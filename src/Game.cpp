@@ -58,11 +58,29 @@ Game::~Game () {
     this->instance = nullptr;
 }
 
-Game* Game::GetInstance (std::string title, int width, int height) {
+Game& Game::GetInstance (std::string title, int width, int height) {
     if (instance == nullptr) {
         instance = new Game(title, width, height);
     }
-    return instance;
+    return *instance;
+}
+Game* Game::instance = nullptr;
+
+// State& Game::GetState () {
+
+// }
+
+SDL_Renderer* Game::GetRenderer () {
+    return this->renderer;
 }
 
-Game* Game::instance = nullptr;
+void Game::Run () {
+    // remover trecho de codigo
+    SDL_Event event;
+    while (true) {
+        if(SDL_PollEvent(&event) && (event.type == SDL_QUIT)) {
+            break;
+        }
+    }
+    // remover fim
+}

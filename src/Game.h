@@ -5,26 +5,28 @@
 #define GAME_H
 
 class Game {
-    protected:
+    private:
         static Game* instance;
         SDL_Window* window;
         SDL_Renderer* renderer;
+        // State* state;
+
         std::string title;
         int width, height;
 
-        Game (std::string title, int width, int height);
+        Game(std::string title, int width, int height);
 
     public:
-        Game (Game &other) = delete;
-
-        static Game* GetInstance(
+        ~Game();
+        static Game& GetInstance(
             std::string title,
             int width,
             int height
         );
+        // State& GetState ();
+        SDL_Renderer* GetRenderer();
+        void Run();
 
-        void operator= (const Game &) = delete;
-        ~Game ();
 };
 
 #endif
