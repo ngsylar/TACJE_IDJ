@@ -1,0 +1,8 @@
+# Binary files
+.vscode/
+test_cmake/
+spike/
+*.exe
+*.out
+*.zip
+*.code-workspace
