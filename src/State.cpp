@@ -1,11 +1,15 @@
 #define INCLUDE_SDL_IMAGE
+#define INCLUDE_SDL_MIXER
 #include "State.h"
 
 #define STATE_RENDER_X 0
 #define STATE_RENDER_Y 0
+#define REPEAT_ST_ON -1
 
 State::State () {
     this->quitRequested = false;
+    this->music.Open("assets/audio/stageState.ogg");
+    this->music.Play(REPEAT_ST_ON);
 }
 
 void State::LoadAssets () {

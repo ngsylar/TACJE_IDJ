@@ -179,7 +179,8 @@ dep/State.d bin/State.o: src/State.cpp include/State.h \
  C:/msys64/mingw64/include/SDL2/SDL_locale.h \
  C:/msys64/mingw64/include/SDL2/SDL_misc.h \
  C:/msys64/mingw64/include/SDL2/SDL_image.h \
- C:/msys64/mingw64/include/SDL2/SDL.h include/Sprite.h \
+ C:/msys64/mingw64/include/SDL2/SDL.h \
+ C:/msys64/mingw64/include/SDL2/SDL_mixer.h include/Sprite.h \
  C:/msys64/mingw64/include/c++/10.3.0/string \
  C:/msys64/mingw64/include/c++/10.3.0/bits/stringfwd.h \
  C:/msys64/mingw64/include/c++/10.3.0/bits/memoryfwd.h \
@@ -251,7 +252,8 @@ dep/State.d bin/State.o: src/State.cpp include/State.h \
  C:/msys64/mingw64/include/c++/10.3.0/cerrno \
  C:/msys64/mingw64/include/c++/10.3.0/bits/charconv.h \
  C:/msys64/mingw64/include/c++/10.3.0/bits/functional_hash.h \
- C:/msys64/mingw64/include/c++/10.3.0/bits/basic_string.tcc
+ C:/msys64/mingw64/include/c++/10.3.0/bits/basic_string.tcc \
+ include/Music.h
 include/State.h:
 include/SDL_include.h:
 C:/msys64/mingw64/include/SDL2/SDL.h:
@@ -435,6 +437,7 @@ C:/msys64/mingw64/include/SDL2/SDL_locale.h:
 C:/msys64/mingw64/include/SDL2/SDL_misc.h:
 C:/msys64/mingw64/include/SDL2/SDL_image.h:
 C:/msys64/mingw64/include/SDL2/SDL.h:
+C:/msys64/mingw64/include/SDL2/SDL_mixer.h:
 include/Sprite.h:
 C:/msys64/mingw64/include/c++/10.3.0/string:
 C:/msys64/mingw64/include/c++/10.3.0/bits/stringfwd.h:
@@ -508,3 +511,4 @@ C:/msys64/mingw64/include/c++/10.3.0/cerrno:
 C:/msys64/mingw64/include/c++/10.3.0/bits/charconv.h:
 C:/msys64/mingw64/include/c++/10.3.0/bits/functional_hash.h:
 C:/msys64/mingw64/include/c++/10.3.0/bits/basic_string.tcc:
+include/Music.h:
