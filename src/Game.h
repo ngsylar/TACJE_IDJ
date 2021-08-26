@@ -1,5 +1,8 @@
-#include <SDL2/SDL.h>
 #include <string>
+
+#define INCLUDE_SDL
+#include "SDL_include.h"
+#include "State.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -9,7 +12,7 @@ class Game {
         static Game* instance;
         SDL_Window* window;
         SDL_Renderer* renderer;
-        // State* state;
+        State* state;
 
         std::string title;
         int width, height;
@@ -23,7 +26,7 @@ class Game {
             int width,
             int height
         );
-        // State& GetState ();
+        State& GetState ();
         SDL_Renderer* GetRenderer();
         void Run();
 

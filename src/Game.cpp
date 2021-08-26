@@ -1,32 +1,44 @@
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-
+#define INCLUDE_SDL_IMAGE
+#define INCLUDE_SDL_MIXER
 #include "Game.h"
 
+#define DELAY_VALUE 33
+
+Game* Game::instance = nullptr;
+
 Game::Game (std::string title, int width, int height) {
+    int mixopaudio;
+
+    if (instance == nullptr) {
+        instance = this;
+    } else {
+        SDL_Log("Something really weird is happening...");
+    }
+
     this->title = title;
     this->width = width;
     this->height = height;
 
     // SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
-        SDL_Log("SDL_Init error: %s\n", SDL_GetError());
+        SDL_Log("SDL_Init error: %s", SDL_GetError());
     }
 
     // IMG
     if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0) {
-        SDL_Log("IMG_Init error: %s\n", IMG_GetError());
+        SDL_Log("IMG_Init error: %s", IMG_GetError());
     }
 
     // Mix
     Mix_Init(MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MOD);
-    if (Mix_OpenAudio(
+    mixopaudio = Mix_OpenAudio(
         MIX_DEFAULT_FREQUENCY,
         MIX_DEFAULT_FORMAT,
         MIX_DEFAULT_CHANNELS,
         1024
-    ) != 0) {
-        SDL_Log("Mix_Init error: %s\n", Mix_GetError());
+    );
+    if (mixopaudio != 0) {
+        SDL_Log("Mix_Init error: %s", Mix_GetError());
     };
     Mix_AllocateChannels(32);
 
@@ -37,18 +49,21 @@ Game::Game (std::string title, int width, int height) {
         this->width, this->height, 0
     );
     if (this->window == nullptr) {
-        SDL_Log("Unable to create window: %s\n", SDL_GetError());
+        SDL_Log("Unable to create window: %s", SDL_GetError());
     }
     this->renderer = SDL_CreateRenderer(
         this->window, -1,
         SDL_RENDERER_ACCELERATED
     );
     if (this->renderer == nullptr) {
-        SDL_Log("Unable to start renderer: %s\n", SDL_GetError());
+        SDL_Log("Unable to start renderer: %s", SDL_GetError());
     }
+
+    this->state = new State();
 }
 
 Game::~Game () {
+    delete this->state;
     Mix_CloseAudio();
     Mix_Quit();
     IMG_Quit();
@@ -64,23 +79,20 @@ Game& Game::GetInstance (std::string title, int width, int height) {
     }
     return *instance;
 }
-Game* Game::instance = nullptr;
 
-// State& Game::GetState () {
-
-// }
+State& Game::GetState () {
+    return *state;
+}
 
 SDL_Renderer* Game::GetRenderer () {
     return this->renderer;
 }
 
 void Game::Run () {
-    // remover trecho de codigo
-    SDL_Event event;
-    while (true) {
-        if(SDL_PollEvent(&event) && (event.type == SDL_QUIT)) {
-            break;
-        }
+    while (!this->state->QuitRequested()) {
+        this->state->Update(0);
+        this->state->Render();
+        SDL_RenderPresent(this->renderer);
+        SDL_Delay(DELAY_VALUE);
     }
-    // remover fim
 }
