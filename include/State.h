@@ -1,3 +1,5 @@
+#define INCLUDE_SDL
+#include "SDL_include.h"
 #include "Sprite.h"
 
 #ifndef STATE_H

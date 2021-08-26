@@ -1,5 +1,4 @@
-#define INCLUDE_SDL
-#include "SDL_include.h"
+#define INCLUDE_SDL_IMAGE
 #include "State.h"
 
 #define STATE_RENDER_X 0
@@ -7,11 +6,10 @@
 
 State::State () {
     this->quitRequested = false;
-    this->bg = Sprite("C:\\Games\\TAC\\150126760_T1\\img\\ocean.jpg");
-    // this->bg = Sprite("ocean.jpg");
 }
 
 void State::LoadAssets () {
+    this->bg.Open("assets/img/ocean.jpg");
 }
 
 void State::Update (float dt) {

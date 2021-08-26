@@ -1,5 +1,5 @@
+#define INCLUDE_SDL_IMAGE
 #include "Game.h"
-#include "Sprite.h"
 
 #define SPRITE_SETCLIP_X 0
 #define SPRITE_SETCLIP_Y 0
@@ -29,6 +29,7 @@ void Sprite::Open (std::string file) {
     this->texture = IMG_LoadTexture(game.GetRenderer(), file.c_str());
     if (!this->texture) {
         SDL_Log("IMG_LoadTexture error: %s", SDL_GetError());
+        exit(1);
     }
     SDL_QueryTexture(
         this->texture, nullptr, nullptr,
@@ -54,16 +55,15 @@ void Sprite::Render (int x, int y) {
     
     dstrect.x = x;
     dstrect.y = y;
-    dstrect.w = this->width;
-    dstrect.h = this->height;
-
-    // SDL_Log("x: %d y: %d w: %d h: %d\n", dstrect.x, dstrect.y, dstrect.w, dstrect.h); //
+    dstrect.w = this->clipRect.w;
+    dstrect.h = this->clipRect.h;
 
     sdlrendercp = SDL_RenderCopy(
         game.GetRenderer(), this->texture, &this->clipRect, &dstrect
     );
     if (sdlrendercp == -1) {
         SDL_Log("SDL_RenderCopy error: %s", SDL_GetError());
+        exit(1);
     }
 }
 

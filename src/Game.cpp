@@ -3,6 +3,8 @@
 #include "Game.h"
 
 #define DELAY_VALUE 33
+#define CHANNELS_VALUE 32
+#define CHUNKSIZE_VALUE 1024
 
 Game* Game::instance = nullptr;
 
@@ -12,7 +14,8 @@ Game::Game (std::string title, int width, int height) {
     if (instance == nullptr) {
         instance = this;
     } else {
-        SDL_Log("Something really weird is happening...");
+        SDL_Log("Something went wrong...");
+        exit(1);
     }
 
     this->title = title;
@@ -22,11 +25,13 @@ Game::Game (std::string title, int width, int height) {
     // SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
         SDL_Log("SDL_Init error: %s", SDL_GetError());
+        exit(1);
     }
 
     // IMG
     if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0) {
         SDL_Log("IMG_Init error: %s", IMG_GetError());
+        exit(1);
     }
 
     // Mix
@@ -35,12 +40,13 @@ Game::Game (std::string title, int width, int height) {
         MIX_DEFAULT_FREQUENCY,
         MIX_DEFAULT_FORMAT,
         MIX_DEFAULT_CHANNELS,
-        1024
+        CHUNKSIZE_VALUE
     );
     if (mixopaudio != 0) {
         SDL_Log("Mix_Init error: %s", Mix_GetError());
+        exit(1);
     };
-    Mix_AllocateChannels(32);
+    Mix_AllocateChannels(CHANNELS_VALUE);
 
     // window
     this->window = SDL_CreateWindow(
@@ -50,6 +56,7 @@ Game::Game (std::string title, int width, int height) {
     );
     if (this->window == nullptr) {
         SDL_Log("Unable to create window: %s", SDL_GetError());
+        exit(1);
     }
     this->renderer = SDL_CreateRenderer(
         this->window, -1,
@@ -57,6 +64,7 @@ Game::Game (std::string title, int width, int height) {
     );
     if (this->renderer == nullptr) {
         SDL_Log("Unable to start renderer: %s", SDL_GetError());
+        exit(1);
     }
 
     this->state = new State();
@@ -64,13 +72,12 @@ Game::Game (std::string title, int width, int height) {
 
 Game::~Game () {
     delete this->state;
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
     Mix_CloseAudio();
     Mix_Quit();
     IMG_Quit();
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
     SDL_Quit();
-    this->instance = nullptr;
 }
 
 Game& Game::GetInstance (std::string title, int width, int height) {
@@ -89,6 +96,7 @@ SDL_Renderer* Game::GetRenderer () {
 }
 
 void Game::Run () {
+    this->state->LoadAssets();
     while (!this->state->QuitRequested()) {
         this->state->Update(0);
         this->state->Render();

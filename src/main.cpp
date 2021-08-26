@@ -1,9 +1,11 @@
 #include "Game.h"
 
+#define WINDOWTITLE "150126760 Gabriel Rocha Fontenele"
+#define WINDOWSIZE 1024, 600
+
 int main (int argc, char* argv[]) {
     Game& game = Game::GetInstance(
-        "150126760 Gabriel Rocha Fontenele",
-        1024, 600
+        WINDOWTITLE, WINDOWSIZE
     );
 
     game.Run();
