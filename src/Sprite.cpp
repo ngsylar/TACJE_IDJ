@@ -1,4 +1,4 @@
-#define INCLUDE_SDL_IMAGE
+#include "State.h"
 #include "Game.h"
 
 #define SPRITE_SETCLIP_X 0
@@ -6,73 +6,72 @@
 #define GAME_INST_PARAMS "",0,0
 
 Sprite::Sprite () {
-    this->texture = nullptr;
+    texture = nullptr;
 }
 
 Sprite::Sprite (std::string file) {
-    this->texture = nullptr;
-    this->Open(file);
+    texture = nullptr;
+    Open(file);
 }
 
 Sprite::~Sprite () {
-    if (this->texture) {
-        SDL_DestroyTexture(this->texture);
+    if (texture) {
+        SDL_DestroyTexture(texture);
     }
 }
 
 void Sprite::Open (std::string file) {
     Game& game = Game::GetInstance(GAME_INST_PARAMS);
 
-    if (this->texture) {
-        SDL_DestroyTexture(this->texture);
+    if (texture) {
+        SDL_DestroyTexture(texture);
     }
-    this->texture = IMG_LoadTexture(game.GetRenderer(), file.c_str());
-    if (!this->texture) {
+    texture = IMG_LoadTexture(game.GetRenderer(), file.c_str());
+    if (texture == nullptr) {
         SDL_Log("IMG_LoadTexture error: %s", SDL_GetError());
         exit(1);
     }
     SDL_QueryTexture(
-        this->texture, nullptr, nullptr,
-        &this->width, &this->height
+        texture, nullptr, nullptr,
+        &width, &height
     );
-    this->SetClip(
+    SetClip(
         SPRITE_SETCLIP_X, SPRITE_SETCLIP_Y,
-        this->width, this->height
+        width, height
     );
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {
-    this->clipRect.x = x;
-    this->clipRect.y = y;
-    this->clipRect.w = w;
-    this->clipRect.h = h;
+    clipRect.x = x;
+    clipRect.y = y;
+    clipRect.w = w;
+    clipRect.h = h;
 }
 
 void Sprite::Render (int x, int y) {
     Game& game = Game::GetInstance(GAME_INST_PARAMS);
     SDL_Rect dstrect;
-    int sdlrendercp;
     
     dstrect.x = x;
     dstrect.y = y;
-    dstrect.w = this->clipRect.w;
-    dstrect.h = this->clipRect.h;
+    dstrect.w = clipRect.w;
+    dstrect.h = clipRect.h;
 
-    sdlrendercp = SDL_RenderCopy(
-        game.GetRenderer(), this->texture, &this->clipRect, &dstrect
-    );
-    if (sdlrendercp == -1) {
+    if (SDL_RenderCopy(
+            game.GetRenderer(), texture,
+            &clipRect, &dstrect
+        ) == -1) {
         SDL_Log("SDL_RenderCopy error: %s", SDL_GetError());
         exit(1);
     }
 }
 
 int Sprite::GetWidth () {
-    return this->width;
+    return width;
 }
 
 int Sprite::GetHeight () {
-    return this->height;
+    return height;
 }
 
 bool Sprite::IsOpen () {

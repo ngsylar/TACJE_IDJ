@@ -1,6 +1,7 @@
 #include <string>
 
 #define INCLUDE_SDL
+#define INCLUDE_SDL_IMAGE
 #include "SDL_include.h"
 
 #ifndef SPRITE_H

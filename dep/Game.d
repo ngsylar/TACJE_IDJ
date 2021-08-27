@@ -251,9 +251,8 @@ dep/Game.d bin/Game.o: src/Game.cpp include/Game.h \
  C:/msys64/mingw64/include/SDL2/SDL_locale.h \
  C:/msys64/mingw64/include/SDL2/SDL_misc.h \
  C:/msys64/mingw64/include/SDL2/SDL_image.h \
- C:/msys64/mingw64/include/SDL2/SDL.h \
- C:/msys64/mingw64/include/SDL2/SDL_mixer.h include/State.h \
- include/Sprite.h include/Music.h
+ C:/msys64/mingw64/include/SDL2/SDL.h include/State.h include/Sprite.h \
+ include/Music.h C:/msys64/mingw64/include/SDL2/SDL_mixer.h
 include/Game.h:
 C:/msys64/mingw64/include/c++/10.3.0/string:
 C:/msys64/mingw64/include/c++/10.3.0/x86_64-w64-mingw32/bits/c++config.h:
@@ -509,7 +508,7 @@ C:/msys64/mingw64/include/SDL2/SDL_locale.h:
 C:/msys64/mingw64/include/SDL2/SDL_misc.h:
 C:/msys64/mingw64/include/SDL2/SDL_image.h:
 C:/msys64/mingw64/include/SDL2/SDL.h:
-C:/msys64/mingw64/include/SDL2/SDL_mixer.h:
 include/State.h:
 include/Sprite.h:
 include/Music.h:
+C:/msys64/mingw64/include/SDL2/SDL_mixer.h:
