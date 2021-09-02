@@ -1,11 +1,19 @@
-# Binary files
+# vscode
 .vscode/
+*.code-workspace
+
+# binarios
+*.d
+*.o
+*.out
+*.exe
+
+# spikes
 test_cmake/
 spike/
-*.exe
-*.out
-*.zip
-*.pdf
-*.code-workspace
 Makefileold
 Makefilenew
+
+# outros
+*.zip
+*.pdf

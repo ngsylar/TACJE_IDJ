@@ -1,4 +1,4 @@
-#include "State.h"
+#include "Sprite.h"
 #include "Game.h"
 
 #define SPRITE_SETCLIP_X 0
