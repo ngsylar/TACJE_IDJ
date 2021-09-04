@@ -1,9 +1,10 @@
 #include "Sprite.h"
 #include "Game.h"
 
-#define SPRITE_SETCLIP_X 0
-#define SPRITE_SETCLIP_Y 0
 #define GAME_INST_PARAMS "",0,0
+#define CLIP_START_X 0
+#define CLIP_START_Y 0
+#define IMG_ERROR -1
 
 Sprite::Sprite () {
     texture = nullptr;
@@ -22,21 +23,26 @@ Sprite::~Sprite () {
 
 void Sprite::Open (std::string file) {
     Game& game = Game::GetInstance(GAME_INST_PARAMS);
+    int qtexture;
 
     if (texture) {
         SDL_DestroyTexture(texture);
     }
     texture = IMG_LoadTexture(game.GetRenderer(), file.c_str());
     if (texture == nullptr) {
-        SDL_Log("IMG_LoadTexture error: %s", SDL_GetError());
+        SDL_Log("IMG_LoadTexture: %s", SDL_GetError());
         exit(1);
     }
-    SDL_QueryTexture(
+    qtexture = SDL_QueryTexture(
         texture, nullptr, nullptr,
         &width, &height
     );
+    if (qtexture == IMG_ERROR) {
+        SDL_Log("SDL_QueryTexture: %s", SDL_GetError());
+        exit(1);
+    }
     SetClip(
-        SPRITE_SETCLIP_X, SPRITE_SETCLIP_Y,
+        CLIP_START_X, CLIP_START_Y,
         width, height
     );
 }
@@ -51,17 +57,19 @@ void Sprite::SetClip (int x, int y, int w, int h) {
 void Sprite::Render (int x, int y) {
     Game& game = Game::GetInstance(GAME_INST_PARAMS);
     SDL_Rect dstrect;
+    int rendercpy;
     
     dstrect.x = x;
     dstrect.y = y;
     dstrect.w = clipRect.w;
     dstrect.h = clipRect.h;
 
-    if (SDL_RenderCopy(
-            game.GetRenderer(), texture,
-            &clipRect, &dstrect
-        ) == -1) {
-        SDL_Log("SDL_RenderCopy error: %s", SDL_GetError());
+    rendercpy = SDL_RenderCopy(
+        game.GetRenderer(), texture,
+        &clipRect, &dstrect
+    );
+    if (rendercpy == IMG_ERROR) {
+        SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
         exit(1);
     }
 }
@@ -76,5 +84,5 @@ int Sprite::GetHeight () {
 
 bool Sprite::IsOpen () {
     if (texture) return true;
-    return false;
+    else return false;
 }

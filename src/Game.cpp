@@ -1,7 +1,7 @@
 #include "Game.h"
 
-#define CHANNELS_VALUE 32
-#define CHUNKSIZE_VALUE 1024
+#define NMB_OF_CHANNELS 32
+#define CHUNKSIZE_VAL 1024
 #define AUTO_DRIVE_ID -1
 #define WINDOW_FLAGS 0
 #define DELAY_VALUE 33
@@ -11,42 +11,48 @@
 Game* Game::instance = nullptr;
 
 Game::Game (std::string title, int width, int height) {
-    if (instance == nullptr) {
-        instance = this;
-        SDL_Log("Instance. OK");
-    } else {
+    int flags, opaudio;
+
+    // Game Instance
+    if (instance != nullptr) {
         SDL_Log("Something went wrong...");
         exit(1);
+    } else {
+        instance = this;
     }
-
     this->title = title;
     this->width = width;
     this->height = height;
 
     // SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != OP_SUCCESS) {
-        SDL_Log("SDL_Init error: %s", SDL_GetError());
+    flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
+    if (SDL_Init(flags) != OP_SUCCESS) {
+        SDL_Log("SDL_Init: %s", SDL_GetError());
         exit(1);
-    } else SDL_Log("SDL_Init. OK");
+    } else SDL_Log("SDL_Init: OK");
 
     // IMG
-    if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == OP_FAILURE) {
-        SDL_Log("IMG_Init error: %s", IMG_GetError());
+    flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
+    if (IMG_Init(flags) == OP_FAILURE) {
+        SDL_Log("IMG_Init: %s", IMG_GetError());
         exit(1);
-    } else SDL_Log("IMG_Init. OK");
+    } else SDL_Log("IMG_Init: OK");
 
-    // Mix
-    Mix_Init(MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MOD);
-    if (Mix_OpenAudio(
-            MIX_DEFAULT_FREQUENCY,
-            MIX_DEFAULT_FORMAT,
-            MIX_DEFAULT_CHANNELS,
-            CHUNKSIZE_VALUE
-        ) != OP_SUCCESS) {
-        SDL_Log("Mix_Init error: %s", Mix_GetError());
-        exit(1);
-    } else SDL_Log("Mix_OpenAudio. OK");
-    Mix_AllocateChannels(CHANNELS_VALUE);
+    // Mixer
+    flags = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MOD;
+    if (Mix_Init(flags) == OP_FAILURE) {
+        SDL_Log("Mix_Init: %s", Mix_GetError());
+    }
+    opaudio = Mix_OpenAudio(
+        MIX_DEFAULT_FREQUENCY,
+        MIX_DEFAULT_FORMAT,
+        MIX_DEFAULT_CHANNELS,
+        CHUNKSIZE_VAL
+    );
+    if (opaudio != OP_SUCCESS) {
+        SDL_Log("Mix_OpenAudio: %s", Mix_GetError());
+    } else SDL_Log("Mix_Init: OK");
+    Mix_AllocateChannels(NMB_OF_CHANNELS);
 
     // window
     window = SDL_CreateWindow(
