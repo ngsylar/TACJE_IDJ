@@ -1,10 +1,11 @@
-#define INCLUDE_SDL
-#include "SDL_include.h"
-#include "Sprite.h"
-#include "Music.h"
-
 #ifndef STATE_H
 #define STATE_H
+
+#define INCLUDE_SDL
+#include "SDL_include.h"
+
+#include "Sprite.h"
+#include "Music.h"
 
 class State {
     private:

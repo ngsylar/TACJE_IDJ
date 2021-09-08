@@ -1,11 +1,11 @@
+#ifndef MUSIC_H
+#define MUSIC_H
+
 #include <string>
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
-
-#ifndef MUSIC_H
-#define MUSIC_H
 
 class Music {
     private:

@@ -1,13 +1,14 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include <string>
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
-#include "State.h"
 
-#ifndef GAME_H
-#define GAME_H
+#include "State.h"
 
 class Game {
     private:
@@ -28,7 +29,7 @@ class Game {
             int width,
             int height
         );
-        State& GetState ();
+        State& GetState();
         SDL_Renderer* GetRenderer();
         void Run();
 
