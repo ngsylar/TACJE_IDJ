@@ -1,16 +1,15 @@
 #include "Sprite.h"
 #include "Game.h"
 
-#define GAME_INST_PARAMS "",0,0
 #define CLIP_START_X 0
 #define CLIP_START_Y 0
 #define IMG_ERROR -1
 
-Sprite::Sprite () {
+Sprite::Sprite (GameObject& associated): Component(associated) {
     texture = nullptr;
 }
 
-Sprite::Sprite (std::string file) {
+Sprite::Sprite (GameObject& associated, std::string file): Component(associated) {
     texture = nullptr;
     Open(file);
 }
@@ -22,13 +21,15 @@ Sprite::~Sprite () {
 }
 
 void Sprite::Open (std::string file) {
-    Game& game = Game::GetInstance(GAME_INST_PARAMS);
     int qtexture;
 
     if (texture) {
         SDL_DestroyTexture(texture);
     }
-    texture = IMG_LoadTexture(game.GetRenderer(), file.c_str());
+    texture = IMG_LoadTexture(
+        Game::GetInstance().GetRenderer(),
+        file.c_str()
+    );
     if (texture == nullptr) {
         SDL_Log("IMG_LoadTexture: %s", SDL_GetError());
         exit(1);
@@ -45,28 +46,26 @@ void Sprite::Open (std::string file) {
         CLIP_START_X, CLIP_START_Y,
         width, height
     );
+    // associated.box.w = GetWidth();
+    // associated.box.h = GetHeight();
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {
-    clipRect.x = x;
-    clipRect.y = y;
-    clipRect.w = w;
-    clipRect.h = h;
+    clipRect = SDL_Rect{x, y, w, h};
 }
 
-void Sprite::Render (int x, int y) {
-    Game& game = Game::GetInstance(GAME_INST_PARAMS);
+void Sprite::Render () {
     SDL_Rect dstrect;
     int rendercpy;
     
-    dstrect.x = x;
-    dstrect.y = y;
-    dstrect.w = clipRect.w;
-    dstrect.h = clipRect.h;
+    dstrect = SDL_Rect{
+        associated.box.x, associated.box.y,
+        clipRect.w, clipRect.h
+    };
 
     rendercpy = SDL_RenderCopy(
-        game.GetRenderer(), texture,
-        &clipRect, &dstrect
+        Game::GetInstance().GetRenderer(),
+        texture, &clipRect, &dstrect
     );
     if (rendercpy == IMG_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
@@ -83,6 +82,11 @@ int Sprite::GetHeight () {
 }
 
 bool Sprite::IsOpen () {
-    if (texture) return true;
-    else return false;
+    return (texture != nullptr);
+}
+
+void Sprite::Update (float dt) {}
+
+bool Sprite::Is (std::string type) {
+    return (type == "Sprite");
 }

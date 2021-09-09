@@ -40,6 +40,5 @@ void Music::Stop (int mToStop=FADE_DURATION) {
 }
 
 bool Music::IsOpen () {
-    if (music) return true;
-    return false;
+    return (music != nullptr);
 }

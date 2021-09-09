@@ -20,15 +20,14 @@ class Game {
         std::string title;
         int width, height;
 
-        Game(std::string title, int width, int height);
+        Game(
+            std::string title,
+            int width, int height
+        );
 
     public:
         ~Game();
-        static Game& GetInstance(
-            std::string title,
-            int width,
-            int height
-        );
+        static Game& GetInstance();
         State& GetState();
         SDL_Renderer* GetRenderer();
         void Run();

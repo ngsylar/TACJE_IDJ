@@ -1,7 +1,5 @@
 #include "State.h"
 
-#define STATE_RENDER_X 0
-#define STATE_RENDER_Y 0
 #define REPEAT_ST_ON -1
 
 State::State () {
@@ -21,7 +19,7 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
-    bg.Render(STATE_RENDER_X, STATE_RENDER_Y);
+    bg.Render();
 }
 
 bool State::QuitRequested () {

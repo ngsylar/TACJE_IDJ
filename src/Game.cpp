@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#define WINDOWTITLE "150126760 Gabriel Rocha Fontenele"
+#define WINDOWSIZE 1024, 600
 #define NMB_OF_CHANNELS 32
 #define CHUNKSIZE_VAL 1024
 #define AUTO_DRIVE_ID -1
@@ -89,9 +91,9 @@ Game::~Game () {
     instance = nullptr;
 }
 
-Game& Game::GetInstance (std::string title, int width, int height) {
+Game& Game::GetInstance () {
     if (instance == nullptr) {
-        instance = new Game(title, width, height);
+        instance = new Game(WINDOWTITLE, WINDOWSIZE);
     }
     return *instance;
 }
