@@ -12,9 +12,8 @@ Sound::Sound (GameObject& associated, std::string file): Sound(associated) {
 }
 
 Sound::~Sound () {
-    while (Mix_Playing(channel));
     if (chunk) {
-        Stop();
+        Mix_HaltChannel(channel);
         Mix_FreeChunk(chunk);
         chunk = nullptr;
     }
@@ -39,13 +38,17 @@ void Sound::Play (int times=REPEAT_OFF) {
 }
 
 void Sound::Stop () {
-    if (chunk) {
+    if (chunk and Mix_Playing(channel)) {
         Mix_HaltChannel(channel);
     }
 }
 
 bool Sound::IsOpen () {
     return (chunk != nullptr);
+}
+
+bool Sound::Playing () {
+    return Mix_Playing(channel);
 }
 
 void Sound::Update (float dt) {}

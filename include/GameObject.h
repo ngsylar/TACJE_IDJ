@@ -1,6 +1,7 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -10,7 +11,7 @@ class Component;
 
 class GameObject {
     private:
-        std::vector<Component*> components;
+        std::vector<std::unique_ptr<Component>> components;
         bool isDead;
     
     public:

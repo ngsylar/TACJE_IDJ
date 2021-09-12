@@ -20,6 +20,7 @@ class Sound: public Component {
         void Stop();
         void Open(std::string file);
         bool IsOpen();
+        bool Playing();
         void Update(float dt);
         void Render();
         bool Is(std::string type);

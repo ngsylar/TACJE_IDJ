@@ -57,7 +57,7 @@ void Sprite::Render () {
     
     dstrect = SDL_Rect{
         (int)associated.box.x, (int)associated.box.y,
-        clipRect.w, clipRect.h
+        (int)associated.box.w, (int)associated.box.h
     };
 
     rendercpy = SDL_RenderCopy(

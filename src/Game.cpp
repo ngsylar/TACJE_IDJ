@@ -77,6 +77,7 @@ Game::Game (std::string title, int width, int height) {
         exit(1);
     }
 
+    srand(time(NULL));
     this->state = new State();
 }
 

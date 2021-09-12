@@ -5,13 +5,18 @@
 #include "Vec2.h"
 
 #define PI 3.1415926535
-#define REPEAT_ST_ON -1
+#define MUS_BG "assets/audio/stageState.ogg"
+#define SPR_BG "assets/img/ocean.jpg"
+#define SPR_ENEMY "assets/img/penguinface.png"
+#define SND_ENEMY "assets/audio/boom.wav"
+#define MUS_REPEAT_ON -1
+#define SPR_START_X 0
+#define SPR_START_Y 0
 
 State::State () {
     quitRequested = false;
-    music.Open("assets/audio/stageState.ogg");
-    music.Play(REPEAT_ST_ON);
-    srand(time(NULL));
+    music.Open(MUS_BG);
+    music.Play(MUS_REPEAT_ON);
 }
 
 State::~State () {
@@ -20,20 +25,38 @@ State::~State () {
 
 void State::LoadAssets () {
     GameObject* bg = new GameObject();
-    Sprite* bgSprite = new Sprite(*bg, "assets/img/ocean.jpg");
+    Sprite* bgSprite = new Sprite(*bg, SPR_BG);
 
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);
+
+	bg->box = Rect(
+		SPR_START_X, SPR_START_Y,
+		bgSprite->GetWidth(), bgSprite->GetHeight()
+	);
 }
 
 void State::Update (float dt) {
+	Sprite* sprite;
+	Sound* sound;
+	Face* face;
+
     Input();
     for (int i=0; i < (int)objectArray.size(); i++) {
         objectArray[i]->Update(dt);
     }
+
     for (int i=((int)objectArray.size())-1; i >= 0; i--) {
         if (objectArray[i]->IsDead()) {
-            objectArray.erase(objectArray.begin()+i);
+			sprite = (Sprite*)objectArray[i]->GetComponent("Sprite");
+			face = (Face*)objectArray[i]->GetComponent("Face");
+			objectArray[i]->RemoveComponent(sprite);
+			objectArray[i]->RemoveComponent(face);
+
+			sound = (Sound*)objectArray[i]->GetComponent("Sound");
+			if (!sound->Playing()) {
+            	objectArray.erase(objectArray.begin()+i);
+			}
         }
     }
 }
@@ -50,8 +73,8 @@ bool State::QuitRequested () {
 
 void State::AddObject (int mouseX, int mouseY) {
     GameObject* obj = new GameObject();
-    Sprite* sprite = new Sprite(*obj, "assets/img/penguinface.png");
-    Sound* sound = new Sound(*obj, "assets/audio/boom.wav");
+    Sprite* sprite = new Sprite(*obj, SPR_ENEMY);
+    Sound* sound = new Sound(*obj, SND_ENEMY);
     Face* face = new Face(*obj);
 
     obj->AddComponent(sprite);
