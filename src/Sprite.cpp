@@ -9,8 +9,7 @@ Sprite::Sprite (GameObject& associated): Component(associated) {
     texture = nullptr;
 }
 
-Sprite::Sprite (GameObject& associated, std::string file): Component(associated) {
-    texture = nullptr;
+Sprite::Sprite (GameObject& associated, std::string file): Sprite(associated) {
     Open(file);
 }
 
@@ -46,8 +45,8 @@ void Sprite::Open (std::string file) {
         CLIP_START_X, CLIP_START_Y,
         width, height
     );
-    // associated.box.w = GetWidth();
-    // associated.box.h = GetHeight();
+    associated.box.w = GetWidth();
+    associated.box.h = GetHeight();
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {

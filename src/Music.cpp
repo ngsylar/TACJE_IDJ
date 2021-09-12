@@ -1,8 +1,8 @@
 #include "Music.h"
 
-#define REPEAT_ST_ON -1
-#define FADE_DURATION 1500
-#define INSTANT_FADE 0
+#define REPEAT_ON -1
+#define FADE_TIME 1500
+#define STOP_TIME 0
 #define ERROR_PLAY -1
 #define ERROR_FADE 0
 
@@ -16,7 +16,7 @@ Music::Music (std::string file) {
 }
 
 Music::~Music () {
-    Stop(INSTANT_FADE);
+    Stop(STOP_TIME);
     Mix_FreeMusic(music);
 }
 
@@ -27,13 +27,13 @@ void Music::Open (std::string file) {
     }
 }
 
-void Music::Play (int times=REPEAT_ST_ON) {
+void Music::Play (int times=REPEAT_ON) {
     if (Mix_PlayMusic(music, times) == ERROR_PLAY) {
         SDL_Log("Mix_PlayMusic: %s", SDL_GetError());
     }
 }
 
-void Music::Stop (int mToStop=FADE_DURATION) {
+void Music::Stop (int mToStop=FADE_TIME) {
     if (Mix_FadeOutMusic(mToStop) == ERROR_FADE) {
         SDL_Log("Mix_PlayMusic: %s", SDL_GetError());
     }
