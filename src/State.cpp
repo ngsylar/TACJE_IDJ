@@ -58,6 +58,8 @@ void State::AddObject (int mouseX, int mouseY) {
     obj->AddComponent(sound);
     obj->AddComponent(face);
     objectArray.emplace_back(obj);
+
+	obj->box = Rect(mouseX, mouseY, sprite->GetWidth(), sprite->GetHeight());
 }
 
 void State::Input() {
