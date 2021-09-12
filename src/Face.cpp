@@ -2,18 +2,19 @@
 #include "Sound.h"
 
 #define INITIAL_HP 30
-#define NO_HP(hp) (hp <= 0)
 #define REPEAT_OFF 1
 
 Face::Face (GameObject& associated): Component(associated) {
     hitpoints = INITIAL_HP;
 }
 
+Face::~Face () {}
+
 void Face::Damage (int damage) {
     Sound* sound;
 
     hitpoints -= damage;
-    if (NO_HP(hitpoints)) {
+    if (hitpoints <= 0) {
         associated.RequestDelete();
         sound = (Sound*)associated.GetComponent("Sound");
         if (sound) {

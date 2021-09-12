@@ -3,7 +3,7 @@
 
 #include <string>
 
-class GameObject;
+#include "GameObject.h"
 
 class Component {
     protected:

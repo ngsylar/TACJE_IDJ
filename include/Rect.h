@@ -7,6 +7,7 @@ class Rect {
 
         Rect();
         Rect(float x, float y, float w, float h);
+        bool Contains(float pX, float pY);
 };
 
 #endif

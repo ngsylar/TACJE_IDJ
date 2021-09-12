@@ -1,11 +1,12 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
-#include <algorithm>
+#include <string>
 #include <vector>
 
-#include "Component.h"
 #include "Rect.h"
+
+class Component;
 
 class GameObject {
     private:
