@@ -71,7 +71,7 @@ bool State::QuitRequested () {
     return quitRequested;
 }
 
-void State::AddObject (int mouseX, int mouseY) {
+void State::AddObject (int pX, int pY) {
     GameObject* obj = new GameObject();
     Sprite* sprite = new Sprite(*obj, SPR_ENEMY);
     Sound* sound = new Sound(*obj, SND_ENEMY);
@@ -82,7 +82,9 @@ void State::AddObject (int mouseX, int mouseY) {
     obj->AddComponent(face);
     objectArray.emplace_back(obj);
 
-	obj->box = Rect(mouseX, mouseY, sprite->GetWidth(), sprite->GetHeight());
+	int pW = sprite->GetWidth();
+	int pH = sprite->GetHeight();
+	obj->box = Rect(pX-pW/2, pY-pH/2, pW, pH);
 }
 
 void State::Input() {
@@ -131,7 +133,7 @@ void State::Input() {
 			}
 			// Se não, crie um objeto
 			else {
-				Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( mouseX, mouseY );
+				Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( (float)mouseX, (float)mouseY );
 				AddObject((int)objPos.x, (int)objPos.y);
 			}
 		}
