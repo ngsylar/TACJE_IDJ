@@ -55,7 +55,7 @@ SDL_PATHS = C:/SDL2/x86_64-w64-mingw32 C:/Tools/msys64/mingw64
 
 SDL_INC_PATH += $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))
-# FLAGS += -mwindows
+FLAGS += -mwindows
 DFLAGS += -mconsole
 LIBS := -lmingw32 -lSDL2main $(LIBS)
 

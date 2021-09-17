@@ -8,6 +8,9 @@
 *.out
 *.exe
 
+# bib
+*.dll
+
 # spikes
 test_cmake/
 spike/
@@ -15,5 +18,6 @@ Makefileold
 Makefilenew
 
 # outros
+*.bat
 *.zip
 *.pdf

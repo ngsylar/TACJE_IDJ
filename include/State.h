@@ -1,6 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <cstdlib>
+#include <ctime>
 #include <memory>
 #include <vector>
 
