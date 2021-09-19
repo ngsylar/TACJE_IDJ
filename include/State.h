@@ -12,6 +12,12 @@
 #include "GameObject.h"
 #include "Music.h"
 
+#define PI 3.1415926535
+#define MUS_BG "assets/audio/stageState.ogg"
+#define SPR_BG "assets/img/ocean.jpg"
+#define SPR_ENEMY "assets/img/penguinfaceCpd.png"
+#define SND_ENEMY "assets/audio/boom.wav"
+
 class State {
     private:
         Music music;

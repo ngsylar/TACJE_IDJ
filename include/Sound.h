@@ -7,6 +7,9 @@
 
 #include "Component.h"
 
+#define SND_REPEAT_OFF 1
+#define SND_ERROR_PLAY -1
+
 class Sound: public Component {
     private:
         Mix_Chunk* chunk;
@@ -16,7 +19,7 @@ class Sound: public Component {
         Sound(GameObject& associated);
         Sound(GameObject& associated, std::string file);
         ~Sound();
-        void Play(int times);
+        void Play(int times=SND_REPEAT_OFF);
         void Stop();
         void Open(std::string file);
         bool IsOpen();

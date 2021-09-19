@@ -4,15 +4,6 @@
 #include "Face.h"
 #include "Vec2.h"
 
-#define PI 3.1415926535
-#define MUS_BG "assets/audio/stageState.ogg"
-#define SPR_BG "assets/img/ocean.jpg"
-#define SPR_ENEMY "assets/img/penguinfaceCpd.png"
-#define SND_ENEMY "assets/audio/boom.wav"
-#define MUS_REPEAT_ON -1
-#define SPR_START_X 0
-#define SPR_START_Y 0
-
 State::State () {
     quitRequested = false;
     music.Open(MUS_BG);
@@ -42,11 +33,11 @@ void State::Update (float dt) {
 	Face* face;
 
     Input();
-    for (int i=0; i < (int)objectArray.size(); i++) {
+    for (unsigned i=0; i < objectArray.size(); i++) {
         objectArray[i]->Update(dt);
     }
 
-    for (int i=((int)objectArray.size())-1; i >= 0; i--) {
+    for (int i=(int)objectArray.size()-1; i >= 0; i--) {
         if (objectArray[i]->IsDead()) {
 			sprite = (Sprite*)objectArray[i]->GetComponent("Sprite");
 			face = (Face*)objectArray[i]->GetComponent("Face");
@@ -62,7 +53,7 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
-    for (int i=0; i < (int)objectArray.size(); i++) {
+    for (unsigned i=0; i < objectArray.size(); i++) {
         objectArray[i]->Render();
     }
 }
@@ -82,9 +73,9 @@ void State::AddObject (int pX, int pY) {
     obj->AddComponent(face);
     objectArray.emplace_back(obj);
 
-	int pW = sprite->GetWidth();
-	int pH = sprite->GetHeight();
-	obj->box = Rect(pX-pW/2, pY-pH/2, pW, pH);
+    int pW = sprite->GetWidth();
+    int pH = sprite->GetHeight();
+    obj->box = Rect(pX-pW/2, pY-pH/2, pW, pH);
 }
 
 void State::Input() {
@@ -106,7 +97,7 @@ void State::Input() {
 		if(event.type == SDL_MOUSEBUTTONDOWN) {
 
 			// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
-			for(int i = objectArray.size() - 1; i >= 0; --i) {
+			for(int i = (int)objectArray.size() - 1; i >= 0; --i) {
 				// Obtem o ponteiro e casta pra Face.
 				GameObject* go = (GameObject*) objectArray[i].get();
 				// Nota: Desencapsular o ponteiro é algo que devemos evitar ao máximo.

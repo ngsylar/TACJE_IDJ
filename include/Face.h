@@ -3,6 +3,8 @@
 
 #include "Component.h"
 
+#define FCE_INITIAL_HP 30
+
 class Face: public Component {
     private:
         int hitpoints;

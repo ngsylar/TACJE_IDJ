@@ -1,15 +1,5 @@
 #include "Game.h"
 
-#define WINDOWTITLE "150126760 Gabriel Rocha Fontenele"
-#define WINDOWSIZE 1024, 600
-#define NMB_OF_CHANNELS 32
-#define CHUNKSIZE_VAL 1024
-#define AUTO_DRIVE_ID -1
-#define WINDOW_FLAGS 0
-#define DELAY_VALUE 33
-#define OP_SUCCESS 0
-#define OP_FAILURE 0
-
 Game* Game::instance = nullptr;
 
 Game::Game (std::string title, int width, int height) {
@@ -49,12 +39,12 @@ Game::Game (std::string title, int width, int height) {
         MIX_DEFAULT_FREQUENCY,
         MIX_DEFAULT_FORMAT,
         MIX_DEFAULT_CHANNELS,
-        CHUNKSIZE_VAL
+        MUS_CHUNK_SIZE
     );
     if (opaudio != OP_SUCCESS) {
         SDL_Log("Mix_OpenAudio: %s", Mix_GetError());
     } else SDL_Log("Mix_Init: OK");
-    Mix_AllocateChannels(NMB_OF_CHANNELS);
+    Mix_AllocateChannels(MUS_CHANNELS);
 
     // window
     window = SDL_CreateWindow(
@@ -94,7 +84,7 @@ Game::~Game () {
 
 Game& Game::GetInstance () {
     if (instance == nullptr) {
-        instance = new Game(WINDOWTITLE, WINDOWSIZE);
+        instance = new Game(WINDOW_TITLE, WINDOW_SIZE);
     }
     return *instance;
 }

@@ -1,8 +1,5 @@
 #include "Sound.h"
 
-#define REPEAT_OFF 1
-#define ERROR_PLAY -1
-
 Sound::Sound (GameObject& associated): Component(associated) {
     chunk = nullptr;
 }
@@ -27,12 +24,12 @@ void Sound::Open (std::string file) {
     channel = -1;
 }
 
-void Sound::Play (int times=REPEAT_OFF) {
+void Sound::Play (int times) {
     int loops;
 
     loops = times - ((times > 0)? 1:0);
     channel = Mix_PlayChannel(channel, chunk, loops);
-    if (channel == ERROR_PLAY) {
+    if (channel == SND_ERROR_PLAY) {
         SDL_Log("Mix_PlayChannel: %s", SDL_GetError());
     }
 }

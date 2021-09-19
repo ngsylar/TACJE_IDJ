@@ -1,10 +1,6 @@
 #include "Sprite.h"
 #include "Game.h"
 
-#define CLIP_START_X 0
-#define CLIP_START_Y 0
-#define IMG_ERROR -1
-
 Sprite::Sprite (GameObject& associated): Component(associated) {
     texture = nullptr;
 }
@@ -37,12 +33,12 @@ void Sprite::Open (std::string file) {
         texture, nullptr, nullptr,
         &width, &height
     );
-    if (qtexture == IMG_ERROR) {
+    if (qtexture == SPR_ERROR) {
         SDL_Log("SDL_QueryTexture: %s", SDL_GetError());
         exit(1);
     }
     SetClip(
-        CLIP_START_X, CLIP_START_Y,
+        SPR_START_X, SPR_START_Y,
         width, height
     );
 }
@@ -52,11 +48,15 @@ void Sprite::SetClip (int x, int y, int w, int h) {
 }
 
 void Sprite::Render () {
+    Render((int)associated.box.x, (int)associated.box.y);
+}
+
+void Sprite::Render (int startX, int startY) {
     SDL_Rect dstrect;
     int rendercpy;
-    
+
     dstrect = SDL_Rect{
-        (int)associated.box.x, (int)associated.box.y,
+        startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
 
@@ -64,7 +64,7 @@ void Sprite::Render () {
         Game::GetInstance().GetRenderer(),
         texture, &clipRect, &dstrect
     );
-    if (rendercpy == IMG_ERROR) {
+    if (rendercpy == SPR_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
         exit(1);
     }
