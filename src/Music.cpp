@@ -1,4 +1,5 @@
 #include "Music.h"
+#include "Resources.h"
 
 Music::Music () {
     music = nullptr;
@@ -9,16 +10,10 @@ Music::Music (std::string file) {
     Open(file);
 }
 
-Music::~Music () {
-    Stop(MUS_STOP_TIME);
-    Mix_FreeMusic(music);
-}
+Music::~Music () {}
 
 void Music::Open (std::string file) {
-    music = Mix_LoadMUS(file.c_str());
-    if (music == nullptr) {
-        SDL_Log("Mix_LoadMUS: %s", SDL_GetError());
-    }
+    music = Resources::GetMusic(file);
 }
 
 void Music::Play (int times) {

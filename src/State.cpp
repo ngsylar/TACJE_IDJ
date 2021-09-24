@@ -1,4 +1,5 @@
 #include "State.h"
+#include "Resources.h"
 #include "TileMap.h"
 #include "Sound.h"
 #include "Face.h"
@@ -40,11 +41,13 @@ void State::LoadAssets () {
     objectArray.emplace_back(gameMap);
 }
 
-void State::Update (float dt) {
-    Sprite* sprite;
-    Sound* sound;
-    Face* face;
+void State::ClearResources () {
+    Resources::ClearImages();
+    Resources::ClearMusics();
+    Resources::ClearSounds();
+}
 
+void State::Update (float dt) {
     Input();
     for (unsigned i=0; i < objectArray.size(); i++) {
         objectArray[i]->Update(dt);
@@ -52,15 +55,7 @@ void State::Update (float dt) {
 
     for (int i=(int)objectArray.size()-1; i >= 0; i--) {
         if (objectArray[i]->IsDead()) {
-            sprite = (Sprite*)objectArray[i]->GetComponent("Sprite");
-            face = (Face*)objectArray[i]->GetComponent("Face");
-            objectArray[i]->RemoveComponent(sprite);
-            objectArray[i]->RemoveComponent(face);
-
-            sound = (Sound*)objectArray[i]->GetComponent("Sound");
-            if (!sound->Playing()) {
-                objectArray.erase(objectArray.begin()+i);
-            }
+            objectArray.erase(objectArray.begin()+i);
         }
     }
 }

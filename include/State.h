@@ -35,6 +35,7 @@ class State {
         ~State();
         bool QuitRequested();
         void LoadAssets();
+        void ClearResources();
         void Update(float dt);
         void Render();
 };

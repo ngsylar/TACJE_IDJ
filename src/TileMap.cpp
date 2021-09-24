@@ -45,7 +45,7 @@ int& TileMap::At (int x, int y, int z) {
 void TileMap::Update (float dt) {}
 
 void TileMap::Render () {
-    for (int z=mapDepth-1; z>=0; z--) {
+    for (int z=0; z<mapDepth; z++) {
         RenderLayer(z);
     }
 }

@@ -15,5 +15,5 @@ Para compilar a partir da pasta raiz, tenha certeza de ter instalado o SDL2 e as
 make
 ```
 
-* Inclua as dlls necessárias (veja [extlib/requirements.txt](extlib/requirements.txt)) na pasta pasta _/extlib_.
+* Inclua as dlls necessárias (veja _[extlib/requirements.txt](extlib/requirements.txt))_.
 * Para abrir o jogo no Windows, execute _JOGO.bat_.
