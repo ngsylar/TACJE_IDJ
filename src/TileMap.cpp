@@ -14,8 +14,8 @@ TileMap::~TileMap () {
 }
 
 void TileMap::Load (std::string fileName) {
-    std::fstream file;
-    int mapSize, tile;
+    std::ifstream file;
+    std::string tile;
     char delimiter;
 
     file.open(fileName);
@@ -25,10 +25,8 @@ void TileMap::Load (std::string fileName) {
     }
 
     file >> mapWidth >> delimiter >> mapHeight >> delimiter >> mapDepth >> delimiter;
-    mapSize = mapDepth*mapHeight*mapWidth;
-    for (int i=0; i<mapSize; i++) {
-        file >> tile >> delimiter;
-        tileMatrix.push_back(tile);
+    while (std::getline(file, tile, delimiter)) {
+        tileMatrix.push_back(atoi(tile.c_str())-1);
     }
 
     file.close();
@@ -47,7 +45,7 @@ int& TileMap::At (int x, int y, int z) {
 void TileMap::Update (float dt) {}
 
 void TileMap::Render () {
-    for (int z=0; z<mapDepth; z++) {
+    for (int z=mapDepth-1; z>=0; z--) {
         RenderLayer(z);
     }
 }
@@ -59,7 +57,7 @@ void TileMap::RenderLayer (int layer, int cameraX, int cameraY) {
         for (int x=0; x<mapWidth; x++) {
             tile = At(x, y, layer);
             tileSet->RenderTile(
-                tile,
+                (unsigned)tile,
                 x*tileSet->GetTileWidth(),
                 y*tileSet->GetTileHeight()
             );

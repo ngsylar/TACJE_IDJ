@@ -18,33 +18,33 @@ Game::Game (std::string title, int width, int height) {
 
     // SDL
     flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
-    if (SDL_Init(flags) != OP_SUCCESS) {
+    if (SDL_Init(flags) != GAM_SUCCESS) {
         SDL_Log("SDL_Init: %s", SDL_GetError());
         exit(1);
     } else SDL_Log("SDL_Init: OK");
 
     // IMG
     flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
-    if (IMG_Init(flags) == OP_FAILURE) {
+    if (IMG_Init(flags) == GAM_FAILURE) {
         SDL_Log("IMG_Init: %s", IMG_GetError());
         exit(1);
     } else SDL_Log("IMG_Init: OK");
 
     // Mixer
     flags = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MOD;
-    if (Mix_Init(flags) == OP_FAILURE) {
+    if (Mix_Init(flags) == GAM_FAILURE) {
         SDL_Log("Mix_Init: %s", Mix_GetError());
     }
     opaudio = Mix_OpenAudio(
         MIX_DEFAULT_FREQUENCY,
         MIX_DEFAULT_FORMAT,
         MIX_DEFAULT_CHANNELS,
-        MUS_CHUNK_SIZE
+        MXR_CHUNK_SIZE
     );
-    if (opaudio != OP_SUCCESS) {
+    if (opaudio != GAM_SUCCESS) {
         SDL_Log("Mix_OpenAudio: %s", Mix_GetError());
     } else SDL_Log("Mix_Init: OK");
-    Mix_AllocateChannels(MUS_CHANNELS);
+    Mix_AllocateChannels(MXR_CHANNELS);
 
     // window
     window = SDL_CreateWindow(
@@ -59,7 +59,7 @@ Game::Game (std::string title, int width, int height) {
 
     // renderer
     renderer = SDL_CreateRenderer(
-        window, AUTO_DRIVE_ID,
+        window, RND_AUTO_DRIVE,
         SDL_RENDERER_ACCELERATED
     );
     if (renderer == nullptr) {
@@ -103,6 +103,6 @@ void Game::Run () {
         state->Update(0);
         state->Render();
         SDL_RenderPresent(renderer);
-        SDL_Delay(DELAY_VALUE);
+        SDL_Delay(GAM_DELAY);
     }
 }

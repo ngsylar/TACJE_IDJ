@@ -1,23 +1,19 @@
 #include "State.h"
-#include "Sprite.h"
+#include "TileMap.h"
 #include "Sound.h"
 #include "Face.h"
 #include "Vec2.h"
 
 State::State () {
+	GameObject* bg;
+    Sprite* bgSprite;
+    
     quitRequested = false;
     music.Open(MUS_BG);
     music.Play(MUS_REPEAT_ON);
-}
 
-State::~State () {
-    objectArray.clear();
-}
-
-void State::LoadAssets () {
-    GameObject* bg = new GameObject();
-    Sprite* bgSprite = new Sprite(*bg, SPR_BG);
-
+    bg = new GameObject();
+    bgSprite = new Sprite(*bg, SPR_BG);
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);
 
@@ -25,6 +21,23 @@ void State::LoadAssets () {
 		SPR_START_X, SPR_START_Y,
 		bgSprite->GetWidth(), bgSprite->GetHeight()
 	);
+}
+
+State::~State () {
+    objectArray.clear();
+}
+
+void State::LoadAssets () {
+    GameObject* gameMap;
+    TileSet* gameMapTset;
+    TileMap* gameMapTmap;
+
+    gameMap = new GameObject();
+    gameMapTset = new TileSet(*gameMap, TSET_GAMEMAP, TDIM_GAMEMAP);
+    gameMapTmap = new TileMap(*gameMap, gameMapTset, TMAP_GAMEMAP);
+    gameMap->box = Rect(SPR_START_X, SPR_START_Y, TDIM_GAMEMAP);
+    gameMap->AddComponent(gameMapTmap);
+    objectArray.emplace_back(gameMap);
 }
 
 void State::Update (float dt) {

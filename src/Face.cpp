@@ -2,7 +2,7 @@
 #include "Sound.h"
 
 Face::Face (GameObject& associated): Component(associated) {
-    hitpoints = FCE_INITIAL_HP;
+    hitpoints = FCE_INIT_HP;
 }
 
 Face::~Face () {}
