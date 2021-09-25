@@ -9,7 +9,7 @@
 
 #define SND_REPEAT_OFF 1
 #define SND_ERROR_PLAY -1
-#define SND_AUTOCHANNEL -1
+#define SND_AUTO_CHANNEL -1
 
 class Sound: public Component {
     private:

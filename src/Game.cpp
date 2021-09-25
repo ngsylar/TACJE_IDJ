@@ -39,7 +39,7 @@ Game::Game (std::string title, int width, int height) {
         MIX_DEFAULT_FREQUENCY,
         MIX_DEFAULT_FORMAT,
         MIX_DEFAULT_CHANNELS,
-        MXR_CHUNKSIZE
+        MXR_CHUNK_SIZE
     );
     if (opaudio != GAM_SUCCESS) {
         SDL_Log("Mix_OpenAudio: %s", Mix_GetError());
@@ -59,7 +59,7 @@ Game::Game (std::string title, int width, int height) {
 
     // renderer
     renderer = SDL_CreateRenderer(
-        window, RND_AUTODRIVE,
+        window, RND_AUTO_DRIVE,
         SDL_RENDERER_ACCELERATED
     );
     if (renderer == nullptr) {

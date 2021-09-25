@@ -76,9 +76,9 @@ void Resources::ClearMusics () {
 }
 
 void Resources::ClearSounds () {
-    std::unordered_map<std::string, Mix_Chunk*>::iterator sound;
-    for (sound=soundTable.begin(); sound!=soundTable.end(); sound++) {
-        Mix_FreeChunk(sound->second);
+    std::unordered_map<std::string, Mix_Chunk*>::iterator chunk;
+    for (chunk=soundTable.begin(); chunk!=soundTable.end(); chunk++) {
+        Mix_FreeChunk(chunk->second);
     }
     soundTable.clear();
 }

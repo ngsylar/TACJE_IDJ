@@ -1,19 +1,21 @@
 # TAC Jogos Eletrônicos
 
-[UnB] Tópicos Avançados em Computadores :: 2021/1
+UnB :: Tópicos Avançados em Computadores :: 2021/1
 
 Gabriel Rocha Fontenele :: 15/1026760
 
 ## Como executar
 
-Executáveis para Windows (32-bits compátivel com ambas as edições x86 e x64) disponíveis em [Releases](https://github.com/ngsylar/TAC_JE/releases).
+Para executar em Windows, baixe o binário de 32-bits compátivel com ambas as edições x86 e x64 disponíveis em [Releases](https://github.com/ngsylar/TAC_JE/releases) e em seguida abra _JOGO.bat_.
+
+Para executar em Linux, leia a seção [Como compilar](#como-compilar).
 
 ## Como compilar
 
-Para compilar a partir da pasta raiz, tenha certeza de ter instalado o SDL2 e as bibliotecas adicionais (SDL2_IMG, SDL2_Mix, SDL2_ttf) e no terminal rode:
+Para compilar a partir da pasta raiz, tenha certeza de ter instalado o SDL2 e as bibliotecas adicionais (SDL2_IMG, SDL2_Mix, SDL2_ttf) e no terminal execute:
 ```bash
-make
+make        # para compilar
+./JOGO      # para executar
 ```
 
-* Inclua as dlls necessárias (veja _[extlib/requirements.txt](extlib/requirements.txt))_.
-* Para abrir o jogo no Windows, execute _JOGO.bat_.
+* No windows, inclua as dlls necessárias na pasta raiz (para abrir _JOGO.exe_) ou em _extlib_ (para abrir _JOGO.bat_) (veja _[extlib/requirements.txt](extlib/requirements.txt))_.

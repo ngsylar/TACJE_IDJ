@@ -13,7 +13,7 @@ Sound::~Sound () {}
 
 void Sound::Open (std::string file) {
     chunk = Resources::GetSound(file);
-    channel = SND_AUTOCHANNEL;
+    channel = SND_AUTO_CHANNEL;
 }
 
 void Sound::Play (int times) {

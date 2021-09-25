@@ -14,8 +14,8 @@
 #define WINDOW_SIZE 1024, 600
 #define WINDOW_FLAGS 0
 #define MXR_CHANNELS 32
-#define MXR_CHUNKSIZE 1024
-#define RND_AUTODRIVE -1
+#define MXR_CHUNK_SIZE 1024
+#define RND_AUTO_DRIVE -1
 #define GAM_DELAY 33
 #define GAM_SUCCESS 0
 #define GAM_FAILURE 0
