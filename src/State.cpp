@@ -86,6 +86,7 @@ void State::AddObject (int pX, int pY) {
     obj->box = Rect(pX-pW/2, pY-pH/2, pW, pH);
 }
 
+// edit: remover essa funcao no proximo commit
 void State::Input() {
     SDL_Event event;
     int mouseX, mouseY;

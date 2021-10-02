@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "InputManager.h"
 
 Game* Game::instance = nullptr;
 
@@ -98,8 +99,11 @@ SDL_Renderer* Game::GetRenderer () {
 }
 
 void Game::Run () {
+    InputManager inputMg = InputManager::GetInstance();
+
     state->LoadAssets();
     while (state->QuitRequested() == false) {
+        inputMg.Update();
         state->Update(0);
         state->Render();
         SDL_RenderPresent(renderer);
