@@ -1,6 +1,6 @@
-#include "InputManager.h"
-
 #include <algorithm>
+
+#include "InputManager.h"
 
 InputManager& InputManager::GetInstance () {
     static InputManager inputManager;
@@ -68,7 +68,7 @@ bool InputManager::MousePress (int button) {
     return (mouseState[button] and (mouseUpdate[button] == updateCounter));
 }
 
-bool InputManager::MousePress (int button) {
+bool InputManager::MouseRelease (int button) {
     return (!mouseState[button] and (mouseUpdate[button] == updateCounter));
 }
 

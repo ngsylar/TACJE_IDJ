@@ -99,11 +99,11 @@ SDL_Renderer* Game::GetRenderer () {
 }
 
 void Game::Run () {
-    InputManager inputMg = InputManager::GetInstance();
+    InputManager& inputManager = InputManager::GetInstance();
 
     state->LoadAssets();
     while (state->QuitRequested() == false) {
-        inputMg.Update();
+        inputManager.Update();
         state->Update(0);
         state->Render();
         SDL_RenderPresent(renderer);
