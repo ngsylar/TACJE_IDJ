@@ -6,14 +6,14 @@
 #define INCLUDE_SDL
 #include "SDL_include.h"
 
-#define LEFT_MOUSE_BUTTON   SDL_BUTTON_LEFT
-#define RIGHT_MOUSE_BUTTON  SDL_BUTTON_RIGHT
-#define UP_ARROW_KEY        SDLK_UP
-#define DOWN_ARROW_KEY      SDLK_DOWN
-#define LEFT_ARROW_KEY      SDLK_LEFT
-#define RIGHT_ARROW_KEY     SDLK_RIGHT
-#define SPACE_KEY           SDLK_SPACE
-#define ESCAPE_KEY          SDLK_ESCAPE
+#define MOUSE_BUTTON_LEFT   SDL_BUTTON_LEFT
+#define MOUSE_BUTTON_RIGHT  SDL_BUTTON_RIGHT
+#define KEY_ARROW_UP        SDLK_UP
+#define KEY_ARROW_DOWN      SDLK_DOWN
+#define KEY_ARROW_LEFT      SDLK_LEFT
+#define KEY_ARROW_RIGHT     SDLK_RIGHT
+#define KEY_SPACE           SDLK_SPACE
+#define KEY_ESCAPE          SDLK_ESCAPE
 
 class InputManager {
     private:

@@ -51,11 +51,11 @@ void State::ClearResources () {
 void State::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
-    if (input.QuitRequested() or input.IsKeyDown(ESCAPE_KEY)) {
+    if (input.QuitRequested() or input.IsKeyDown(KEY_ESCAPE)) {
         quitRequested = true;
     } else {
 
-        if (input.IsKeyDown(SPACE_KEY)) {
+        if (input.IsKeyDown(KEY_SPACE)) {
             Vec2 objPos = Vec2(200,0).GetRotated(-PI+PI*(rand()%1001)/500.0) + Vec2((float)input.GetMouseX(),(float)input.GetMouseY());
             AddObject((int)objPos.x, (int)objPos.y);
         }
