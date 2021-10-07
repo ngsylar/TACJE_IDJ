@@ -1,5 +1,6 @@
 #include "State.h"
 #include "InputManager.h"
+#include "Camera.h"
 #include "Resources.h"
 #include "TileMap.h"
 #include "Sound.h"
@@ -54,6 +55,8 @@ void State::Update (float dt) {
     if (input.QuitRequested() or input.IsKeyDown(KEY_ESCAPE)) {
         quitRequested = true;
     } else {
+        
+        Camera::Update(dt);
 
         if (input.IsKeyDown(KEY_SPACE)) {
             Vec2 objPos = Vec2(200,0).GetRotated(-PI+PI*(rand()%1001)/500.0) + Vec2((float)input.GetMouseX(),(float)input.GetMouseY());
