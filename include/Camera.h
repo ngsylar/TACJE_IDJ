@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Vec2.h"
 
-#define CAM_SPEED_DEF 200
+#define CAM_SPEED 200.0
 
 class Camera {
     private:

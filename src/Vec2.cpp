@@ -15,8 +15,7 @@ Vec2 Vec2::GetRotated (float theta) {
 }
 
 float Vec2::Magnitude () {
-    float number = (float)x*x + (float)y*y;
-    return sqrt(number);
+    return sqrt(x*x + y*y);
 }
 
 void Vec2::Normalize () {

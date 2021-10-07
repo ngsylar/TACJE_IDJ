@@ -34,7 +34,7 @@ void Camera::Update (float dt) {
         if (speed.x and speed.y) {
             speed.Normalize();
         }
-        pos += speed * CAM_SPEED_DEF * dt;
+        pos += speed * CAM_SPEED * dt;
     }
 
     speed.x = 0;
