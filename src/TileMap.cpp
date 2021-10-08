@@ -47,11 +47,11 @@ void TileMap::Update (float dt) {}
 
 void TileMap::Render () {
     for (int z=0; z<mapDepth; z++) {
-        RenderLayer(z, Camera::pos.x, Camera::pos.y);
+        RenderLayer(z, (int)Camera::pos.x, (int)Camera::pos.y);
     }
 }
 
-void TileMap::RenderLayer (int layer, float cameraX, float cameraY) {
+void TileMap::RenderLayer (int layer, int cameraX, int cameraY) {
     int tile;
 
     for (int y=0; y<mapHeight; y++) {

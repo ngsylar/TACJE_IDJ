@@ -60,7 +60,10 @@ void State::Update (float dt) {
 
         if (input.IsKeyDown(KEY_SPACE)) {
             Vec2 objPos = Vec2(200,0).GetRotated(-PI+PI*(rand()%1001)/500.0) + Vec2((float)input.GetMouseX(),(float)input.GetMouseY());
-            AddObject((int)objPos.x, (int)objPos.y);
+            AddObject(
+                (int)objPos.x+Camera::pos.x,
+                (int)objPos.y+Camera::pos.y
+            );
         }
     
         for (unsigned i=0; i < objectArray.size(); i++) {

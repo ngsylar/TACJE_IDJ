@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Game.h"
+#include "Camera.h"
 #include "Resources.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
@@ -36,7 +37,10 @@ void Sprite::SetClip (int x, int y, int w, int h) {
 }
 
 void Sprite::Render () {
-    Render((int)associated.box.x, (int)associated.box.y);
+    Render(
+        (int)associated.box.x-Camera::pos.x,
+        (int)associated.box.y-Camera::pos.y
+    );
 }
 
 void Sprite::Render (int startX, int startY) {
