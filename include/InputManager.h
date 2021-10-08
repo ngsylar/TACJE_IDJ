@@ -8,12 +8,16 @@
 
 #define MOUSE_BUTTON_LEFT   SDL_BUTTON_LEFT
 #define MOUSE_BUTTON_RIGHT  SDL_BUTTON_RIGHT
+#define KEY_ESCAPE          SDLK_ESCAPE
+#define KEY_W               SDLK_w
+#define KEY_A               SDLK_a
+#define KEY_S               SDLK_s
+#define KEY_D               SDLK_d
+#define KEY_SPACE           SDLK_SPACE
 #define KEY_ARROW_UP        SDLK_UP
 #define KEY_ARROW_DOWN      SDLK_DOWN
 #define KEY_ARROW_LEFT      SDLK_LEFT
 #define KEY_ARROW_RIGHT     SDLK_RIGHT
-#define KEY_SPACE           SDLK_SPACE
-#define KEY_ESCAPE          SDLK_ESCAPE
 
 class InputManager {
     private:

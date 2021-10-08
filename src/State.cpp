@@ -1,6 +1,7 @@
 #include "State.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "CameraFollower.h"
 #include "Resources.h"
 #include "TileMap.h"
 #include "Sound.h"
@@ -8,15 +9,10 @@
 #include "Vec2.h"
 
 State::State () {
-    GameObject* bg;
-    Sprite* bgSprite;
-
-    quitRequested = false;
-    music.Open(MUS_BG);
-    music.Play(MUS_REPEAT_ON);
-
-    bg = new GameObject();
-    bgSprite = new Sprite(*bg, SPR_BG);
+    GameObject* bg = new GameObject();
+    CameraFollower* bgCamera = new CameraFollower(*bg);
+    Sprite* bgSprite = new Sprite(*bg, SPR_BG);
+    bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);
 
@@ -24,6 +20,10 @@ State::State () {
         SPR_START_X, SPR_START_Y,
         bgSprite->GetWidth(), bgSprite->GetHeight()
     );
+
+    quitRequested = false;
+    music.Open(MUS_BG);
+    music.Play(MUS_REPEAT_ON);
 }
 
 State::~State () {
