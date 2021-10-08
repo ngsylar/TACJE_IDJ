@@ -12,6 +12,7 @@ State::State () {
     GameObject* bg = new GameObject();
     CameraFollower* bgCamera = new CameraFollower(*bg);
     Sprite* bgSprite = new Sprite(*bg, SPR_BG);
+
     bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);

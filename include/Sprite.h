@@ -6,9 +6,9 @@
 
 #include "Component.h"
 
-#define SPR_START_X 0
-#define SPR_START_Y 0
-#define SPR_ERROR -1
+#define SPR_START_X  0
+#define SPR_START_Y  0
+#define SPR_ERROR   -1
 
 class Sprite: public Component {
     private:

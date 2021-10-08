@@ -12,14 +12,14 @@
 #include "GameObject.h"
 #include "Music.h"
 
-#define PI 3.1415926535
-#define MUS_BG "assets/audio/stageState.ogg"
-#define SPR_BG "assets/img/ocean.jpg"
-#define SPR_ENEMY "assets/img/penguinface.png"
-#define SND_ENEMY "assets/audio/boom.wav"
-#define TSET_GAMEMAP "assets/img/tileset.png"
-#define TMAP_GAMEMAP "assets/map/tileMap.txt"
-#define TDIM_GAMEMAP 64, 64
+#define PI              3.1415926535
+#define MUS_BG          "assets/audio/stageState.ogg"
+#define SPR_BG          "assets/img/ocean.jpg"
+#define SPR_ENEMY       "assets/img/penguinface.png"
+#define SND_ENEMY       "assets/audio/boom.wav"
+#define TSET_GAMEMAP    "assets/img/tileset.png"
+#define TMAP_GAMEMAP    "assets/map/tileMap.txt"
+#define TDIM_GAMEMAP    64, 64
 
 class State {
     private:

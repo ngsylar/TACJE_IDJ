@@ -15,8 +15,8 @@
 #define KEY_D               SDLK_d
 #define KEY_SPACE           SDLK_SPACE
 #define KEY_ARROW_UP        SDLK_UP
-#define KEY_ARROW_DOWN      SDLK_DOWN
 #define KEY_ARROW_LEFT      SDLK_LEFT
+#define KEY_ARROW_DOWN      SDLK_DOWN
 #define KEY_ARROW_RIGHT     SDLK_RIGHT
 
 class InputManager {
