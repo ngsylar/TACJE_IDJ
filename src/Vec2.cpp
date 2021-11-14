@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Vec2.h"
 
 Vec2::Vec2 () {
@@ -16,6 +18,10 @@ Vec2 Vec2::GetRotated (float theta) {
 
 float Vec2::Magnitude () {
     return sqrt(x*x + y*y);
+}
+
+float Vec2::Angle (Vec2 vec) {
+    return atan2(vec.y-y, vec.x-x);
 }
 
 void Vec2::Normalize () {

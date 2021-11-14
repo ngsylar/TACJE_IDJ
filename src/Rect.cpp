@@ -1,4 +1,5 @@
 #include "Rect.h"
+#include "Sprite.h"
 
 Rect::Rect () {
     x = 0;
@@ -21,3 +22,16 @@ bool Rect::Contains (float pX, float pY) {
 Vec2 Rect::GetCenter () {
     return Vec2(x+w/2, y+h/2);
 }
+
+void Rect::SetPosition (float pX, float pY) {
+    x = pX - w/2;
+    y = pY - h/2;
+}
+
+// void Rect::Translate (Vec2 dest, float dt) {
+//     // float angle = Vec2(x,y).Angle(translation);
+//     Vec2 trasnlation = Vec2(dest.x-x, dest.y-y);
+//     trasnlation.Normalize();
+//     x += dest.x * 2;
+//     y += dest.y * 2;
+// }

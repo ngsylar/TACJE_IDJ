@@ -10,7 +10,9 @@ class Rect {
         Rect();
         Rect(float x, float y, float w, float h);
         bool Contains(float pX, float pY);
+
         Vec2 GetCenter();
+        void SetPosition(float x, float y);
 };
 
 #endif

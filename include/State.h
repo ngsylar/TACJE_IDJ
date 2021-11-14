@@ -12,32 +12,29 @@
 #include "GameObject.h"
 #include "Music.h"
 
-#define PI              3.1415926535
-#define MUS_BG          "assets/audio/stageState.ogg"
-#define SPR_BG          "assets/img/ocean.jpg"
-#define SPR_ENEMY       "assets/img/penguinface.png"
-#define SND_ENEMY       "assets/audio/boom.wav"
-#define TSET_GAMEMAP    "assets/img/tileset.png"
-#define TMAP_GAMEMAP    "assets/map/tileMap.txt"
-#define TDIM_GAMEMAP    64, 64
+#define PI 3.1415926535
 
 class State {
     private:
         Music music;
+        bool started;
         bool quitRequested;
-        std::vector<std::unique_ptr<GameObject>> objectArray;
+        std::vector<std::shared_ptr<GameObject>> objectArray;
 
         void Input();
-        void AddObject(int pX, int pY);
+        // void AddObject(int pX, int pY);
 
     public:
         State();
         ~State();
+        void Start();
         bool QuitRequested();
         void LoadAssets();
         void ClearResources();
         void Update(float dt);
         void Render();
+        std::weak_ptr<GameObject> AddObject(GameObject* go);
+        std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
 };
 
 #endif

@@ -30,6 +30,9 @@ void Sprite::Open (std::string file) {
         SPR_START_X, SPR_START_Y,
         width, height
     );
+
+    associated.box.w = width;
+    associated.box.h = height;
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {
