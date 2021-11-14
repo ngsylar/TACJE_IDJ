@@ -82,27 +82,25 @@ void Alien::Update (float dt) {
 
     if (!taskQueue.empty()) {
         Action action = taskQueue.front();
+        Vec2 alienPos;
         float dX=0, dY=0;
-        std::string coiso;
 
         switch (action.type) {
             case Action::SHOOT:
                 break;
 
             case Action::MOVE:
-                dX = action.pos.x-associated.box.x;
-                dY = action.pos.y-associated.box.y;
+                alienPos = associated.box.GetCenter();
+
+                dX = action.pos.x-alienPos.x;
+                dY = action.pos.y-alienPos.y;
                 speed = Vec2(dX, dY);
                 speed.Normalize();
                 speed *= 200.0f * dt;
                 associated.box.x += speed.x;
                 associated.box.y += speed.y;
 
-                // apagar isso dps
-                coiso = std::to_string(associated.box.x)+" "+std::to_string(associated.box.y);
-                SDL_Log(coiso.c_str());
-
-                if ((abs(action.pos.x-associated.box.x) <= 10.0f) && (abs(action.pos.y-associated.box.y) <= 10.0f)) {
+                if ((abs(action.pos.x-alienPos.x) <= 10.0f) && (abs(action.pos.y-alienPos.y) <= 10.0f)) {
                     speed = Vec2();
                     taskQueue.pop();
                 }
