@@ -84,10 +84,10 @@ void Alien::Update (float dt) {
         ));
     }
 
-    // apagar isso dps
-    if (input.KeyPress(KEY_SPACE)) {
-        taskQueue.pop();
-    }
+    // // apagar isso dps
+    // if (input.KeyPress(KEY_SPACE)) {
+    //     taskQueue.pop();
+    // }
 
     if (!taskQueue.empty()) {
         Action action = taskQueue.front();
@@ -97,7 +97,9 @@ void Alien::Update (float dt) {
         switch (action.type) {
             case Action::SHOOT:
                 if (!minionArray.empty()) {
-                    ((Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion"))->Shoot(action.pos);
+                    Minion* minion = (Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion");
+
+                    minion->Shoot(action.pos);
                 }
                 taskQueue.pop();
                 break;
