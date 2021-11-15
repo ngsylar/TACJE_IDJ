@@ -12,8 +12,6 @@
 #include "GameObject.h"
 #include "Music.h"
 
-#define PI 3.1415926535
-
 class State {
     private:
         Music music;

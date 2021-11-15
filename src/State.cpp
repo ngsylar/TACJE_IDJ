@@ -50,7 +50,7 @@ void State::LoadAssets () {
     objectArray.emplace_back(gameMap);
 
     GameObject* alien = new GameObject();
-    alien->AddComponent(new Alien(*alien, 0));
+    alien->AddComponent(new Alien(*alien, 6));
     alien->box.SetPosition(512,300);
     objectArray.emplace_back(alien);
 }

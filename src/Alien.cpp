@@ -1,14 +1,17 @@
 #include <cmath>
 
 #include "Alien.h"
+#include "Game.h"
 #include "InputManager.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "Minion.h"
 // #include "Sound.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
     Sprite* sprite = new Sprite(associated, ALIEN_SPR);
     associated.AddComponent(sprite);
+    this->nMinions = nMinions;
     hp = ALIEN_INITIAL_HP;
 }
 
@@ -22,7 +25,13 @@ Alien::~Alien () {
 }
 
 void Alien::Start () {
-    // editar
+    GameObject* minion;
+
+    for (int i=0; i < nMinions; i++) {
+        minion = new GameObject();
+        minion->AddComponent(new Minion(*minion, associated, (float)i*((PI*2)/nMinions)));
+        minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
+    }
 }
 
 // Face::Face (GameObject& associated): Component(associated) {

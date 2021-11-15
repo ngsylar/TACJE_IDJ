@@ -12,10 +12,6 @@ Vec2::Vec2 (float x, float y) {
     this->y = y;
 }
 
-Vec2 Vec2::GetRotated (float theta) {
-    return Vec2(x*cos(theta)-y*sin(theta), y*cos(theta)-x*sin(theta)); 
-}
-
 float Vec2::Magnitude () {
     return sqrt(x*x + y*y);
 }
@@ -29,6 +25,10 @@ void Vec2::Normalize () {
 
     x /= magnitude;
     y /= magnitude;
+}
+
+Vec2 Vec2::Rotate (float theta) {
+    return Vec2(x*cos(theta)-y*sin(theta), y*cos(theta)-x*sin(theta)); 
 }
 
 Vec2 Vec2::operator+ (const Vec2& vec) {
