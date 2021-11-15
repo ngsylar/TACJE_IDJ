@@ -16,8 +16,17 @@ float Vec2::Magnitude () {
     return sqrt(x*x + y*y);
 }
 
-float Vec2::Angle (Vec2 vec) {
-    return atan2(vec.y-y, vec.x-x);
+float Vec2::Angle (Vec2 target) {
+    return atan2(target.y-y, target.x-x);
+}
+
+float Vec2::Distance (Vec2 target) {
+    target -= *this;
+    return target.Magnitude();
+}
+
+Vec2 Vec2::Direction (float angle) {
+    return Vec2(cos(angle), sin(angle));
 }
 
 void Vec2::Normalize () {
@@ -27,8 +36,8 @@ void Vec2::Normalize () {
     y /= magnitude;
 }
 
-Vec2 Vec2::Rotate (float theta) {
-    return Vec2(x*cos(theta)-y*sin(theta), y*cos(theta)-x*sin(theta)); 
+Vec2 Vec2::Rotate (float angle) {
+    return Vec2(x*cos(angle)-y*sin(angle), y*cos(angle)-x*sin(angle)); 
 }
 
 Vec2 Vec2::operator+ (const Vec2& vec) {

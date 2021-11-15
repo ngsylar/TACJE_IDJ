@@ -96,6 +96,10 @@ void Alien::Update (float dt) {
 
         switch (action.type) {
             case Action::SHOOT:
+                if (!minionArray.empty()) {
+                    ((Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion"))->Shoot(action.pos);
+                }
+                taskQueue.pop();
                 break;
 
             case Action::MOVE:

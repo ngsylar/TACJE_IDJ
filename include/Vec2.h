@@ -8,10 +8,12 @@ class Vec2 {
         Vec2();
         Vec2(float x, float y);
         float Magnitude();
-        float Angle (Vec2 vec);
+        float Angle(Vec2 target);
+        float Distance(Vec2 target);
+        Vec2 Direction(float angle);
         
         void Normalize();
-        Vec2 Rotate(float theta);
+        Vec2 Rotate(float angle);
 
         Vec2 operator+(const Vec2& vec);
         Vec2 operator-(const Vec2& vec);

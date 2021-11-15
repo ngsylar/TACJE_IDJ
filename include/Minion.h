@@ -14,12 +14,10 @@ class Minion: public Component {
             GameObject& alienCenter,
             float arcOffsetDeg=0
         );
-        // ~Minion();
         void Update(float dt);
         void Render();
         bool Is(std::string type);
-        
-        // void Shoot(Vec2 target);
+        void Shoot(Vec2 target);
 };
 
 #endif
