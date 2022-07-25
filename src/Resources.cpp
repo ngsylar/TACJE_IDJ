@@ -1,3 +1,6 @@
+#define INCLUDE_SDL_IMAGE
+#include "SDL_include.h"
+
 #include "Resources.h"
 #include "Game.h"
 
