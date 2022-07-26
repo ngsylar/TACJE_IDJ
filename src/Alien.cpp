@@ -1,7 +1,8 @@
 #include "Alien.h"
+#include "Game.h"
 #include "Camera.h"
-#include "Resources.h"
 #include "Sprite.h"
+#include "Minion.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
     Sprite* sprite = new Sprite(associated, ALIEN_SPR);
@@ -20,11 +21,19 @@ Alien::~Alien () {
 }
 
 void Alien::Start () {
-    // GameObject* minion;
+    GameObject* minionObj;
+    Minion* minionRaw;
+    std::weak_ptr<GameObject> minionPtr;
+    float minionArcPlacement;
 
-    // for (int i=0; i < nMinions; i++) {
-    //     minion = new GameObject();
-    // }
+    for (int i=0; i < nMinions; i++) {
+        minionObj = new GameObject();
+        minionArcPlacement = (float)i*((PI*2)/nMinions);
+        minionRaw = new Minion(*minionObj, associated, minionArcPlacement);
+        minionObj->AddComponent(minionRaw);
+        minionPtr = Game::GetInstance().GetState().AddObject(minionObj);
+        minionArray.push_back(minionPtr);
+    }
 }
 
 Alien::Action Alien::ScheduleAction(InputManager* input, Action::ActionType type) {
@@ -59,12 +68,12 @@ void Alien::Update (float dt) {
             case Action::MOVE:
                 alienPosition = associated.box.GetCenter();
 
-                if (alienPosition.DistanceTo(action.pos) > ALIEN_MINIMUM_DISTANCE) {
+                if (alienPosition.DistanceTo(action.pos) > ALIEN_PASSING_DISTANCE) {
                     targetAngle = alienPosition.AngleTo(action.pos);
                     speed = alienPosition.DirectionFrom(targetAngle);
                     associated.box.Translate(speed * ALIEN_SCALAR_SPEED * dt);
                 } else {
-                    associated.box.SetPosition(action.pos.x, action.pos.y);
+                    associated.box.SetPosition(action.pos);
                     taskQueue.pop();
                     speed = Vec2();
                 }
@@ -72,9 +81,8 @@ void Alien::Update (float dt) {
             
             case Action::SHOOT:
                 if (!minionArray.empty()) {
-                    // Minion* minion = (Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion");
-
-                    // minion->Shoot(action.pos);
+                    Minion* minion = (Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion");
+                    minion->Shoot(action.pos);
                 }
                 taskQueue.pop();
                 break;

@@ -27,6 +27,11 @@ void Rect::SetPosition (float pX, float pY) {
     y = pY - h/2;
 }
 
+void Rect::SetPosition (Vec2 point) {
+    x = point.x - w/2;
+    y = point.y - h/2;
+}
+
 void Rect::Translate (Vec2 target) {
     x += target.x;
     y += target.y;

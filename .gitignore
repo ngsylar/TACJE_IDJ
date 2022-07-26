@@ -16,8 +16,6 @@ test_cmake/
 spike/
 Makefileold
 Makefilenew
-clear_obj.bat
 
 # outros
 *.zip
-*.pdf
