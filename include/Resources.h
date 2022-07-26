@@ -8,6 +8,17 @@
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
 
+#define BG_MUS          "assets/audio/stageState.ogg"
+#define BG_SPR          "assets/img/ocean.jpg"
+#define FACE_SPR        "assets/img/penguinface.png"
+#define FACE_SND        "assets/audio/boom.wav"
+#define ALIEN_SPR       "assets/img/alien.png"
+#define MINION_SPR      "assets/img/minion.png"
+#define BULLET1_SPR     "assets/img/minionbullet1.png"
+#define GAMEMAP_TSET    "assets/img/tileset.png"
+#define GAMEMAP_TMAP    "assets/map/tileMap.txt"
+#define GAMEMAP_TDIM    64, 64
+
 class Resources {
     private:
         static std::unordered_map<std::string, SDL_Texture*> imageTable;

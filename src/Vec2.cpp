@@ -18,11 +18,24 @@ float Vec2::Magnitude () {
     return sqrt(x*x + y*y);
 }
 
-void Vec2::Normalize () {
-    float magnitude = Magnitude();
+float Vec2::AngleTo (Vec2 target) {
+    return atan2(target.y-y, target.x-x);
+}
 
+float Vec2::DistanceTo (Vec2 target) {
+    target -= *this;
+    return target.Magnitude();
+}
+
+Vec2 Vec2::DirectionFrom (float angle) {
+    return Vec2(cos(angle), sin(angle));
+}
+
+Vec2 Vec2::Normalize () {
+    float magnitude = Magnitude();
     x /= magnitude;
     y /= magnitude;
+    return Vec2(x, y);
 }
 
 Vec2 Vec2::operator+ (const Vec2& vec) {
@@ -35,12 +48,6 @@ Vec2 Vec2::operator- (const Vec2& vec) {
 
 Vec2 Vec2::operator* (const float& scalar) {
     return Vec2(x*scalar, y*scalar);
-}
-
-Vec2& Vec2::operator= (const Vec2& vec) {
-    x = vec.x;
-    y = vec.y;
-    return *this;
 }
 
 Vec2& Vec2::operator+= (const Vec2& vec) {

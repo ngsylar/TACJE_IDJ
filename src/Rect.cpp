@@ -21,3 +21,13 @@ bool Rect::Contains (float pX, float pY) {
 Vec2 Rect::GetCenter () {
     return Vec2(x+w/2, y+h/2);
 }
+
+void Rect::SetPosition (float pX, float pY) {
+    x = pX - w/2;
+    y = pY - h/2;
+}
+
+void Rect::Translate (Vec2 target) {
+    x += target.x;
+    y += target.y;
+}
