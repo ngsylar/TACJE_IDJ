@@ -4,6 +4,7 @@
 #include "Resources.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
+    scale = Vec2(1.0f, 1.0f);
     texture = nullptr;
 }
 
@@ -54,9 +55,11 @@ void Sprite::Render (int startX, int startY) {
         (int)associated.box.w, (int)associated.box.h
     };
 
-    rendercpy = SDL_RenderCopy(
+    rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
-        texture, &clipRect, &dstrect
+        texture, &clipRect, &dstrect,
+        associated.angleDeg, nullptr,
+        SDL_FLIP_NONE
     );
     if (rendercpy == SPR_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
@@ -64,12 +67,29 @@ void Sprite::Render (int startX, int startY) {
     }
 }
 
+void Sprite::SetScale (float scaleX, float scaleY) {
+    Vec2 position = associated.box.GetCenter();
+    scale = Vec2(scaleX, scaleY);
+    
+    associated.box.w = width * scale.x;
+    associated.box.h = height * scale.y;
+    associated.box.SetPosition(position);
+}
+
+void Sprite::SetScale (float scale) {
+    SetScale(scale, scale);
+}
+
+Vec2 Sprite::GetScale () {
+    return scale;
+}
+
 int Sprite::GetWidth () {
-    return width;
+    return (width * (int)scale.x);
 }
 
 int Sprite::GetHeight () {
-    return height;
+    return (height * (int)scale.y);
 }
 
 bool Sprite::IsOpen () {

@@ -10,6 +10,10 @@ Minion::Minion (
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(associated, MINION_SPR);
+    Vec2 scaleRange(MINION_SCALE_RANGE);
+    int rangeStart = scaleRange.x * 100;
+    int scaleMod = ((scaleRange.y - scaleRange.x) * 100) + 1;
+    sprite->SetScale((float)((rand()%scaleMod)+rangeStart)/100);
     associated.AddComponent(sprite);
 
     this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
@@ -24,8 +28,13 @@ void Minion::Update (float dt) {
     else {
         arc += PI * MINION_ARC_SPEED * dt;
         Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
-        Vec2 minionPosition = alienPosition + Vec2(MINION_ARC_DISTANCE).Rotate(arc);
-        associated.box.SetPosition(minionPosition);
+        float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
+        Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
+        Vec2 minionPlacement = alienPosition + minionDistance.Rotate(arc);
+        associated.box.SetPosition(minionPlacement);
+
+        Vec2 minionPosition = associated.box.GetCenter();
+        associated.angleDeg = minionPosition.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
     }
 }
 
@@ -45,4 +54,8 @@ void Minion::Shoot (Vec2 target) {
     bullet->AddComponent(bulletRaw);
     bullet->box.SetPosition(minionPosition);
     Game::GetInstance().GetState().AddObject(bullet);
+}
+
+Vec2 Minion::GetPosition () {
+    return associated.box.GetCenter();
 }

@@ -12,6 +12,7 @@ Bullet::Bullet (
 
     Sprite* sprite = new Sprite(associated, spriteName);
     associated.AddComponent(sprite);
+    associated.angleDeg = angle * (180.0f/PI) + BULLET_ANGLEDEG_ADJUST;
 
     this->speed = Vec2().DirectionFrom(angle) * speed;
     this->damage = damage;

@@ -11,6 +11,7 @@
 #define ALIEN_SCALAR_SPEED      200.0f
 #define ALIEN_PASSING_DISTANCE  10.0f
 #define ALIEN_INITIAL_POSITION  512, 300
+#define ALIEN_ROTATION_SPEED    20.0f
 #define ALIEN_MINIONS_AMOUNT    6
 
 class Alien: public Component {
@@ -31,6 +32,9 @@ class Alien: public Component {
         std::vector<std::weak_ptr<GameObject>> minionArray;
         
         Action ScheduleAction(InputManager* input, Action::ActionType type);
+
+        // sylar's alien breath extra effects
+        bool spriteIncreasing;
 
     public:
         Alien(GameObject& associated, int nMinions);

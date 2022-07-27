@@ -18,6 +18,10 @@ float Vec2::AngleTo (Vec2 target) {
     return atan2(target.y-y, target.x-x);
 }
 
+float Vec2::AngleDegTo (Vec2 target) {
+    return AngleTo(target) * (180.0f/PI);
+}
+
 float Vec2::DistanceTo (Vec2 target) {
     target -= *this;
     return target.Magnitude();

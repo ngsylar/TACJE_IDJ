@@ -4,6 +4,8 @@
 #include <cmath>
 #define PI 3.1415926535
 
+#define BULLET_ANGLEDEG_ADJUST 0.0f
+
 class Vec2 {
     public:
         float x, y;
@@ -12,6 +14,7 @@ class Vec2 {
         Vec2(float x, float y);
         float Magnitude();
         float AngleTo(Vec2 target);
+        float AngleDegTo(Vec2 target);
         float DistanceTo(Vec2 target);
         Vec2 DirectionFrom(float angle);
         
