@@ -11,21 +11,15 @@
 State::State () {
     GameObject* bg = new GameObject();
     CameraFollower* bgCamera = new CameraFollower(*bg);
-    Sprite* bgSprite = new Sprite(*bg, BG_SPR);
-
+    Sprite* bgSprite = new Sprite(*bg, BG_SPRITE);
     bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);
 
-    bg->box = Rect(
-        SPR_START_X, SPR_START_Y,
-        bgSprite->GetWidth(), bgSprite->GetHeight()
-    );
+    music.Open(BG_MUSIC);
+    music.Play(MUSIC_REPEAT_ON);
 
     quitRequested = false;
-    music.Open(BG_MUS);
-    music.Play(MUS_REPEAT_ON);
-
     started = false;
 }
 
@@ -43,15 +37,15 @@ void State::Start () {
 
 void State::LoadAssets () {
     GameObject* gameMap = new GameObject();
-    TileSet* gameMapTset = new TileSet(*gameMap, GAMEMAP_TSET, GAMEMAP_TDIM);
-    TileMap* gameMapTmap = new TileMap(*gameMap, gameMapTset, GAMEMAP_TMAP);
-    gameMap->box = Rect(SPR_START_X, SPR_START_Y, GAMEMAP_TDIM);
+    TileSet* gameMapTset = new TileSet(*gameMap, GAMEMAP_TILESET, GAMEMAP_TILE_DIM);
+    TileMap* gameMapTmap = new TileMap(*gameMap, gameMapTset, GAMEMAP_TILEMAP);
+    gameMap->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILE_DIM);
     gameMap->AddComponent(gameMapTmap);
     objectArray.emplace_back(gameMap);
 
     GameObject* alien = new GameObject();
     alien->AddComponent(new Alien(*alien, ALIEN_MINIONS_AMOUNT));
-    alien->box.SetPosition(ALIEN_INITIAL_POSITION);
+    alien->box.SetPosition(ALIEN_START_POSITION);
     objectArray.emplace_back(alien);
 }
 

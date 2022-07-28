@@ -6,9 +6,9 @@
 
 #include "Component.h"
 
-#define SPR_START_X 0
-#define SPR_START_Y 0
-#define SPR_ERROR   -1
+#define SPRITE_ERROR            -1
+#define SPRITE_CLIP_START_POINT 0, 0
+#define SPRITE_DEFAULT_SCALE    1.0f, 1.0f
 
 class Sprite: public Component {
     private:
@@ -16,10 +16,17 @@ class Sprite: public Component {
         SDL_Rect clipRect;
         int width, height;
         Vec2 scale;
+        // int frameCount;
+        // float frameTime;
+        // int currentFrame;
+        // float timeElapsed;
 
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, std::string file);
+        Sprite(
+            GameObject& associated, std::string file,
+            int frameCount=1, float frameTime=1.0f
+        );
         ~Sprite();
         void Open(std::string file);
         void SetClip(int x, int y, int w, int h);
@@ -30,8 +37,11 @@ class Sprite: public Component {
         Vec2 GetScale();
         int GetWidth();
         int GetHeight();
-        bool IsOpen();
+        // void SetFrame(int frame);
+        // void SetFrameCount(int frameCount);
+        // void SetFrameTime(float frameTime);
         void Update(float dt);
+        bool IsOpen();
         bool Is(std::string type);
 };
 

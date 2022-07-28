@@ -5,10 +5,10 @@
 #include "Minion.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
-    Sprite* sprite = new Sprite(associated, ALIEN_SPR);
+    Sprite* sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
     this->nMinions = nMinions;
-    hp = ALIEN_INITIAL_HP;
+    hp = ALIEN_START_HP;
 }
 
 Alien::Action::Action (ActionType type, float x, float y) {
@@ -21,18 +21,14 @@ Alien::~Alien () {
 }
 
 void Alien::Start () {
-    GameObject* minionObj;
-    Minion* minionRaw;
-    std::weak_ptr<GameObject> minionPtr;
+    GameObject* minion;
     float minionArcPlacement;
 
     for (int i=0; i < nMinions; i++) {
-        minionObj = new GameObject();
+        minion = new GameObject();
         minionArcPlacement = (float)i*((PI*2)/nMinions);
-        minionRaw = new Minion(*minionObj, associated, minionArcPlacement);
-        minionObj->AddComponent(minionRaw);
-        minionPtr = Game::GetInstance().GetState().AddObject(minionObj);
-        minionArray.push_back(minionPtr);
+        minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
+        minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
     }
 }
 

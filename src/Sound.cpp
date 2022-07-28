@@ -13,7 +13,7 @@ Sound::~Sound () {}
 
 void Sound::Open (std::string file) {
     chunk = Resources::GetSound(file);
-    channel = SND_AUTO_CHANNEL;
+    channel = SOUND_AUTO_CHANNEL;
 }
 
 void Sound::Play (int times) {
@@ -21,7 +21,7 @@ void Sound::Play (int times) {
 
     loops = times - ((times > 0)? 1:0);
     channel = Mix_PlayChannel(channel, chunk, loops);
-    if (channel == SND_ERROR_PLAY) {
+    if (channel == SOUND_ERROR_PLAY) {
         SDL_Log("Mix_PlayChannel: %s", SDL_GetError());
     }
 }

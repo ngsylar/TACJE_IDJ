@@ -3,11 +3,11 @@
 
 Bullet::Bullet (
     GameObject& associated,
+    std::string spriteName,
     float angle,
     float speed,
-    int damage,
     float maxDistance,
-    std::string spriteName
+    int damage
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(associated, spriteName);

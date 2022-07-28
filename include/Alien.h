@@ -6,11 +6,11 @@
 #include "InputManager.h"
 #include "Component.h"
 
-#define ALIEN_SPR               "assets/img/alien.png"
-#define ALIEN_INITIAL_HP        100
+#define ALIEN_SPRITE            "assets/img/alien.png"
+#define ALIEN_START_HP          100
 #define ALIEN_SCALAR_SPEED      200.0f
 #define ALIEN_PASSING_DISTANCE  10.0f
-#define ALIEN_INITIAL_POSITION  512, 300
+#define ALIEN_START_POSITION    512, 300
 #define ALIEN_ROTATION_SPEED    20.0f
 #define ALIEN_MINIONS_AMOUNT    6
 

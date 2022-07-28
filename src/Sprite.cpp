@@ -4,12 +4,17 @@
 #include "Resources.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
-    scale = Vec2(1.0f, 1.0f);
     texture = nullptr;
 }
 
-Sprite::Sprite (GameObject& associated, std::string file): Sprite(associated) {
+Sprite::Sprite (
+    GameObject& associated, std::string file,
+    int frameCount, float frameTime
+): Sprite(associated) {
+    
     Open(file);
+    // currentFrame = 0;
+    // timeElapsed = 0.0f;
 }
 
 Sprite::~Sprite () {}
@@ -18,21 +23,20 @@ void Sprite::Open (std::string file) {
     int qtexture;
 
     texture = Resources::GetImage(file);
+    scale = Vec2(SPRITE_DEFAULT_SCALE);
 
     qtexture = SDL_QueryTexture(
         texture, nullptr, nullptr,
         &width, &height
     );
-    if (qtexture == SPR_ERROR) {
+    if (qtexture == SPRITE_ERROR) {
         SDL_Log("SDL_QueryTexture: %s", SDL_GetError());
         exit(1);
     }
-    SetClip(
-        SPR_START_X, SPR_START_Y,
-        width, height
-    );
-    associated.box.w = width;
-    associated.box.h = height;
+    SetClip(SPRITE_CLIP_START_POINT, width, height);
+
+    associated.box.w = (float)width * scale.x;
+    associated.box.h = (float)height * scale.y;
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {
@@ -61,7 +65,7 @@ void Sprite::Render (int startX, int startY) {
         associated.angleDeg, nullptr,
         SDL_FLIP_NONE
     );
-    if (rendercpy == SPR_ERROR) {
+    if (rendercpy == SPRITE_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
         exit(1);
     }
@@ -96,7 +100,13 @@ bool Sprite::IsOpen () {
     return (texture != nullptr);
 }
 
-void Sprite::Update (float dt) {}
+void Sprite::Update (float dt) {
+    // timeElapsed += dt;
+    // if (timeElapsed > frameTime) {
+    //     currentFrame = (currentFrame + 1) % frameCount;
+    //     SDL_Log("%d", currentFrame);
+    // }
+}
 
 bool Sprite::Is (std::string type) {
     return (type == "Sprite");

@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-#define BULLET1_SPR     "assets/img/minionbullet1.png"
+#define BULLET1_SPRITE  "assets/img/minionbullet1.png"
 #define BULLET1_SPEED   600.0f
 #define BULLET1_DAMAGE  10
 
@@ -16,11 +16,11 @@ class Bullet: public Component {
     public:
         Bullet(
             GameObject& associated,
+            std::string spriteName,
             float angle,
             float speed,
-            int damage,
             float maxDistance,
-            std::string spriteName
+            int damage
         );
         void Update(float dt);
         void Render();

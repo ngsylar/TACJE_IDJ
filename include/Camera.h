@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 
-#define CAM_SPEED 200.0f
+#define CAMERA_SPEED 200.0f
 
 class Camera {
     private:

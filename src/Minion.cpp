@@ -9,11 +9,10 @@ Minion::Minion (
     float arcOffsetDeg
 ): Component(associated) {
 
-    Sprite* sprite = new Sprite(associated, MINION_SPR);
-    Vec2 scaleRange(MINION_SCALE_RANGE);
-    int rangeStart = scaleRange.x * 100;
-    int scaleMod = ((scaleRange.y - scaleRange.x) * 100) + 1;
-    sprite->SetScale((float)((rand()%scaleMod)+rangeStart)/100);
+    Sprite* sprite = new Sprite(associated, MINION_SPRITE);
+    int rangeStart = MINION_SCALE_MIN * 100;
+    int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
+    sprite->SetScale((float)((rand() % scaleMod) + rangeStart) / 100.0f);
     associated.AddComponent(sprite);
 
     this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
@@ -50,8 +49,9 @@ void Minion::Shoot (Vec2 target) {
     float distance = minionPosition.DistanceTo(target);
 
     GameObject* bullet = new GameObject();
-    Bullet* bulletRaw = new Bullet(*bullet, angle, BULLET1_SPEED, BULLET1_DAMAGE, distance, BULLET1_SPR);
-    bullet->AddComponent(bulletRaw);
+    bullet->AddComponent(
+        new Bullet(*bullet, BULLET1_SPRITE, angle, BULLET1_SPEED, distance, BULLET1_DAMAGE)
+    );
     bullet->box.SetPosition(minionPosition);
     Game::GetInstance().GetState().AddObject(bullet);
 }

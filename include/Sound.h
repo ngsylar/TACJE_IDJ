@@ -6,9 +6,9 @@
 
 #include "Component.h"
 
-#define SND_REPEAT_OFF      1
-#define SND_ERROR_PLAY     -1
-#define SND_AUTO_CHANNEL   -1
+#define SOUND_REPEAT_OFF    1
+#define SOUND_ERROR_PLAY    -1
+#define SOUND_AUTO_CHANNEL  -1
 
 class Sound: public Component {
     private:
@@ -19,7 +19,7 @@ class Sound: public Component {
         Sound(GameObject& associated);
         Sound(GameObject& associated, std::string file);
         ~Sound();
-        void Play(int times=SND_REPEAT_OFF);
+        void Play(int times=SOUND_REPEAT_OFF);
         void Stop();
         void Open(std::string file);
         bool IsOpen();

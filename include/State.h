@@ -12,14 +12,17 @@
 #include "GameObject.h"
 #include "Music.h"
 
-#define GAMEMAP_TSET    "assets/img/tileset.png"
-#define GAMEMAP_TMAP    "assets/map/tileMap.txt"
-#define GAMEMAP_TDIM    64, 64
-#define BG_MUS          "assets/audio/stageState.ogg"
-#define BG_SPR          "assets/img/ocean.jpg"
+#define BG_SPRITE               "assets/img/ocean.jpg"
+#define BG_START_POSITION       10.0f, 10.0f
+#define BG_MUSIC                "assets/audio/stageState.ogg"
 
-#define FACE_SPR        "assets/img/penguinface.png"
-#define FACE_SND        "assets/audio/boom.wav"
+#define GAMEMAP_TILESET         "assets/img/tileset.png"
+#define GAMEMAP_TILEMAP         "assets/map/tileMap.txt"
+#define GAMEMAP_TILE_DIM        64, 64
+#define GAMEMAP_START_POSITION  0.0f, 0.0f
+
+#define FACE_SPRITE             "assets/img/penguinface.png"
+#define FACE_SOUND              "assets/audio/boom.wav"
 
 class State {
     private:

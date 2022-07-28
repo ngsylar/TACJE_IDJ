@@ -8,15 +8,15 @@
 
 #include "State.h"
 
-#define WINDOW_TITLE    "150126760 Gabriel Rocha Fontenele"
-#define WINDOW_SIZE     1024, 600
-#define WINDOW_FLAGS    0
-#define MXR_CHANNELS    32
-#define MXR_CHUNK_SIZE  1024
-#define RND_AUTO_DRIVE  -1
-#define GAM_DELAY       33
-#define GAM_SUCCESS     0
-#define GAM_FAILURE     0
+#define WINDOW_TITLE        "150126760 Gabriel Rocha Fontenele"
+#define WINDOW_SIZE         1024, 600
+#define WINDOW_FLAGS        0
+#define MIXER_CHANNELS      32
+#define MIXER_CHUNK_SIZE    1024
+#define RENDER_AUTO_DRIVE   -1
+#define GAME_DELAY          33
+#define GAME_SUCCESS        0
+#define GAME_FAILURE        0
 
 class Game {
     private:

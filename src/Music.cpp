@@ -17,13 +17,13 @@ void Music::Open (std::string file) {
 }
 
 void Music::Play (int times) {
-    if (Mix_PlayMusic(music, times) == MUS_ERROR_PLAY) {
+    if (Mix_PlayMusic(music, times) == MUSIC_ERROR_PLAY) {
         SDL_Log("Mix_PlayMusic: %s", SDL_GetError());
     }
 }
 
 void Music::Stop (int msToStop) {
-    if (Mix_FadeOutMusic(msToStop) == MUS_ERROR_FADE) {
+    if (Mix_FadeOutMusic(msToStop) == MUSIC_ERROR_FADE) {
         SDL_Log("Mix_PlayMusic: %s", SDL_GetError());
     }
 }
