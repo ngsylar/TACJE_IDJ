@@ -13,7 +13,6 @@
 #include "Music.h"
 
 #define BG_SPRITE               "assets/img/ocean.jpg"
-#define BG_START_POSITION       10.0f, 10.0f
 #define BG_MUSIC                "assets/audio/stageState.ogg"
 
 #define GAMEMAP_TILESET         "assets/img/tileset.png"

@@ -10,7 +10,10 @@ Bullet::Bullet (
     int damage
 ): Component(associated) {
 
-    Sprite* sprite = new Sprite(associated, spriteName);
+    Sprite* sprite = new Sprite(
+        associated, spriteName,
+        BULLET1_FRAME_COUNT, BULLET1_FRAME_TIME
+    );
     associated.AddComponent(sprite);
     associated.angleDeg = angle * (180.0f/PI) + BULLET_ANGLEDEG_ADJUST;
 

@@ -12,9 +12,11 @@ Sprite::Sprite (
     int frameCount, float frameTime
 ): Sprite(associated) {
     
+    this->frameCount = frameCount;
+    this->frameTime = frameTime;
+    currentFrame = 0;
+    timeElapsed = 0.0f;
     Open(file);
-    // currentFrame = 0;
-    // timeElapsed = 0.0f;
 }
 
 Sprite::~Sprite () {}
@@ -33,9 +35,11 @@ void Sprite::Open (std::string file) {
         SDL_Log("SDL_QueryTexture: %s", SDL_GetError());
         exit(1);
     }
-    SetClip(SPRITE_CLIP_START_POINT, width, height);
+    
+    frameWidth = width / frameCount;
+    SetClip(SPRITE_CLIP_START_POINT, frameWidth, height);
 
-    associated.box.w = (float)width * scale.x;
+    associated.box.w = (float)frameWidth * scale.x;
     associated.box.h = (float)height * scale.y;
 }
 
@@ -75,7 +79,7 @@ void Sprite::SetScale (float scaleX, float scaleY) {
     Vec2 position = associated.box.GetCenter();
     scale = Vec2(scaleX, scaleY);
     
-    associated.box.w = (float)width * scale.x;
+    associated.box.w = (float)frameWidth * scale.x;
     associated.box.h = (float)height * scale.y;
     associated.box.SetPosition(position);
 }
@@ -89,23 +93,43 @@ Vec2 Sprite::GetScale () {
 }
 
 int Sprite::GetWidth () {
-    return (width * (int)scale.x);
+    return (frameWidth * (int)scale.x);
 }
 
 int Sprite::GetHeight () {
     return (height * (int)scale.y);
 }
 
-bool Sprite::IsOpen () {
-    return (texture != nullptr);
+void Sprite::SetFrame (int frame) {
+    currentFrame = frame % frameCount;
+    clipRect.x = currentFrame * frameWidth;
+}
+
+void Sprite::SetFrameTime (float frameTime) {
+    this->frameTime = frameTime;
+}
+
+void Sprite::SetFrameCount (int frameCount) {
+    this->frameCount = frameCount;
+    frameWidth = width / frameCount;
+    currentFrame = 0;
+    
+    clipRect.x = currentFrame;
+    clipRect.w = frameWidth;
+
+    associated.box.w = (float)frameWidth * scale.x;
 }
 
 void Sprite::Update (float dt) {
-    // timeElapsed += dt;
-    // if (timeElapsed > frameTime) {
-    //     currentFrame = (currentFrame + 1) % frameCount;
-    //     SDL_Log("%d", currentFrame);
-    // }
+    timeElapsed += dt;
+    if (timeElapsed > frameTime) {
+        SetFrame(currentFrame+1);
+        timeElapsed = 0;
+    }
+}
+
+bool Sprite::IsOpen () {
+    return (texture != nullptr);
 }
 
 bool Sprite::Is (std::string type) {

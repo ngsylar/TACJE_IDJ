@@ -16,10 +16,8 @@ class Sprite: public Component {
         SDL_Rect clipRect;
         int width, height;
         Vec2 scale;
-        // int frameCount;
-        // float frameTime;
-        // int currentFrame;
-        // float timeElapsed;
+        int frameWidth, frameCount, currentFrame;
+        float frameTime, timeElapsed;
 
     public:
         Sprite(GameObject& associated);
@@ -37,9 +35,9 @@ class Sprite: public Component {
         Vec2 GetScale();
         int GetWidth();
         int GetHeight();
-        // void SetFrame(int frame);
-        // void SetFrameCount(int frameCount);
-        // void SetFrameTime(float frameTime);
+        void SetFrame(int frame);
+        void SetFrameTime(float frameTime);
+        void SetFrameCount(int frameCount);
         void Update(float dt);
         bool IsOpen();
         bool Is(std::string type);
