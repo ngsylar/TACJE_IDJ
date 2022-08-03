@@ -6,6 +6,8 @@
 #define INCLUDE_SDL
 #include "SDL_include.h"
 
+#include "Vec2.h"
+
 #define MOUSE_BUTTON_LEFT   SDL_BUTTON_LEFT
 #define MOUSE_BUTTON_RIGHT  SDL_BUTTON_RIGHT
 #define KEY_ESCAPE          SDLK_ESCAPE
@@ -40,6 +42,7 @@ class InputManager {
         bool MousePress(int button);
         bool MouseRelease(int button);
         bool IsMouseDown(int button);
+        Vec2 GetMousePosition();
         int GetMouseX();
         int GetMouseY();
         bool QuitRequested();

@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Game.h"
 #include "InputManager.h"
 
 GameObject* Camera::focus = nullptr;
@@ -16,19 +17,19 @@ void Camera::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     if (focus) {
-        pos = focus->box.GetCenter();
-    } else {
-
-        if (input.IsKeyDown(KEY_ARROW_UP) or input.IsKeyDown(KEY_W)) {
+        pos = focus->box.GetCenter() - (Vec2(WINDOW_SIZE) * 0.5f);
+    }
+    else {
+        if (input.IsKeyDown(KEY_ARROW_UP)) {
             speed.y = -1;
         }
-        if (input.IsKeyDown(KEY_ARROW_DOWN) or input.IsKeyDown(KEY_S)) {
+        if (input.IsKeyDown(KEY_ARROW_DOWN)) {
             speed.y = 1;
         }
-        if (input.IsKeyDown(KEY_ARROW_LEFT) or input.IsKeyDown(KEY_A)) {
+        if (input.IsKeyDown(KEY_ARROW_LEFT)) {
             speed.x = -1;
         }
-        if (input.IsKeyDown(KEY_ARROW_RIGHT) or input.IsKeyDown(KEY_D)) {
+        if (input.IsKeyDown(KEY_ARROW_RIGHT)) {
             speed.x = 1;
         }
         if (speed.x and speed.y) {

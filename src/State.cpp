@@ -7,6 +7,7 @@
 #include "Sound.h"
 #include "Vec2.h"
 #include "Alien.h"
+#include "PenguinBody.h"
 
 State::State () {
     GameObject* bg = new GameObject();
@@ -47,6 +48,12 @@ void State::LoadAssets () {
     alien->AddComponent(new Alien(*alien, ALIEN_MINIONS_AMOUNT));
     alien->box.SetPosition(ALIEN_START_POSITION);
     objectArray.emplace_back(alien);
+
+    GameObject* penguin = new GameObject();
+    penguin->AddComponent(new PenguinBody(*penguin));
+    penguin->box.SetPosition(PENGUINB_START_POSITION);
+    objectArray.emplace_back(penguin);
+    Camera::Follow(penguin);
 }
 
 void State::ClearResources () {

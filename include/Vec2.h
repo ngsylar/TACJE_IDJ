@@ -4,7 +4,8 @@
 #include <cmath>
 #define PI 3.1415926535
 
-#define BULLET_ANGLEDEG_ADJUST 0.0f
+float Rad2Deg(float angle);
+float Deg2Rad(float angleDeg);
 
 class Vec2 {
     public:

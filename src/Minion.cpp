@@ -39,10 +39,6 @@ void Minion::Update (float dt) {
 
 void Minion::Render () {}
 
-bool Minion::Is (std::string type) {
-    return (type == "Minion");
-}
-
 void Minion::Shoot (Vec2 target) {
     Vec2 minionPosition = associated.box.GetCenter();
     float angle = minionPosition.AngleTo(target);
@@ -50,10 +46,18 @@ void Minion::Shoot (Vec2 target) {
 
     GameObject* bullet = new GameObject();
     bullet->AddComponent(
-        new Bullet(*bullet, BULLET1_SPRITE, angle, BULLET1_SPEED, distance, BULLET1_DAMAGE)
+        new Bullet(
+            *bullet, MINION_BULLET_SPRITE,
+            angle, MINION_BULLET_SPEED, distance,
+            MINION_BULLET_DAMAGE
+        )
     );
     bullet->box.SetPosition(minionPosition);
     Game::GetInstance().GetState().AddObject(bullet);
+}
+
+bool Minion::Is (std::string type) {
+    return (type == "Minion");
 }
 
 Vec2 Minion::GetPosition () {

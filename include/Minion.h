@@ -8,7 +8,7 @@
 #define MINION_ARC_SPEED        0.25f
 #define MINION_SCALE_MIN        0.66f
 #define MINION_SCALE_MAX        1.06f
-#define MINION_ANGLEDEG_ADJUST  270.0f
+#define MINION_ANGLEDEG_ADJUST  -90.0f
 
 class Minion: public Component {
     private:
@@ -23,8 +23,8 @@ class Minion: public Component {
         );
         void Update(float dt);
         void Render();
-        bool Is(std::string type);
         void Shoot(Vec2 target);
+        bool Is(std::string type);
         Vec2 GetPosition();
 };
 

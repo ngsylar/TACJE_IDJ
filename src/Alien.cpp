@@ -11,9 +11,9 @@ Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
     hp = ALIEN_START_HP;
 }
 
-Alien::Action::Action (ActionType type, float x, float y) {
+Alien::Action::Action (ActionType type, Vec2 pos) {
     this->type = type;
-    pos = Vec2(x, y);
+    this->pos = pos;
 }
 
 Alien::~Alien () {
@@ -33,11 +33,7 @@ void Alien::Start () {
 }
 
 Alien::Action Alien::ScheduleAction(InputManager* input, Action::ActionType type) {
-    Action action(
-        type,
-        input->GetMouseX()+Camera::pos.x,
-        input->GetMouseY()+Camera::pos.y
-    );
+    Action action(type, input->GetMousePosition());
     return action;
 }
 
@@ -52,9 +48,9 @@ void Alien::Update (float dt) {
     if (input.MousePress(MOUSE_BUTTON_RIGHT)) {
         taskQueue.push(ScheduleAction(&input, Action::MOVE));
     }
-    if (input.MousePress(MOUSE_BUTTON_LEFT)) {
-        taskQueue.push(ScheduleAction(&input, Action::SHOOT));
-    }
+    // if (input.MousePress(MOUSE_BUTTON_LEFT)) {
+    //     taskQueue.push(ScheduleAction(&input, Action::SHOOT));
+    // }
 
     if (!taskQueue.empty()) {
         Action action = taskQueue.front();
@@ -65,7 +61,7 @@ void Alien::Update (float dt) {
             if (alienPosition.DistanceTo(action.pos) > ALIEN_PASSING_DISTANCE) {
                 float targetAngle = alienPosition.AngleTo(action.pos);
                 speed = alienPosition.DirectionFrom(targetAngle);
-                associated.box.Translate(speed * ALIEN_SCALAR_SPEED * dt);
+                associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
             }
             else {
                 associated.box.SetPosition(action.pos);

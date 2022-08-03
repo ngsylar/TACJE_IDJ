@@ -5,19 +5,19 @@ Bullet::Bullet (
     GameObject& associated,
     std::string spriteName,
     float angle,
-    float speed,
+    float linearSpeed,
     float maxDistance,
     int damage
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(
         associated, spriteName,
-        BULLET1_FRAME_COUNT, BULLET1_FRAME_TIME
+        MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME
     );
     associated.AddComponent(sprite);
-    associated.angleDeg = angle * (180.0f/PI) + BULLET_ANGLEDEG_ADJUST;
+    associated.angleDeg = Rad2Deg(angle) + MINION_BULLET_ANGLEDEG_ADJUST;
 
-    this->speed = Vec2().DirectionFrom(angle) * speed;
+    this->speed = Vec2().DirectionFrom(angle) * linearSpeed;
     this->damage = damage;
     this->distanceLeft = maxDistance;
 }

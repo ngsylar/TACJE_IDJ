@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "InputManager.h"
+#include "Camera.h"
 
 InputManager& InputManager::GetInstance () {
     static InputManager inputManager;
@@ -74,6 +75,10 @@ bool InputManager::MouseRelease (int button) {
 
 bool InputManager::IsMouseDown (int button) {
     return mouseState[button];
+}
+
+Vec2 InputManager::GetMousePosition () {
+    return Vec2(mouseX+Camera::pos.x, mouseY+Camera::pos.y);
 }
 
 int InputManager::GetMouseX () {

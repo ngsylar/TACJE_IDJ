@@ -7,10 +7,10 @@
 #include "Component.h"
 
 #define ALIEN_SPRITE            "assets/img/alien.png"
-#define ALIEN_START_HP          100
-#define ALIEN_SCALAR_SPEED      200.0f
-#define ALIEN_PASSING_DISTANCE  10.0f
 #define ALIEN_START_POSITION    512, 300
+#define ALIEN_START_HP          100
+#define ALIEN_LINEAR_SPEED      200.0f
+#define ALIEN_PASSING_DISTANCE  10.0f
 #define ALIEN_ROTATION_SPEED    20.0f
 #define ALIEN_MINIONS_AMOUNT    6
 
@@ -22,7 +22,7 @@ class Alien: public Component {
                 ActionType type;
                 Vec2 pos;
 
-                Action(ActionType type, float x, float y);
+                Action(ActionType type, Vec2 pos);
         };
         
         int hp;

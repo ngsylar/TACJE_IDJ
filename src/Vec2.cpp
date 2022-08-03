@@ -1,5 +1,13 @@
 #include "Vec2.h"
 
+float Rad2Deg (float angle) {
+    return angle * (180.0f/PI);
+}
+
+float Deg2Rad (float angleDeg) {
+    return angleDeg * (PI/180.0f);
+}
+
 Vec2::Vec2 () {
     x = 0;
     y = 0;
