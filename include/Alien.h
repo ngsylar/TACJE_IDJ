@@ -6,6 +6,9 @@
 #include "InputManager.h"
 #include "Component.h"
 
+// sylar's extra positioning
+#include "Sprite.h"
+
 #define ALIEN_SPRITE            "assets/img/alien.png"
 #define ALIEN_START_POSITION    512, 300
 #define ALIEN_START_HP          100
@@ -34,7 +37,9 @@ class Alien: public Component {
         Action ScheduleAction(InputManager* input, Action::ActionType type);
 
         // sylar's alien breath extra effects
-        bool spriteIncreasing;
+        Sprite* sprite;
+        bool breathIn;
+        void BreathAnimation(float dt);
 
     public:
         Alien(GameObject& associated, int nMinions);

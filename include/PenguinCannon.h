@@ -3,12 +3,28 @@
 
 #include "Component.h"
 
-#define PENGUINC_SPRITE "assets/img/cubngun.png"
+// sylar's extra positioning
+#include "PenguinBody.h"
+
+#define PENGUINC_SPRITE                 "assets/img/cubngun.png"
+
+#define PENGUINC_BULLET_SPRITE          "assets/img/minionbullet2.png"
+#define PENGUINC_BULLET_FRAME_COUNT     3
+#define PENGUINC_BULLET_FRAME_TIME      0.04f
+#define PENGUINC_BULLET_ARC_DISTANCE    50.0f, 0.0f
+#define PENGUINC_BULLET_SPEED           600.0f
+#define PENGUINC_BULLET_DAMAGE          10
+
+// sylar's extra positioning
+#define PENGUINC_ARC_DISTANCE           5.75f, 0.0f
 
 class PenguinCannon: public Component {
     private:
         std::weak_ptr<GameObject> pbody;
         float angle;
+
+        // sylar's extra positioning
+        PenguinBody* pbodyRaw;
     
     public:
         PenguinCannon(GameObject& associated, GameObject& penguinBody);

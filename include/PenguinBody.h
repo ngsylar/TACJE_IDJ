@@ -10,12 +10,19 @@
 #define PENGUINB_ACCELERATION   200.0f
 #define PENGUINB_ROTATION_SPEED 90.0f
 
+// sylar's extra positioning
+#define PENGUINB_ARC_DISTANCE   1.0f, 0.0f
+
 class PenguinBody: public Component {
     private:
         std::weak_ptr<GameObject> pcannon;
         Vec2 speed;
         float angle, linearSpeed, rotationRadSpeed;
         int hp;
+        
+        // sylar's extra positioning
+        Vec2 position, arcPlacement, center, arcDisplacement;
+        float deltaAngle;
     
     public:
         static PenguinBody* player;
@@ -26,6 +33,9 @@ class PenguinBody: public Component {
         void Update(float dt);
         void Render();
         bool Is(std::string type);
+
+        // sylar's extra positioning
+        Vec2 GetPosition();
 };
 
 #endif

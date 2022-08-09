@@ -1,11 +1,12 @@
 #include "Alien.h"
 #include "Game.h"
 #include "Camera.h"
-#include "Sprite.h"
+// #include "Sprite.h"      // idj's original alien
 #include "Minion.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
-    Sprite* sprite = new Sprite(associated, ALIEN_SPRITE);
+    // Sprite* sprite = new Sprite(associated, ALIEN_SPRITE);   // idj's original alien
+    sprite = new Sprite(associated, ALIEN_SPRITE);              // sylar's alien breath extra effects
     associated.AddComponent(sprite);
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
@@ -95,11 +96,15 @@ void Alien::Update (float dt) {
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
 
     // sylar's alien breath extra effects
-    Sprite* sprite = (Sprite*)associated.GetComponent("Sprite");
+    BreathAnimation(dt);
+}
+
+// sylar's alien breath extra effects
+void Alien::BreathAnimation (float dt) {
     float currentScale = sprite->GetScale().x;
-    if (currentScale <= 1.0f) spriteIncreasing = true;
-    else if (currentScale >= 1.06f) spriteIncreasing = false;
-    if (spriteIncreasing) currentScale += (0.08f*dt);
+    if (currentScale <= 1.0f) breathIn = true;
+    else if (currentScale >= 1.06f) breathIn = false;
+    if (breathIn) currentScale += (0.08f*dt);
     else currentScale -= (0.08f*dt);
     sprite->SetScale(currentScale);
 }

@@ -27,6 +27,13 @@ void PenguinBody::Start () {
     pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
     pcannon = Game::GetInstance().GetState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);
+
+    // sylar's extra positioning
+    position = associated.box.GetCenter();
+    arcPlacement = Vec2(PENGUINB_ARC_DISTANCE) * (PI*2);
+    center = position + arcPlacement;
+    associated.box.SetPosition(center);
+    deltaAngle = 0.0f;
 }
 
 void PenguinBody::Update (float dt) {
@@ -51,17 +58,33 @@ void PenguinBody::Update (float dt) {
     if (input.IsKeyDown(KEY_A)) {
         angle -= rotationRadSpeed * dt;
         associated.angleDeg = Rad2Deg(angle);
+        deltaAngle = angle;     // sylar's extra positioning
     }
     if (input.IsKeyDown(KEY_D)) {
         angle += rotationRadSpeed * dt;
         associated.angleDeg = Rad2Deg(angle);
+        deltaAngle = angle;     // sylar's extra positioning
     }
     
     speed = Vec2().DirectionFrom(angle) * linearSpeed;
-    associated.box.Translate(speed * dt);
+    Vec2 displacement = speed * dt;
+    associated.box.Translate(displacement);
+    position += displacement;   // sylar's extra positioning
+
+    // sylar's extra positioning
+    if (deltaAngle != 0.0f) {
+        arcDisplacement = arcPlacement.Rotate(-deltaAngle);
+        center = position + arcDisplacement;
+        associated.box.SetPosition(center);
+        deltaAngle = 0.0f;
+    }
 }
 
 void PenguinBody::Render () {}
+
+Vec2 PenguinBody::GetPosition () {
+    return position;
+}
 
 bool PenguinBody::Is (std::string type) {
     return (type == "PenguinBody");

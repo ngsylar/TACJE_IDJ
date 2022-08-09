@@ -55,20 +55,18 @@ void Sprite::Render () {
 }
 
 void Sprite::Render (int startX, int startY) {
-    SDL_Rect dstrect;
-    int rendercpy;
-
-    dstrect = SDL_Rect{
+    SDL_Rect dstrect = SDL_Rect{
         startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
 
-    rendercpy = SDL_RenderCopyEx(
+    int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
         texture, &clipRect, &dstrect,
         associated.angleDeg, nullptr,
         SDL_FLIP_NONE
     );
+
     if (rendercpy == SPRITE_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
         exit(1);

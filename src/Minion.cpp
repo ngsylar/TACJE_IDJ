@@ -49,17 +49,18 @@ void Minion::Shoot (Vec2 target) {
         new Bullet(
             *bullet, MINION_BULLET_SPRITE,
             angle, MINION_BULLET_SPEED, distance,
-            MINION_BULLET_DAMAGE
+            MINION_BULLET_DAMAGE,
+            MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME
         )
     );
     bullet->box.SetPosition(minionPosition);
     Game::GetInstance().GetState().AddObject(bullet);
 }
 
-bool Minion::Is (std::string type) {
-    return (type == "Minion");
-}
-
 Vec2 Minion::GetPosition () {
     return associated.box.GetCenter();
+}
+
+bool Minion::Is (std::string type) {
+    return (type == "Minion");
 }

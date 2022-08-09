@@ -12,6 +12,9 @@ PenguinCannon::PenguinCannon (
     associated.AddComponent(sprite);
     pbody = Game::GetInstance().GetState().GetObjectPtr(&penguinBody);
     angle = 0;
+
+    // sylar's extra positioning
+    pbodyRaw = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
 }
 
 void PenguinCannon::Update (float dt) {
@@ -23,9 +26,19 @@ void PenguinCannon::Update (float dt) {
         return;
     }
 
-    associated.box.SetPosition(pbody.lock()->box.GetCenter());
+    // // idj's original positioning
+    // Vec2 pbodyPosition = pbody.lock()->box.GetCenter();
+    // angle = associated.box.GetCenter().AngleTo(target);
+    // associated.angleDeg = Rad2Deg(angle);
+    // associated.box.SetPosition(pbodyPosition);
+
+    // sylar's extra positioning
+    Vec2 pbodyPosition = pbodyRaw->GetPosition();
+    Vec2 arcPlacement = Vec2(PENGUINC_ARC_DISTANCE)*(PI*2);
     angle = associated.box.GetCenter().AngleTo(target);
+    Vec2 position = pbodyPosition + arcPlacement.Rotate(-angle);
     associated.angleDeg = Rad2Deg(angle);
+    associated.box.SetPosition(position);
 
     if (input.MousePress(MOUSE_BUTTON_LEFT)) {
         Shoot(target);
@@ -35,18 +48,21 @@ void PenguinCannon::Update (float dt) {
 void PenguinCannon::Render () {}
 
 void PenguinCannon::Shoot (Vec2 target) {
-    Vec2 cannonPosition = associated.box.GetCenter();
-    float distance = cannonPosition.DistanceTo(target);
-
     GameObject* bullet = new GameObject();
+    Vec2 cannonPosition = associated.box.GetCenter();
+    Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
+    Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(-angle);
+    float targetDistance = bulletPosition.DistanceTo(target);
+
     bullet->AddComponent(
         new Bullet(
-            *bullet, MINION_BULLET_SPRITE,
-            angle, MINION_BULLET_SPEED, distance,
-            MINION_BULLET_DAMAGE
+            *bullet, PENGUINC_BULLET_SPRITE,
+            angle, PENGUINC_BULLET_SPEED, targetDistance,
+            PENGUINC_BULLET_DAMAGE,
+            PENGUINC_BULLET_FRAME_COUNT, PENGUINC_BULLET_FRAME_TIME
         )
     );
-    bullet->box.SetPosition(cannonPosition);
+    bullet->box.SetPosition(bulletPosition);
     Game::GetInstance().GetState().AddObject(bullet);
 }
 
