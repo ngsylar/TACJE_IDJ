@@ -25,6 +25,7 @@ class PenguinCannon: public Component {
 
         // sylar's extra positioning
         PenguinBody* pbodyRaw;
+        Vec2 arcPlacement;
     
     public:
         PenguinCannon(GameObject& associated, GameObject& penguinBody);

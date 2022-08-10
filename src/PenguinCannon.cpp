@@ -15,6 +15,7 @@ PenguinCannon::PenguinCannon (
 
     // sylar's extra positioning
     pbodyRaw = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
+    arcPlacement = Vec2(PENGUINC_ARC_DISTANCE) * (PI*2);
 }
 
 void PenguinCannon::Update (float dt) {
@@ -34,8 +35,7 @@ void PenguinCannon::Update (float dt) {
 
     // sylar's extra positioning
     Vec2 pbodyPosition = pbodyRaw->GetPosition();
-    Vec2 arcPlacement = Vec2(PENGUINC_ARC_DISTANCE)*(PI*2);
-    angle = associated.box.GetCenter().AngleTo(target);
+    angle = pbodyPosition.AngleTo(target);
     Vec2 position = pbodyPosition + arcPlacement.Rotate(-angle);
     associated.angleDeg = Rad2Deg(angle);
     associated.box.SetPosition(position);
