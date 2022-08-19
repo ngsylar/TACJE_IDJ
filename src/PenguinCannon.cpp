@@ -42,7 +42,7 @@ void PenguinCannon::Update (float dt) {
     // sylar's extra positioning
     Vec2 pbodyPosition = pbodyCp->GetPosition();
     angle = pbodyPosition.AngleTo(target);
-    Vec2 position = pbodyPosition + arcPlacement.Rotate(-angle);
+    Vec2 position = pbodyPosition + arcPlacement.Rotate(angle);
     associated.angleDeg = Rad2Deg(angle);
     associated.box.SetPosition(position);
 
@@ -57,7 +57,7 @@ void PenguinCannon::Shoot (Vec2 target) {
     GameObject* bullet = new GameObject();
     Vec2 cannonPosition = associated.box.GetCenter();
     Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
-    Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(-angle);
+    Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(angle);
     float targetDistance = bulletPosition.DistanceTo(target);
 
     bullet->AddComponent(

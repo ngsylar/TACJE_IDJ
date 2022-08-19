@@ -38,7 +38,7 @@ void Minion::Update (float dt) {
     Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
     float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
     Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
-    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(arc);
+    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(-arc);
     associated.box.SetPosition(minionPlacement);
 
     Vec2 minionPosition = associated.box.GetCenter();
