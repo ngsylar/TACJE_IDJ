@@ -22,6 +22,11 @@ Vec2 Rect::GetCenter () {
     return Vec2(x+w/2, y+h/2);
 }
 
+void Rect::SetSize (float w, float h) {
+    this->w = w;
+    this->h = h;
+}
+
 void Rect::SetPosition (float pX, float pY) {
     x = pX - w/2;
     y = pY - h/2;

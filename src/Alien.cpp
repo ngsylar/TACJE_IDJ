@@ -13,8 +13,8 @@ Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-    associated.label = "Enemy";
 
+    associated.label = "Enemy";
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
 }

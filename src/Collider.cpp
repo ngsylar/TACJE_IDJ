@@ -19,8 +19,9 @@ void Collider::Update (float dt) {
     box.SetPosition(
         associated.box.GetCenter() + offset.Rotate(associated.angleDeg)
     );
-    box.w = associated.box.w * scale.x;
-    box.h = associated.box.h * scale.y;
+    box.SetSize(
+        associated.box.w * scale.x, associated.box.h * scale.y
+    );
 }
 
 void Collider::Render () {

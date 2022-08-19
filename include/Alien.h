@@ -5,9 +5,7 @@
 
 #include "InputManager.h"
 #include "Component.h"
-
-// sylar's extra positioning
-#include "Sprite.h"
+#include "Sprite.h"             // sylar's extra positioning
 
 #define ALIEN_SPRITE            "assets/img/alien.png"
 #define ALIEN_START_POSITION    512, 300

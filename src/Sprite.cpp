@@ -22,12 +22,11 @@ Sprite::Sprite (
 Sprite::~Sprite () {}
 
 void Sprite::Open (std::string file) {
-    int qtexture;
 
     texture = Resources::GetImage(file);
     scale = Vec2(SPRITE_DEFAULT_SCALE);
 
-    qtexture = SDL_QueryTexture(
+    int qtexture = SDL_QueryTexture(
         texture, nullptr, nullptr,
         &width, &height
     );
@@ -38,9 +37,8 @@ void Sprite::Open (std::string file) {
     
     frameWidth = width / frameCount;
     SetClip(SPRITE_CLIP_START_POINT, frameWidth, height);
-
-    associated.box.w = (float)frameWidth * scale.x;
-    associated.box.h = (float)height * scale.y;
+    
+    associated.box.SetSize((float)frameWidth, (float)height);
 }
 
 void Sprite::SetClip (int x, int y, int w, int h) {
@@ -74,11 +72,11 @@ void Sprite::Render (int startX, int startY) {
 }
 
 void Sprite::SetScale (float scaleX, float scaleY) {
+    Vec2 size = Vec2((float)frameWidth, (float)height);
     Vec2 position = associated.box.GetCenter();
     scale = Vec2(scaleX, scaleY);
     
-    associated.box.w = (float)frameWidth * scale.x;
-    associated.box.h = (float)height * scale.y;
+    associated.box.SetSize(size.x*scale.x, size.y*scale.y);
     associated.box.SetPosition(position);
 }
 
