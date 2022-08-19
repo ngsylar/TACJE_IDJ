@@ -3,15 +3,21 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Sprite.h"
+#include "Collider.h"
 #include "PenguinCannon.h"
+#include "Bullet.h"
 
 PenguinBody* PenguinBody::player;
 
 PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
+
     Sprite* sprite = new Sprite(associated, PENGUINB_SPRITE);
     associated.AddComponent(sprite);
-    player = this;
+    Collider* collider = new Collider(associated);
+    associated.AddComponent(collider);
+    associated.label = "Player";
 
+    player = this;
     hp = PENGUINB_START_HP;
     linearSpeed = 0.0f;
     angle = 0.0f;
@@ -82,8 +88,16 @@ void PenguinBody::Update (float dt) {
 
 void PenguinBody::Render () {}
 
+// sylar's extra positioning
 Vec2 PenguinBody::GetPosition () {
     return position;
+}
+
+void PenguinBody::NotifyCollision (GameObject& other) {
+    Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+    if ((bullet != nullptr) and bullet->IsTargetingPlayer()) {
+        hp -= bullet->GetDamage();
+    }
 }
 
 bool PenguinBody::Is (std::string type) {

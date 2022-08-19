@@ -1,11 +1,13 @@
 #include "Bullet.h"
 #include "Sprite.h"
+#include "Collider.h"
 
 Bullet::Bullet (
     GameObject& associated, std::string spriteName,
     float angle, float linearSpeed, float maxDistance,
     int damage,
-    int spriteFrameCount, float spriteFrameTime
+    int spriteFrameCount, float spriteFrameTime,
+    bool targetsPlayer
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(
@@ -14,9 +16,15 @@ Bullet::Bullet (
     associated.AddComponent(sprite);
     associated.angleDeg = Rad2Deg(angle);
 
+    Collider* collider = new Collider(associated);
+    associated.AddComponent(collider);
+    associated.label = "Projectile";
+
     speed = Vec2().DirectionFrom(angle) * linearSpeed;
-    this->damage = damage;
     this->distanceLeft = maxDistance;
+
+    this->damage = damage;
+    this->targetsPlayer = targetsPlayer;
 }
 
 void Bullet::Update (float dt) {
@@ -31,10 +39,27 @@ void Bullet::Update (float dt) {
 
 void Bullet::Render () {}
 
-bool Bullet::Is (std::string type) {
-    return (type == "Bullet");
-}
-
 int Bullet::GetDamage () {
     return damage;
+}
+
+void Bullet::NotifyCollision (GameObject& other) {
+    bool shootingPlayer = (targetsPlayer and (other.label == "Player"));
+    bool shootingEnemy = (IsTargetingEnemy() and other.label == "Enemy");
+
+    if (shootingPlayer or shootingEnemy) {
+        associated.RequestDelete();
+    }
+}
+
+bool Bullet::IsTargetingPlayer () {
+    return targetsPlayer;
+}
+
+bool Bullet::IsTargetingEnemy () {
+    return (not targetsPlayer);
+}
+
+bool Bullet::Is (std::string type) {
+    return (type == "Bullet");
 }

@@ -8,22 +8,23 @@ class Bullet: public Component {
         Vec2 speed;
         float distanceLeft;
         int damage;
+        bool targetsPlayer;
 
     public:
         Bullet(
-            GameObject& associated,
-            std::string spriteName,
-            float angle,
-            float linearSpeed,
-            float maxDistance,
+            GameObject& associated, std::string spriteName,
+            float angle, float linearSpeed, float maxDistance,
             int damage,
-            int spriteFrameCount=1,
-            float spriteFrameTime=1.0f
+            int spriteFrameCount=1, float spriteFrameTime=1.0f,
+            bool targetsPlayer=false
         );
         void Update(float dt);
         void Render();
-        bool Is(std::string type);
         int GetDamage();
+        void NotifyCollision(GameObject& other);
+        bool IsTargetingPlayer();
+        bool IsTargetingEnemy();
+        bool Is(std::string type);
 };
 
 #endif

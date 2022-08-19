@@ -2,12 +2,19 @@
 #include "Game.h"
 #include "Camera.h"
 // #include "Sprite.h"      // idj's original alien
+#include "Collider.h"
 #include "Minion.h"
+#include "Bullet.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
-    // Sprite* sprite = new Sprite(associated, ALIEN_SPRITE);   // idj's original alien
-    sprite = new Sprite(associated, ALIEN_SPRITE);              // sylar's alien breath extra effects
+
+    // Sprite* sprite;      // idj's original alien
+    sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
+    Collider* collider = new Collider(associated);
+    associated.AddComponent(collider);
+    associated.label = "Enemy";
+
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
 }
@@ -40,20 +47,28 @@ Alien::Action Alien::ScheduleAction(InputManager* input, Action::ActionType type
 
 void Alien::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
+    Minion* minion;
     
     if (hp <= 0) {
         associated.RequestDelete();
         return;
     }
+    for (int i=(int)minionArray.size()-1; i >= 0; i--) {
+        minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+        if (minion->IsDead()) {
+            minionArray[i].lock()->RequestDelete();
+            minionArray.erase(minionArray.begin()+i);
+        }
+    }
     
     if (input.MousePress(MOUSE_BUTTON_RIGHT)) {
         taskQueue.push(ScheduleAction(&input, Action::MOVE));
     }
-    // if (input.MousePress(MOUSE_BUTTON_LEFT)) {
-    //     taskQueue.push(ScheduleAction(&input, Action::SHOOT));
-    // }
+    if (input.MousePress(MOUSE_BUTTON_LEFT)) {
+        taskQueue.push(ScheduleAction(&input, Action::SHOOT));
+    }
 
-    if (!taskQueue.empty()) {
+    if (not taskQueue.empty()) {
         Action action = taskQueue.front();
 
         if (action.type == Action::MOVE) {
@@ -71,11 +86,10 @@ void Alien::Update (float dt) {
             }
         }
         else if (action.type == Action::SHOOT) {
-            if (!minionArray.empty()) {
+            if (not minionArray.empty()) {
                 float targetDistance = 999999.0f;
                 float minionDistance;
                 int minionShooterId;
-                Minion* minion;
 
                 for (int i=0; i < (int)minionArray.size(); i++) {
                     minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
@@ -115,6 +129,13 @@ void Alien::BreathAnimation (float dt) {
 }
 
 void Alien::Render () {}
+
+void Alien::NotifyCollision (GameObject& other) {
+    Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+    if ((bullet != nullptr) and bullet->IsTargetingEnemy()) {
+        hp -= bullet->GetDamage();
+    }
+}
 
 bool Alien::Is (std::string type) {
     return (type == "Alien");

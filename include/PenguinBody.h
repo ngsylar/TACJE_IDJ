@@ -32,6 +32,7 @@ class PenguinBody: public Component {
         void Start();
         void Update(float dt);
         void Render();
+        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 
         // sylar's extra positioning

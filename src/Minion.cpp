@@ -1,6 +1,7 @@
 #include "Minion.h"
 #include "Game.h"
 #include "Sprite.h"
+#include "Collider.h"
 #include "Bullet.h"
 
 Minion::Minion (
@@ -15,26 +16,33 @@ Minion::Minion (
     sprite->SetScale((float)((rand() % scaleMod) + rangeStart) / 100.0f);
     associated.AddComponent(sprite);
 
+    Collider* collider = new Collider(associated);
+    associated.AddComponent(collider);
+    associated.label = "Enemy";
+
     this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
     arc = arcOffsetDeg;
+    hp = sprite->GetScale().x * MINION_HP_MODIFIER;
 }
 
 void Minion::Update (float dt) {
+    if (hp <= 0) {
+        return;
+    }
     if (alienCenter.expired()) {
         associated.RequestDelete();
         return;
     }
-    else {
-        arc += PI * MINION_ARC_SPEED * dt;
-        Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
-        float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
-        Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
-        Vec2 minionPlacement = alienPosition + minionDistance.Rotate(arc);
-        associated.box.SetPosition(minionPlacement);
+    
+    arc += PI * MINION_ARC_SPEED * dt;
+    Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
+    float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
+    Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
+    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(arc);
+    associated.box.SetPosition(minionPlacement);
 
-        Vec2 minionPosition = associated.box.GetCenter();
-        associated.angleDeg = minionPosition.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
-    }
+    Vec2 minionPosition = associated.box.GetCenter();
+    associated.angleDeg = minionPosition.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
 }
 
 void Minion::Render () {}
@@ -50,7 +58,8 @@ void Minion::Shoot (Vec2 target) {
             *bullet, MINION_BULLET_SPRITE,
             angle, MINION_BULLET_SPEED, distance,
             MINION_BULLET_DAMAGE,
-            MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME
+            MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME,
+            MINION_BULLET_TARGETS_PLAYER
         )
     );
     bullet->box.SetPosition(minionPosition);
@@ -59,6 +68,17 @@ void Minion::Shoot (Vec2 target) {
 
 Vec2 Minion::GetPosition () {
     return associated.box.GetCenter();
+}
+
+void Minion::NotifyCollision (GameObject& other) {
+    Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+    if ((bullet != nullptr) and bullet->IsTargetingEnemy()) {
+        hp -= bullet->GetDamage();
+    }
+}
+
+bool Minion::IsDead () {
+    return (hp <= 0);
 }
 
 bool Minion::Is (std::string type) {

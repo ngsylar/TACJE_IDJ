@@ -3,18 +3,24 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Sprite.h"
+#include "Collider.h"
 #include "Bullet.h"
 
 PenguinCannon::PenguinCannon (
     GameObject& associated, GameObject& penguinBody
 ): Component(associated) {
+    
     Sprite* sprite = new Sprite(associated, PENGUINC_SPRITE);
     associated.AddComponent(sprite);
+    Collider* collider = new Collider(associated);
+    associated.AddComponent(collider);
+    associated.label = "Player";
+
     pbody = Game::GetInstance().GetState().GetObjectPtr(&penguinBody);
     angle = 0;
 
     // sylar's extra positioning
-    pbodyRaw = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
+    pbodyCp = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
     arcPlacement = Vec2(PENGUINC_ARC_DISTANCE) * (PI*2);
 }
 
@@ -34,7 +40,7 @@ void PenguinCannon::Update (float dt) {
     // associated.box.SetPosition(pbodyPosition);
 
     // sylar's extra positioning
-    Vec2 pbodyPosition = pbodyRaw->GetPosition();
+    Vec2 pbodyPosition = pbodyCp->GetPosition();
     angle = pbodyPosition.AngleTo(target);
     Vec2 position = pbodyPosition + arcPlacement.Rotate(-angle);
     associated.angleDeg = Rad2Deg(angle);
@@ -64,6 +70,12 @@ void PenguinCannon::Shoot (Vec2 target) {
     );
     bullet->box.SetPosition(bulletPosition);
     Game::GetInstance().GetState().AddObject(bullet);
+}
+
+void PenguinCannon::NotifyCollision (GameObject& other) {
+    if (other.label == "Projectile") {
+        pbodyCp->NotifyCollision(other);
+    }
 }
 
 bool PenguinCannon::Is (std::string type) {

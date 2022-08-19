@@ -11,11 +11,12 @@
 # bib
 *.dll
 
+# docs
+docs/
+
 # spikes
 test_cmake/
 spike/
-Makefileold
-Makefilenew
 
 # outros
 *.zip

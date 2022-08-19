@@ -24,7 +24,7 @@ class PenguinCannon: public Component {
         float angle;
 
         // sylar's extra positioning
-        PenguinBody* pbodyRaw;
+        PenguinBody* pbodyCp;
         Vec2 arcPlacement;
     
     public:
@@ -32,6 +32,7 @@ class PenguinCannon: public Component {
         void Update(float dt);
         void Render();
         void Shoot(Vec2 target);
+        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 };
 

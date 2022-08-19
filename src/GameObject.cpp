@@ -5,6 +5,7 @@ GameObject::GameObject () {
     isDead = false;
     started = false;
     angleDeg = 0.0f;
+    label = "";
 }
 
 GameObject::~GameObject () {
@@ -60,4 +61,10 @@ Component* GameObject::GetComponent (std::string type) {
         }
     }
     return nullptr;
+}
+
+void GameObject::NotifyCollision (GameObject& other) {
+    for (int i=0; i < (int)components.size(); i++) {
+        components[i]->NotifyCollision(other);
+    }
 }

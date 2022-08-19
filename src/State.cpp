@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "CameraFollower.h"
 #include "Resources.h"
+#include "Collision.h"
+#include "Collider.h"
 #include "TileMap.h"
 #include "Sound.h"
 #include "Vec2.h"
@@ -71,8 +73,24 @@ void State::Update (float dt) {
         
         Camera::Update(dt);
     
-        for (unsigned i=0; i < objectArray.size(); i++) {
+        for (int i=0; i < (int)objectArray.size(); i++) {
             objectArray[i]->Update(dt);
+        }
+
+        for (int i=0; i < (int)objectArray.size()-1; i++) {
+            for (int j=i+1; j < (int)objectArray.size(); j++) {
+                Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
+                Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
+
+                if (not (colliderA and colliderB)) continue;
+                if (Collision::IsColliding(
+                    colliderA->box, colliderB->box,
+                    objectArray[i]->angleDeg, objectArray[j]->angleDeg
+                )) {
+                    objectArray[i]->NotifyCollision(*objectArray[j]);
+                    objectArray[j]->NotifyCollision(*objectArray[i]);
+                }
+            }
         }
 
         for (int i=(int)objectArray.size()-1; i >= 0; i--) {
@@ -84,7 +102,7 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
-    for (unsigned i=0; i < objectArray.size(); i++) {
+    for (int i=0; i < (int)objectArray.size(); i++) {
         objectArray[i]->Render();
     }
 }

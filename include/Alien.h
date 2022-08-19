@@ -47,6 +47,7 @@ class Alien: public Component {
         void Start();
         void Update(float dt);
         void Render();
+        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 };
 
