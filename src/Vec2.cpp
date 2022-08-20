@@ -47,7 +47,7 @@ Vec2 Vec2::Normalize () {
 }
 
 Vec2 Vec2::Rotate (float angle) {
-    return Vec2(x*cos(angle)-y*sin(angle), y*cos(angle)+x*sin(angle)); 
+    return Vec2(x*cos(angle)-y*sin(angle), x*sin(angle)+y*cos(angle)); 
 }
 
 Vec2 Vec2::operator+ (const Vec2& vec) {

@@ -79,7 +79,7 @@ void PenguinBody::Update (float dt) {
 
     // sylar's extra positioning
     if (deltaAngle != 0.0f) {
-        arcDisplacement = arcPlacement.Rotate(-deltaAngle);
+        arcDisplacement = arcPlacement.Rotate(deltaAngle);
         center = position + arcDisplacement;
         associated.box.SetPosition(center);
         deltaAngle = 0.0f;

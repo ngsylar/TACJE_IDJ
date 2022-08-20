@@ -13,14 +13,15 @@ class GameObject {
     private:
         std::vector<std::unique_ptr<Component>> components;
         bool isDead;
+        bool started;
     
     public:
         Rect box;
-        bool started;
         float angleDeg;
+        int layer;
         std::string label;
 
-        GameObject();
+        GameObject(int layer=0, std::string label="");
         ~GameObject();
         void Start();
         void Update(float dt);
@@ -31,6 +32,10 @@ class GameObject {
         void RemoveComponent(Component* cpt);
         Component* GetComponent(std::string type);
         void NotifyCollision(GameObject& other);
+        static bool CompareLayers(
+            std::shared_ptr<GameObject>& goA,
+            std::shared_ptr<GameObject>& goB
+        );
 };
 
 #endif

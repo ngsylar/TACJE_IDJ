@@ -2,11 +2,12 @@
 #include "Camera.h"
 
 TileMap::TileMap (
-    GameObject& associated, TileSet* tileSet,
-    std::string file
+    GameObject& associated, TileSet* tileSet, std::string file
 ): Component(associated) {
+
     this->tileSet = tileSet;
     Load(file);
+    associated.label = "TileMap";
 }
 
 TileMap::~TileMap () {
@@ -54,13 +55,13 @@ void TileMap::Render () {
 void TileMap::RenderLayer (int layer, int cameraX, int cameraY) {
     int tile;
 
-    for (int y=0; y<mapHeight; y++) {
-        for (int x=0; x<mapWidth; x++) {
+    for (int y=0; y < mapHeight; y++) {
+        for (int x=0; x < mapWidth; x++) {
             tile = At(x, y, layer);
             tileSet->RenderTile(
                 (unsigned)tile,
-                (float)(associated.box.x+x)*tileSet->GetTileWidth()-(0.2*layer+1)*cameraX,
-                (float)(associated.box.y+y)*tileSet->GetTileHeight()-(0.2*layer+1)*cameraY
+                (float)(associated.box.x+x)*tileSet->GetTileWidth()-(0.2f*layer+1)*cameraX,
+                (float)(associated.box.y+y)*tileSet->GetTileHeight()-(0.2f*layer+1)*cameraY
             );
         }
     }

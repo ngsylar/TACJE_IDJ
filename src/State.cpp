@@ -18,6 +18,7 @@ State::State () {
     bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     objectArray.emplace_back(bg);
+    scheduleLayerSort = false;
 
     music.Open(BG_MUSIC);
     music.Play(MUSIC_REPEAT_ON);
@@ -39,12 +40,19 @@ void State::Start () {
 }
 
 void State::LoadAssets () {
-    GameObject* gameMap = new GameObject();
-    TileSet* gameMapTset = new TileSet(*gameMap, GAMEMAP_TILESET, GAMEMAP_TILE_DIM);
-    TileMap* gameMapTmap = new TileMap(*gameMap, gameMapTset, GAMEMAP_TILEMAP);
-    gameMap->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILE_DIM);
-    gameMap->AddComponent(gameMapTmap);
-    objectArray.emplace_back(gameMap);
+    GameObject* gameMap0 = new GameObject();
+    TileSet* gameMapTset0 = new TileSet(*gameMap0, GAMEMAP_TILESET, GAMEMAP_TILESET_TILE_SIZE);
+    TileMap* gameMapTmap0 = new TileMap(*gameMap0, gameMapTset0, GAMEMAP_TILEMAP0);
+    gameMap0->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
+    gameMap0->AddComponent(gameMapTmap0);
+    objectArray.emplace_back(gameMap0);
+
+    GameObject* gameMap1 = new GameObject(1);
+    TileSet* gameMapTset1 = new TileSet(*gameMap1, GAMEMAP_TILESET, GAMEMAP_TILESET_TILE_SIZE);
+    TileMap* gameMapTmap1 = new TileMap(*gameMap1, gameMapTset1, GAMEMAP_TILEMAP1);
+    gameMap1->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
+    gameMap1->AddComponent(gameMapTmap1);
+    objectArray.emplace_back(gameMap1);
 
     GameObject* alien = new GameObject();
     alien->AddComponent(new Alien(*alien, ALIEN_MINIONS_AMOUNT));
@@ -62,6 +70,19 @@ void State::ClearResources () {
     Resources::ClearImages();
     Resources::ClearMusics();
     Resources::ClearSounds();
+}
+
+void State::UpdateLayerRange (int layer) {
+    if (layer < (int)layerRange.x)
+        layerRange.x = layer;
+    else if (layer > (int)layerRange.y)
+        layerRange.y = layer;
+    scheduleLayerSort = true;
+}
+
+void State::SortGameObjectsByLayer () {
+    std::sort(objectArray.begin(), objectArray.end(), GameObject::CompareLayers);
+    scheduleLayerSort = false;
 }
 
 void State::Update (float dt) {
@@ -85,7 +106,8 @@ void State::Update (float dt) {
                 if (not (colliderA and colliderB)) continue;
                 if (Collision::IsColliding(
                     colliderA->box, colliderB->box,
-                    objectArray[i]->angleDeg, objectArray[j]->angleDeg
+                    Deg2Rad(objectArray[i]->angleDeg),
+                    Deg2Rad(objectArray[j]->angleDeg)
                 )) {
                     objectArray[i]->NotifyCollision(*objectArray[j]);
                     objectArray[j]->NotifyCollision(*objectArray[i]);

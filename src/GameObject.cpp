@@ -1,11 +1,13 @@
 #include "GameObject.h"
+#include "Game.h"
 #include "Component.h"
 
-GameObject::GameObject () {
+GameObject::GameObject (int layer, std::string label) {
     isDead = false;
     started = false;
     angleDeg = 0.0f;
-    label = "";
+    this->layer = layer;
+    this->label = label;
 }
 
 GameObject::~GameObject () {
@@ -13,6 +15,8 @@ GameObject::~GameObject () {
 }
 
 void GameObject::Start () {
+    Game::GetInstance().GetState().UpdateLayerRange(layer);
+    
     for (int i=0; i < (int)components.size(); i++) {
         components[i]->Start();
     }
@@ -67,4 +71,11 @@ void GameObject::NotifyCollision (GameObject& other) {
     for (int i=0; i < (int)components.size(); i++) {
         components[i]->NotifyCollision(other);
     }
+}
+
+bool GameObject::CompareLayers (
+    std::shared_ptr<GameObject>& goA,
+    std::shared_ptr<GameObject>& goB
+) {
+    return (goA->layer < goB->layer);
 }
