@@ -12,10 +12,13 @@ class TileMap: public Component {
         int mapWidth, mapHeight, mapDepth;
     
     public:
+        float parallaxFactor;
+
         TileMap(
             GameObject& associated,
             TileSet* tileSet,
-            std::string file
+            std::string file,
+            float parallaxFactor=0.0f
         );
         ~TileMap();
         void Load(std::string fileName);
