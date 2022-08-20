@@ -52,7 +52,7 @@ void Minion::Shoot (Vec2 target) {
     float angle = minionPosition.AngleTo(target);
     float distance = minionPosition.DistanceTo(target);
 
-    GameObject* bullet = new GameObject();
+    GameObject* bullet = new GameObject(7);
     bullet->AddComponent(
         new Bullet(
             *bullet, MINION_BULLET_SPRITE,

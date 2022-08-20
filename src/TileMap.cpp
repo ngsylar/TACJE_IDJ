@@ -55,7 +55,7 @@ void TileMap::Render () {
 void TileMap::RenderLayer (int layer, int cameraX, int cameraY) {
     int tile;
 
-    for (int y=0; y < mapHeight; y++) {
+    for (int y=0; y < mapHeight; y++)
         for (int x=0; x < mapWidth; x++) {
             tile = At(x, y, layer);
             tileSet->RenderTile(
@@ -64,7 +64,6 @@ void TileMap::RenderLayer (int layer, int cameraX, int cameraY) {
                 (float)(associated.box.y+y)*tileSet->GetTileHeight()-(0.2f*layer+1)*cameraY
             );
         }
-    }
 }
 
 int TileMap::GetWidth () {

@@ -118,8 +118,6 @@ void Game::Run () {
         CalculateDeltaTime();
         inputManager.Update();
         state->Update(dt);
-        if (state->scheduleLayerSort)
-            state->SortGameObjectsByLayer();
         state->Render();
         SDL_RenderPresent(renderer);
         SDL_Delay(GAME_DELAY);

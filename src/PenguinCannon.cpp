@@ -54,7 +54,7 @@ void PenguinCannon::Update (float dt) {
 void PenguinCannon::Render () {}
 
 void PenguinCannon::Shoot (Vec2 target) {
-    GameObject* bullet = new GameObject();
+    GameObject* bullet = new GameObject(3);
     Vec2 cannonPosition = associated.box.GetCenter();
     Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
     Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(angle);

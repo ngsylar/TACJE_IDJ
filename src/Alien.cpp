@@ -33,7 +33,7 @@ void Alien::Start () {
     float minionArcPlacement;
 
     for (int i=0; i < nMinions; i++) {
-        minion = new GameObject();
+        minion = new GameObject(6);
         minionArcPlacement = (float)i*((PI*2)/nMinions);
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
         minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));

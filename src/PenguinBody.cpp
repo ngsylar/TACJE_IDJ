@@ -29,7 +29,7 @@ PenguinBody::~PenguinBody () {
 }
 
 void PenguinBody::Start () {
-    GameObject* pcannonObj = new GameObject();
+    GameObject* pcannonObj = new GameObject(4);
     pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
     pcannon = Game::GetInstance().GetState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);
