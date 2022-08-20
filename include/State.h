@@ -12,14 +12,19 @@
 #include "GameObject.h"
 #include "Music.h"
 
+#define BG_LABEL                    "Background"
 #define BG_SPRITE                   "assets/img/ocean.jpg"
 #define BG_MUSIC                    "assets/audio/stageState.ogg"
+#define BG_LAYER                    -1
 
+#define GAMEMAP_LABEL               "GameMap"
 #define GAMEMAP_TILESET             "assets/img/tileset.png"
 #define GAMEMAP_TILESET_TILE_SIZE   64, 64
 #define GAMEMAP_TILEMAP0            "assets/map/tileMap0.txt"
 #define GAMEMAP_TILEMAP1            "assets/map/tileMap1.txt"
 #define GAMEMAP_START_POSITION      0.0f, 0.0f
+#define GAMEMAP_TILEMAP0_LAYER      0
+#define GAMEMAP_TILEMAP1_LAYER      7
 
 #define FACE_SPRITE                 "assets/img/penguinface.png"
 #define FACE_SOUND                  "assets/audio/boom.wav"
@@ -30,6 +35,7 @@ class State {
         bool started;
         bool quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
+        // std::vector<std::weak_ptr<GameObject>> renderingArray;
         Vec2 layerRange;
         bool scheduleLayerSort;
 
@@ -45,7 +51,7 @@ class State {
         void ClearResources();
         void Update(float dt);
         void UpdateLayerRange(int layer);
-        void SortRenderByLayer();
+        void SortRenderList();
         void Render();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);

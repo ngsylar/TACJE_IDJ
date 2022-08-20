@@ -15,7 +15,6 @@ PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-    associated.label = "Player";
 
     player = this;
     hp = PENGUINB_START_HP;
@@ -29,7 +28,7 @@ PenguinBody::~PenguinBody () {
 }
 
 void PenguinBody::Start () {
-    GameObject* pcannonObj = new GameObject(4);
+    GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
     pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
     pcannon = Game::GetInstance().GetState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);

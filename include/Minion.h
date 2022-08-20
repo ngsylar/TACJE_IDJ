@@ -10,13 +10,16 @@
 #define MINION_SCALE_MAX                1.06f
 #define MINION_HP_MODIFIER              20
 #define MINION_ANGLEDEG_ADJUST          -90.0f
+#define MINION_LAYER                    5
 
+#define MINION_BULLET_LABEL             "Projectile"
 #define MINION_BULLET_SPRITE            "assets/img/minionbullet2.png"
 #define MINION_BULLET_FRAME_COUNT       3
 #define MINION_BULLET_FRAME_TIME        0.04f
 #define MINION_BULLET_SPEED             600.0f
 #define MINION_BULLET_DAMAGE            10
 #define MINION_BULLET_TARGETS_PLAYER    true
+#define MINION_BULLET_LAYER             6
 
 class Minion: public Component {
     private:

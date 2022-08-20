@@ -14,7 +14,6 @@ PenguinCannon::PenguinCannon (
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-    associated.label = "Player";
 
     pbody = Game::GetInstance().GetState().GetObjectPtr(&penguinBody);
     angle = 0;
@@ -54,7 +53,7 @@ void PenguinCannon::Update (float dt) {
 void PenguinCannon::Render () {}
 
 void PenguinCannon::Shoot (Vec2 target) {
-    GameObject* bullet = new GameObject(3);
+    GameObject* bullet = new GameObject(PENGUINC_BULLET_LAYER, PENGUINC_BULLET_LABEL);
     Vec2 cannonPosition = associated.box.GetCenter();
     Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
     Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(angle);
@@ -73,7 +72,7 @@ void PenguinCannon::Shoot (Vec2 target) {
 }
 
 void PenguinCannon::NotifyCollision (GameObject& other) {
-    if (other.label == "Projectile") {
+    if (other.label == PENGUINC_BULLET_LABEL) {
         pbodyCp->NotifyCollision(other);
     }
 }

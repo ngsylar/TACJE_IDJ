@@ -3,12 +3,14 @@
 
 #include "Component.h"
 
+#define PENGUINB_LABEL          "Player"
 #define PENGUINB_SPRITE         "assets/img/penguin.png"
 #define PENGUINB_START_POSITION 704, 640
 #define PENGUINB_START_HP       100
 #define PENGUINB_MAX_SPEED      600.0f
 #define PENGUINB_ACCELERATION   200.0f
 #define PENGUINB_ROTATION_SPEED 90.0f
+#define PENGUINB_LAYER          1
 
 // sylar's extra positioning
 #define PENGUINB_ARC_DISTANCE   1.0f, 0.0f

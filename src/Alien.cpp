@@ -14,7 +14,6 @@ Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
-    associated.label = "Enemy";
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
 }
@@ -33,7 +32,7 @@ void Alien::Start () {
     float minionArcPlacement;
 
     for (int i=0; i < nMinions; i++) {
-        minion = new GameObject(6);
+        minion = new GameObject(MINION_LAYER, ALIEN_LABEL);
         minionArcPlacement = (float)i*((PI*2)/nMinions);
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
         minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));

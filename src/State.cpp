@@ -12,7 +12,7 @@
 #include "PenguinBody.h"
 
 State::State () {
-    GameObject* bg = new GameObject(0);
+    GameObject* bg = new GameObject(BG_LAYER, BG_LABEL);
     CameraFollower* bgCamera = new CameraFollower(*bg);
     Sprite* bgSprite = new Sprite(*bg, BG_SPRITE);
     bg->AddComponent(bgCamera);
@@ -40,26 +40,26 @@ void State::Start () {
 
 // nota: modificar TileSet para ser usado por mais de um GameObject
 void State::LoadAssets () {
-    GameObject* gameMap0 = new GameObject(1);
+    GameObject* gameMap0 = new GameObject(GAMEMAP_TILEMAP0_LAYER, GAMEMAP_LABEL);
     TileSet* gameMapTset0 = new TileSet(*gameMap0, GAMEMAP_TILESET, GAMEMAP_TILESET_TILE_SIZE);
     TileMap* gameMapTmap0 = new TileMap(*gameMap0, gameMapTset0, GAMEMAP_TILEMAP0);
     gameMap0->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
     gameMap0->AddComponent(gameMapTmap0);
     AddObject(gameMap0);
 
-    GameObject* gameMap1 = new GameObject(8);
+    GameObject* gameMap1 = new GameObject(GAMEMAP_TILEMAP1_LAYER, GAMEMAP_LABEL);
     TileSet* gameMapTset1 = new TileSet(*gameMap1, GAMEMAP_TILESET, GAMEMAP_TILESET_TILE_SIZE);
     TileMap* gameMapTmap1 = new TileMap(*gameMap1, gameMapTset1, GAMEMAP_TILEMAP1, 0.2f);
     gameMap1->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
     gameMap1->AddComponent(gameMapTmap1);
     AddObject(gameMap1);
 
-    GameObject* alien = new GameObject(5);
+    GameObject* alien = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
     alien->AddComponent(new Alien(*alien, ALIEN_MINIONS_AMOUNT));
     alien->box.SetPosition(ALIEN_START_POSITION);
     AddObject(alien);
 
-    GameObject* penguin = new GameObject(2);
+    GameObject* penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));
     penguin->box.SetPosition(PENGUINB_START_POSITION);
     AddObject(penguin);
@@ -77,34 +77,34 @@ void State::Update (float dt) {
 
     if (input.QuitRequested() or input.IsKeyDown(KEY_ESCAPE)) {
         quitRequested = true;
+        return;
     }
-    else {
-        Camera::Update(dt);
     
-        for (int i=0; i < (int)objectArray.size(); i++) {
-            objectArray[i]->Update(dt);
-        }
+    Camera::Update(dt);
+    for (int i=0; i < (int)objectArray.size(); i++) {
+        objectArray[i]->Update(dt);
+    }
 
-        for (int i=0; i < (int)objectArray.size()-1; i++)
-            for (int j=i+1; j < (int)objectArray.size(); j++) {
-                Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
-                Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
-
-                if (not (colliderA and colliderB)) continue;
-                if (Collision::IsColliding(
-                    colliderA->box, colliderB->box,
-                    Deg2Rad(objectArray[i]->angleDeg),
-                    Deg2Rad(objectArray[j]->angleDeg)
-                )) {
-                    objectArray[i]->NotifyCollision(*objectArray[j]);
-                    objectArray[j]->NotifyCollision(*objectArray[i]);
-                }
+    for (int i=0; i < (int)objectArray.size()-1; i++)
+        for (int j=i+1; j < (int)objectArray.size(); j++) {
+            Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
+            Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
+            if (not (colliderA and colliderB))
+                continue;
+            
+            if (Collision::IsColliding(
+                colliderA->box, colliderB->box,
+                Deg2Rad(objectArray[i]->angleDeg),
+                Deg2Rad(objectArray[j]->angleDeg)
+            )) {
+                objectArray[i]->NotifyCollision(*objectArray[j]);
+                objectArray[j]->NotifyCollision(*objectArray[i]);
             }
-
-        for (int i=(int)objectArray.size()-1; i >= 0; i--) {
-            if (objectArray[i]->IsDead())
-                objectArray.erase(objectArray.begin()+i);
         }
+
+    for (int i=(int)objectArray.size()-1; i >= 0; i--) {
+        if (objectArray[i]->IsDead())
+            objectArray.erase(objectArray.begin()+i);
     }
 }
 
@@ -116,15 +116,14 @@ void State::UpdateLayerRange (int layer) {
     scheduleLayerSort = true;
 }
 
-void State::SortRenderByLayer () {
+void State::SortRenderList () {
     std::sort(objectArray.begin(), objectArray.end(), GameObject::CompareLayers);
     scheduleLayerSort = false;
 }
 
 void State::Render () {
     if (scheduleLayerSort)
-        SortRenderByLayer();
-    
+        SortRenderList();
     for (int i=0; i < (int)objectArray.size(); i++)
         objectArray[i]->Render();
 }

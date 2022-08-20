@@ -12,14 +12,14 @@ class Component;
 class GameObject {
     private:
         std::vector<std::unique_ptr<Component>> components;
-        bool isDead;
-        bool started;
+        bool started, isDead;
+        // int renderId;
     
     public:
+        std::string label;
         Rect box;
         float angleDeg;
         int layer;
-        std::string label;
 
         GameObject(int layer=0, std::string label="");
         ~GameObject();
@@ -28,6 +28,8 @@ class GameObject {
         void Render();
         bool IsDead();
         void RequestDelete();
+        // void SetRenderIndex(int index);
+        // int GetRenderIndex();
         void AddComponent(Component* cpt);
         void RemoveComponent(Component* cpt);
         Component* GetComponent(std::string type);

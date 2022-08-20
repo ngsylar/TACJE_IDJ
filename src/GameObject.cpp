@@ -1,13 +1,14 @@
 #include "GameObject.h"
-#include "Game.h"
 #include "Component.h"
 
 GameObject::GameObject (int layer, std::string label) {
     isDead = false;
     started = false;
     angleDeg = 0.0f;
-    this->layer = layer;
+
     this->label = label;
+    this->layer = layer;
+    // renderId = 0;
 }
 
 GameObject::~GameObject () {
@@ -39,6 +40,14 @@ bool GameObject::IsDead () {
 void GameObject::RequestDelete () {
     isDead = true;
 }
+
+// void GameObject::SetRenderIndex (int index) {
+//     renderId = index;
+// }
+
+// int GameObject::GetRenderIndex () {
+//     return renderId;
+// }
 
 void GameObject::AddComponent (Component* cpt) {
     components.emplace_back(cpt);

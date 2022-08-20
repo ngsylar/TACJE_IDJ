@@ -18,7 +18,6 @@ Minion::Minion (
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-    associated.label = "Enemy";
 
     this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
     arc = arcOffsetDeg;
@@ -52,7 +51,7 @@ void Minion::Shoot (Vec2 target) {
     float angle = minionPosition.AngleTo(target);
     float distance = minionPosition.DistanceTo(target);
 
-    GameObject* bullet = new GameObject(7);
+    GameObject* bullet = new GameObject(MINION_BULLET_LAYER, MINION_BULLET_LABEL);
     bullet->AddComponent(
         new Bullet(
             *bullet, MINION_BULLET_SPRITE,

@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "Sprite.h"             // sylar's extra positioning
 
+#define ALIEN_LABEL             "Enemy"
 #define ALIEN_SPRITE            "assets/img/alien.png"
 #define ALIEN_START_POSITION    512, 300
 #define ALIEN_START_HP          100
@@ -14,6 +15,7 @@
 #define ALIEN_PASSING_DISTANCE  10.0f
 #define ALIEN_ROTATION_SPEED    20.0f
 #define ALIEN_MINIONS_AMOUNT    6
+#define ALIEN_LAYER             4
 
 class Alien: public Component {
     private:

@@ -18,7 +18,6 @@ Bullet::Bullet (
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-    associated.label = "Projectile";
 
     speed = Vec2().DirectionFrom(angle) * linearSpeed;
     this->distanceLeft = maxDistance;
