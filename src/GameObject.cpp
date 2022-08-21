@@ -10,6 +10,7 @@ GameObject::GameObject (int layer, std::string label) {
     this->layer = layer;
 }
 
+// sylar's extra layer rendering
 GameObject::StatePassKey::StatePassKey () {
     index = -1;
 }
@@ -72,22 +73,27 @@ void GameObject::NotifyCollision (GameObject& other) {
     }
 }
 
+// sylar's extra layer rendering
 void GameObject::StatePassKey::Set (int index) {
     this->index = index;
 }
 
+// sylar's extra layer rendering
 int GameObject::StatePassKey::Get () {
     return index;
 }
 
+// sylar's extra layer rendering
 void GameObject::StatePassKey::Decrease () {
     index--;
 }
 
+// sylar's extra layer rendering
 bool GameObject::StatePassKey::Exists () {
     return (index > -1);
 }
 
+// sylar's extra layer rendering
 bool GameObject::CompareLayers (
     std::weak_ptr<GameObject>& goA,
     std::weak_ptr<GameObject>& goB

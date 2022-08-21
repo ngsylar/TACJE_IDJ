@@ -38,7 +38,7 @@ void State::Start () {
     started = true;
 }
 
-// nota: modificar TileSet para ser usado por mais de um GameObject
+// editar: modificar TileSet para ser usado por mais de um GameObject
 void State::LoadAssets () {
     GameObject* gameMap0 = new GameObject(GAMEMAP_TILEMAP0_LAYER, GAMEMAP_LABEL);
     TileSet* gameMapTset0 = new TileSet(*gameMap0, GAMEMAP_TILESET, GAMEMAP_TILESET_TILE_SIZE);
@@ -102,6 +102,12 @@ void State::Update (float dt) {
             }
         }
 
+    // // idj's original object deletion
+    // for (int i=(int)objectArray.size()-1; i >= 0; i--) {
+    //     objectArray.erase(objectArray.begin()+i);
+    // }
+    
+    // sylar's extra layer rendering
     for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
         if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
             RemoveObject(renderingArray[i].lock()->index.Get(), i);
@@ -109,10 +115,17 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
+    // // idj's original object rendering
+    // for (int i=0; i < (int)objectArray.size(); i++) {
+    //     objectArray[i]->Render();
+    // }
+
+    // sylar's extra layer rendering
     if (scheduleLayerSort) {
         std::sort(renderingArray.begin(), renderingArray.end(), GameObject::CompareLayers);
         scheduleLayerSort = false;
     }
+    // sylar's extra layer rendering
     for (int i=0; i < (int)renderingArray.size(); i++) {
         renderingArray[i].lock()->Render();
     }
@@ -127,22 +140,15 @@ std::weak_ptr<GameObject> State::AddObject (GameObject* go) {
     std::weak_ptr<GameObject> wptrGo(sptrGo);
 
     objectArray.push_back(sptrGo);
-    go->index.Set(objectArray.size()-1);
+    go->index.Set(objectArray.size()-1);    // sylar's extra layer rendering
     if (started)
         go->Start();
 
+    // sylar's extra layer rendering
     renderingArray.push_back(wptrGo);
     scheduleLayerSort = true;
     
     return wptrGo;
-}
-
-void State::RemoveObject (int objectId, int renderingId) {
-    renderingArray.erase(renderingArray.begin()+renderingId);
-    objectArray.erase(objectArray.begin()+objectId);
-
-    for (int i=objectId; i < (int)objectArray.size(); i++)
-        objectArray[i]->index.Decrease();
 }
 
 std::weak_ptr<GameObject> State::GetObjectPtr (GameObject* go) {
@@ -153,4 +159,13 @@ std::weak_ptr<GameObject> State::GetObjectPtr (GameObject* go) {
             wptrGo = objectArray[i];
     }
     return wptrGo;
+}
+
+// sylar's extra layer rendering
+void State::RemoveObject (int objectId, int renderingId) {
+    renderingArray.erase(renderingArray.begin()+renderingId);
+    objectArray.erase(objectArray.begin()+objectId);
+
+    for (int i=objectId; i < (int)objectArray.size(); i++)
+        objectArray[i]->index.Decrease();
 }

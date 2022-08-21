@@ -45,8 +45,10 @@ void PenguinCannon::Update (float dt) {
     associated.angleDeg = Rad2Deg(angle);
     associated.box.SetPosition(position);
 
-    if (input.MousePress(MOUSE_BUTTON_LEFT)) {
+    shotCooldownTimer.Update(dt);
+    if (shotCooldownTimer.IsReady(PENGUINC_SHOT_COOLDOWN) and input.MousePress(MOUSE_BUTTON_LEFT)) {
         Shoot(target);
+        shotCooldownTimer.Restart();
     }
 }
 

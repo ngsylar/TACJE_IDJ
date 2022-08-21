@@ -2,11 +2,13 @@
 #define PENGUIN_CANNON_H
 
 #include "Component.h"
+#include "Timer.h"
 
 // sylar's extra positioning
 #include "PenguinBody.h"
 
 #define PENGUINC_SPRITE                 "assets/img/cubngun.png"
+#define PENGUINC_SHOT_COOLDOWN          0.5f
 #define PENGUINC_LAYER                  3
 
 #define PENGUINC_BULLET_LABEL           "Projectile"
@@ -25,6 +27,7 @@ class PenguinCannon: public Component {
     private:
         std::weak_ptr<GameObject> pbody;
         float angle;
+        Timer shotCooldownTimer;
 
         // sylar's extra positioning
         PenguinBody* pbodyCp;
