@@ -10,6 +10,10 @@ GameObject::GameObject (int layer, std::string label) {
     this->layer = layer;
 }
 
+GameObject::StatePassKey::StatePassKey () {
+    index = -1;
+}
+
 GameObject::~GameObject () {
     components.clear();
 }
@@ -66,6 +70,22 @@ void GameObject::NotifyCollision (GameObject& other) {
     for (int i=0; i < (int)components.size(); i++) {
         components[i]->NotifyCollision(other);
     }
+}
+
+void GameObject::StatePassKey::Set (int index) {
+    this->index = index;
+}
+
+int GameObject::StatePassKey::Get () {
+    return index;
+}
+
+void GameObject::StatePassKey::Decrease () {
+    index--;
+}
+
+bool GameObject::StatePassKey::Exists () {
+    return (index > -1);
 }
 
 bool GameObject::CompareLayers (

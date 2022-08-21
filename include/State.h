@@ -35,6 +35,8 @@ class State {
         bool started;
         bool quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
+
+        // sylar's extra layer rendering
         std::vector<std::weak_ptr<GameObject>> renderingArray;
         bool scheduleLayerSort;
 
@@ -52,6 +54,7 @@ class State {
         void Render();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+        void RemoveObject(int objectId, int renderingId);
 };
 
 #endif

@@ -103,12 +103,8 @@ void State::Update (float dt) {
         }
 
     for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
-        if (renderingArray[i].lock()->IsDead())
-            renderingArray.erase(renderingArray.begin()+i);
-    }
-    for (int i=(int)objectArray.size()-1; i >= 0; i--) {
-        if (objectArray[i]->IsDead())
-            objectArray.erase(objectArray.begin()+i);
+        if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
+            RemoveObject(renderingArray[i].lock()->index.Get(), i);
     }
 }
 
@@ -131,6 +127,7 @@ std::weak_ptr<GameObject> State::AddObject (GameObject* go) {
     std::weak_ptr<GameObject> wptrGo(sptrGo);
 
     objectArray.push_back(sptrGo);
+    go->index.Set(objectArray.size()-1);
     if (started)
         go->Start();
 
@@ -138,6 +135,14 @@ std::weak_ptr<GameObject> State::AddObject (GameObject* go) {
     scheduleLayerSort = true;
     
     return wptrGo;
+}
+
+void State::RemoveObject (int objectId, int renderingId) {
+    renderingArray.erase(renderingArray.begin()+renderingId);
+    objectArray.erase(objectArray.begin()+objectId);
+
+    for (int i=objectId; i < (int)objectArray.size(); i++)
+        objectArray[i]->index.Decrease();
 }
 
 std::weak_ptr<GameObject> State::GetObjectPtr (GameObject* go) {
