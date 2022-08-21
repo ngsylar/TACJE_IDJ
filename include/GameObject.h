@@ -13,7 +13,6 @@ class GameObject {
     private:
         std::vector<std::unique_ptr<Component>> components;
         bool started, isDead;
-        // int renderId;
     
     public:
         std::string label;
@@ -26,17 +25,18 @@ class GameObject {
         void Start();
         void Update(float dt);
         void Render();
+        bool HasRenderIndex();
+        void SetRenderIndex(int index);
+        int GetRenderIndex();
         bool IsDead();
         void RequestDelete();
-        // void SetRenderIndex(int index);
-        // int GetRenderIndex();
         void AddComponent(Component* cpt);
         void RemoveComponent(Component* cpt);
         Component* GetComponent(std::string type);
         void NotifyCollision(GameObject& other);
         static bool CompareLayers(
-            std::shared_ptr<GameObject>& goA,
-            std::shared_ptr<GameObject>& goB
+            std::weak_ptr<GameObject>& goA,
+            std::weak_ptr<GameObject>& goB
         );
 };
 

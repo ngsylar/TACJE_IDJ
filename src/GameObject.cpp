@@ -8,7 +8,6 @@ GameObject::GameObject (int layer, std::string label) {
 
     this->label = label;
     this->layer = layer;
-    // renderId = 0;
 }
 
 GameObject::~GameObject () {
@@ -41,14 +40,6 @@ void GameObject::RequestDelete () {
     isDead = true;
 }
 
-// void GameObject::SetRenderIndex (int index) {
-//     renderId = index;
-// }
-
-// int GameObject::GetRenderIndex () {
-//     return renderId;
-// }
-
 void GameObject::AddComponent (Component* cpt) {
     components.emplace_back(cpt);
     if (started) {
@@ -78,8 +69,8 @@ void GameObject::NotifyCollision (GameObject& other) {
 }
 
 bool GameObject::CompareLayers (
-    std::shared_ptr<GameObject>& goA,
-    std::shared_ptr<GameObject>& goB
+    std::weak_ptr<GameObject>& goA,
+    std::weak_ptr<GameObject>& goB
 ) {
-    return (goA->layer < goB->layer);
+    return (goA.lock()->layer < goB.lock()->layer);
 }

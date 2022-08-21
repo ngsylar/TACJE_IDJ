@@ -35,8 +35,7 @@ class State {
         bool started;
         bool quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
-        // std::vector<std::weak_ptr<GameObject>> renderingArray;
-        Vec2 layerRange;
+        std::vector<std::weak_ptr<GameObject>> renderingArray;
         bool scheduleLayerSort;
 
         void Input();
@@ -50,8 +49,6 @@ class State {
         void LoadAssets();
         void ClearResources();
         void Update(float dt);
-        void UpdateLayerRange(int layer);
-        void SortRenderList();
         void Render();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);

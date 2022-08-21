@@ -102,30 +102,24 @@ void State::Update (float dt) {
             }
         }
 
+    for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
+        if (renderingArray[i].lock()->IsDead())
+            renderingArray.erase(renderingArray.begin()+i);
+    }
     for (int i=(int)objectArray.size()-1; i >= 0; i--) {
         if (objectArray[i]->IsDead())
             objectArray.erase(objectArray.begin()+i);
     }
 }
 
-void State::UpdateLayerRange (int layer) {
-    if (layer < (int)layerRange.x)
-        layerRange.x = layer;
-    else if (layer > (int)layerRange.y)
-        layerRange.y = layer;
-    scheduleLayerSort = true;
-}
-
-void State::SortRenderList () {
-    std::sort(objectArray.begin(), objectArray.end(), GameObject::CompareLayers);
-    scheduleLayerSort = false;
-}
-
 void State::Render () {
-    if (scheduleLayerSort)
-        SortRenderList();
-    for (int i=0; i < (int)objectArray.size(); i++)
-        objectArray[i]->Render();
+    if (scheduleLayerSort) {
+        std::sort(renderingArray.begin(), renderingArray.end(), GameObject::CompareLayers);
+        scheduleLayerSort = false;
+    }
+    for (int i=0; i < (int)renderingArray.size(); i++) {
+        renderingArray[i].lock()->Render();
+    }
 }
 
 bool State::QuitRequested () {
@@ -137,10 +131,12 @@ std::weak_ptr<GameObject> State::AddObject (GameObject* go) {
     std::weak_ptr<GameObject> wptrGo(sptrGo);
 
     objectArray.push_back(sptrGo);
-    if (started) {
+    if (started)
         go->Start();
-    }
-    UpdateLayerRange(go->layer);
+
+    renderingArray.push_back(wptrGo);
+    scheduleLayerSort = true;
+    
     return wptrGo;
 }
 
