@@ -25,9 +25,6 @@ class GameObject {
         void Start();
         void Update(float dt);
         void Render();
-        bool HasRenderIndex();
-        void SetRenderIndex(int index);
-        int GetRenderIndex();
         bool IsDead();
         void RequestDelete();
         void AddComponent(Component* cpt);
