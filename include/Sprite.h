@@ -5,6 +5,7 @@
 #include "SDL_include.h"
 
 #include "Component.h"
+#include "Timer.h"
 
 #define SPRITE_ERROR            -1
 #define SPRITE_CLIP_START_POINT 0, 0
@@ -16,17 +17,28 @@ class Sprite: public Component {
         SDL_Rect clipRect;
         int width, height;
         Vec2 scale;
+        Timer frameTimer;
         int frameWidth, frameCount, currentFrame;
-        float frameTime, timeElapsed;
+        bool frameOneshot;
+        Timer selfDestructionTimer;
 
     public:
         Sprite(GameObject& associated);
         Sprite(
-            GameObject& associated, std::string file,
-            int frameCount=1, float frameTime=1.0f
+            GameObject& associated,
+            std::string file,
+            int frameCount=1,
+            float frameTime=0.0f,
+            bool frameOneshot=false,
+            float secondsToSelfDestruct=0.0f
         );
         ~Sprite();
-        void Open(std::string file);
+        void Open(
+            std::string file,
+            int frameCount=1,
+            float frameTime=0.0f,
+            bool frameOneshot=false
+        );
         void SetClip(int x, int y, int w, int h);
         void Render();
         void Render(int startX, int startY);

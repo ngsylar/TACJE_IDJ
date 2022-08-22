@@ -16,6 +16,7 @@
 #define MINION_BULLET_SPRITE            "assets/img/minionbullet2.png"
 #define MINION_BULLET_FRAME_COUNT       3
 #define MINION_BULLET_FRAME_TIME        0.04f
+#define MINION_BULLET_FRAME_ONESHOT     false
 #define MINION_BULLET_SPEED             600.0f
 #define MINION_BULLET_DAMAGE            10
 #define MINION_BULLET_TARGETS_PLAYER    true

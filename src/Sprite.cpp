@@ -9,20 +9,19 @@ Sprite::Sprite (GameObject& associated): Component(associated) {
 
 Sprite::Sprite (
     GameObject& associated, std::string file,
-    int frameCount, float frameTime
+    int frameCount, float frameTime, bool frameOneshot,
+    float secondsToSelfDestruct
 ): Sprite(associated) {
-    
-    this->frameCount = frameCount;
-    this->frameTime = frameTime;
-    currentFrame = 0;
-    timeElapsed = 0.0f;
-    Open(file);
+    Open(file, frameCount, frameTime, frameOneshot);
+    selfDestructionTimer = Timer(secondsToSelfDestruct);
 }
 
 Sprite::~Sprite () {}
 
-void Sprite::Open (std::string file) {
-
+void Sprite::Open (
+    std::string file,
+    int frameCount, float frameTime, bool oneshot
+) {
     texture = Resources::GetImage(file);
     scale = Vec2(SPRITE_DEFAULT_SCALE);
 
@@ -35,9 +34,13 @@ void Sprite::Open (std::string file) {
         exit(1);
     }
     
+    this->frameCount = frameCount;
+    frameTimer = Timer(frameTime);
+    frameOneshot = oneshot;
+    currentFrame = 0;
+
     frameWidth = width / frameCount;
     SetClip(SPRITE_CLIP_START_POINT, frameWidth, height);
-    
     associated.box.SetSize((float)frameWidth, (float)height);
 }
 
@@ -102,7 +105,7 @@ void Sprite::SetFrame (int frame) {
 }
 
 void Sprite::SetFrameTime (float frameTime) {
-    this->frameTime = frameTime;
+    frameTimer = Timer(frameTime, frameTimer.Get());
 }
 
 void Sprite::SetFrameCount (int frameCount) {
@@ -117,10 +120,16 @@ void Sprite::SetFrameCount (int frameCount) {
 }
 
 void Sprite::Update (float dt) {
-    timeElapsed += dt;
-    if (timeElapsed > frameTime) {
+    if (selfDestructionTimer.HasResetAndIsOver(dt)) {
+        associated.RequestDelete();
+        return;
+    }
+    if (frameTimer.HasResetAndIsOver(dt)) {
         SetFrame(currentFrame+1);
-        timeElapsed = 0;
+        frameTimer.Reset();
+        
+        if (frameOneshot)
+            frameTimer.SetResetTime(0.0f);
     }
 }
 

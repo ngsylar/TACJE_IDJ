@@ -6,12 +6,12 @@ Bullet::Bullet (
     GameObject& associated, std::string spriteName,
     float angle, float linearSpeed, float maxDistance,
     int damage,
-    int spriteFrameCount, float spriteFrameTime,
+    int frameCount, float frameTime, bool framesOneshot,
     bool targetsPlayer
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(
-        associated, spriteName, spriteFrameCount, spriteFrameTime
+        associated, spriteName, frameCount, frameTime, framesOneshot
     );
     associated.AddComponent(sprite);
     associated.angleDeg = Rad2Deg(angle);

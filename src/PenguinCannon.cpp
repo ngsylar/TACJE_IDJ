@@ -21,6 +21,8 @@ PenguinCannon::PenguinCannon (
     // sylar's extra positioning
     pbodyCp = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
     arcPlacement = Vec2(PENGUINC_ARC_DISTANCE) * (PI*2);
+
+    cooldown = Timer(PENGUINC_SHOT_COOLDOWN, PENGUINC_SHOT_COOLDOWN);
 }
 
 void PenguinCannon::Update (float dt) {
@@ -45,10 +47,9 @@ void PenguinCannon::Update (float dt) {
     associated.angleDeg = Rad2Deg(angle);
     associated.box.SetPosition(position);
 
-    shotCooldownTimer.Update(dt);
-    if (shotCooldownTimer.IsReady(PENGUINC_SHOT_COOLDOWN) and input.MousePress(MOUSE_BUTTON_LEFT)) {
+    if (cooldown.IsOver(dt) and input.MousePress(MOUSE_BUTTON_LEFT)) {
         Shoot(target);
-        shotCooldownTimer.Restart();
+        cooldown.Reset();
     }
 }
 
@@ -66,7 +67,7 @@ void PenguinCannon::Shoot (Vec2 target) {
             *bullet, PENGUINC_BULLET_SPRITE,
             angle, PENGUINC_BULLET_SPEED, targetDistance,
             PENGUINC_BULLET_DAMAGE,
-            PENGUINC_BULLET_FRAME_COUNT, PENGUINC_BULLET_FRAME_TIME
+            PENGUINC_BULLET_FRAME_COUNT, PENGUINC_BULLET_FRAME_TIME, PENGUINC_BULLET_FRAME_ONESHOT
         )
     );
     bullet->box.SetPosition(bulletPosition);

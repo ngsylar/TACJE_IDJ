@@ -12,10 +12,15 @@ class Bullet: public Component {
 
     public:
         Bullet(
-            GameObject& associated, std::string spriteName,
-            float angle, float linearSpeed, float maxDistance,
+            GameObject& associated,
+            std::string spriteName,
+            float angle,
+            float linearSpeed,
+            float maxDistance,
             int damage,
-            int spriteFrameCount=1, float spriteFrameTime=1.0f,
+            int spriteFrameCount=1,
+            float spriteFrameTime=0.0f,
+            bool spriteFramesOneshot=false,
             bool targetsPlayer=false
         );
         void Update(float dt);
