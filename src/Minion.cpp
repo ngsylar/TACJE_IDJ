@@ -59,7 +59,8 @@ void Minion::Shoot (Vec2 target) {
             angle, MINION_BULLET_SPEED, distance,
             MINION_BULLET_DAMAGE,
             MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME, MINION_BULLET_FRAME_ONESHOT,
-            MINION_BULLET_TARGETS
+            MINION_BULLET_TARGETS,
+            MINION_BULLET_SOUND_SHOT, MINION_BULLET_SOUND_HIT
         )
     );
     bullet->box.SetPosition(minionPosition);

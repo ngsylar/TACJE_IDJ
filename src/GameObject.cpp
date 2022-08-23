@@ -46,6 +46,9 @@ void GameObject::RequestDelete () {
 }
 
 void GameObject::AddComponent (Component* cpt) {
+    if (cpt == nullptr)
+        return;
+
     components.emplace_back(cpt);
     if (started) {
         cpt->Start();
@@ -53,6 +56,9 @@ void GameObject::AddComponent (Component* cpt) {
 }
 
 void GameObject::RemoveComponent (Component* cpt) {
+    if (cpt == nullptr)
+        return;
+
     for (int i=((int)components.size())-1; i >= 0; i--) {
         if (components[i].get() == cpt)
             components.erase(components.begin()+i);

@@ -14,6 +14,8 @@ PenguinCannon::PenguinCannon (
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
+
+    // sylar's extra sfx
     shotSound = new Sound(associated, PENGUINC_SHOT_SOUND);
     associated.AddComponent(shotSound);
 
@@ -71,12 +73,13 @@ void PenguinCannon::Shoot (Vec2 target) {
             PENGUINC_BULLET_DAMAGE,
             PENGUINC_BULLET_FRAME_COUNT, PENGUINC_BULLET_FRAME_TIME, PENGUINC_BULLET_FRAME_ONESHOT,
             PENGUINC_BULLET_TARGETS,
-            PENGUINC_BULLET_HIT_SOUND
+            PENGUINC_BULLET_SOUND_SHOT, PENGUINC_BULLET_SOUND_HIT
         )
     );
     bullet->box.SetPosition(bulletPosition);
     Game::GetInstance().GetState().AddObject(bullet);
 
+    // sylar's extra sfx
     shotSound->Play();
 }
 

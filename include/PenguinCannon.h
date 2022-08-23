@@ -13,7 +13,8 @@
 #define PENGUINC_LAYER                  3
 
 #define PENGUINC_BULLET_LABEL           "Projectile"
-#define PENGUINC_BULLET_HIT_SOUND       "assets/audio/snowball.wav"
+#define PENGUINC_BULLET_SOUND_SHOT      ""
+#define PENGUINC_BULLET_SOUND_HIT       "assets/audio/snowball.wav"
 #define PENGUINC_BULLET_SPRITE          "assets/img/penguinbullet.png"
 #define PENGUINC_BULLET_FRAME_COUNT     4
 #define PENGUINC_BULLET_FRAME_TIME      0.04f

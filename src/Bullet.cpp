@@ -1,7 +1,6 @@
 #include "Bullet.h"
 #include "Collider.h"
 #include "Sprite.h"
-#include "Sound.h"
 
 Bullet::Bullet (
     GameObject& associated, std::string spriteName,
@@ -9,7 +8,7 @@ Bullet::Bullet (
     int damage,
     int frameCount, float frameTime, bool framesOneshot,
     std::vector<std::string> targetLabels,
-    std::string hitSoundFilename
+    std::string shotSoundFilename, std::string hitSoundFilename
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(
@@ -21,6 +20,14 @@ Bullet::Bullet (
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
+    // sylar's extra sfx
+    if (shotSoundFilename.empty()) {
+        shotSound = nullptr;
+    } else {
+        shotSound = new Sound(associated, shotSoundFilename);
+        associated.AddComponent(shotSound);
+    }
+
     speed = Vec2().DirectionFrom(angle) * linearSpeed;
     this->distanceLeft = maxDistance;
 
@@ -28,6 +35,12 @@ Bullet::Bullet (
     this->damage = damage;
 
     this->hitSoundFilename = hitSoundFilename;
+}
+
+void Bullet::Start () {
+    // sylar's extra sfx
+    if (shotSound)
+        shotSound->Play();
 }
 
 void Bullet::Update (float dt) {

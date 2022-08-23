@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "Component.h"
+#include "Sound.h"
 
 #define BULLET_HIT_SOUND_TIMES      1
 #define BULLET_HIT_SELFDESTRUCTION  true
@@ -14,6 +15,7 @@ class Bullet: public Component {
         std::vector<std::string> targets;
 
         // sylar's extra sfx
+        Sound* shotSound;
         std::string hitSoundFilename;
 
     public:
@@ -28,8 +30,10 @@ class Bullet: public Component {
             float spriteFrameTime=0.0f,
             bool spriteFramesOneshot=false,
             std::vector<std::string> targetLabels={},
+            std::string shotSoundFilename="",
             std::string hitSoundFilename=""
         );
+        void Start();
         void Update(float dt);
         void Render();
         bool IsAimingAt(std::string targetLabel);
