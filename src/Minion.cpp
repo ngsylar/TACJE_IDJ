@@ -1,8 +1,8 @@
 #include "Minion.h"
 #include "Game.h"
+#include "Collider.h"
 #include "Sprite.h"
 #include "Sound.h"
-#include "Collider.h"
 #include "Bullet.h"
 
 Minion::Minion (
@@ -59,7 +59,7 @@ void Minion::Shoot (Vec2 target) {
             angle, MINION_BULLET_SPEED, distance,
             MINION_BULLET_DAMAGE,
             MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME, MINION_BULLET_FRAME_ONESHOT,
-            MINION_BULLET_TARGETS_PLAYER
+            MINION_BULLET_TARGETS
         )
     );
     bullet->box.SetPosition(minionPosition);
@@ -93,7 +93,7 @@ Vec2 Minion::GetPosition () {
 
 void Minion::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
-    if ((bullet != nullptr) and bullet->IsTargetingEnemy()) {
+    if ((bullet != nullptr) and bullet->IsAimingAt(MINION_LABEL)) {
         hp -= bullet->GetDamage();
     }
 }

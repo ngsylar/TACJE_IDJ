@@ -1,8 +1,8 @@
 #include "Alien.h"
 #include "Game.h"
 #include "Camera.h"
-#include "Sound.h"
 #include "Collider.h"
+#include "Sound.h"
 #include "Minion.h"
 #include "Bullet.h"
 
@@ -35,7 +35,7 @@ void Alien::Start () {
     float minionArcPlacement;
 
     for (int i=0; i < nMinions; i++) {
-        minion = new GameObject(MINION_LAYER, ALIEN_LABEL);
+        minion = new GameObject(MINION_LAYER, MINION_LABEL);
         minionArcPlacement = (float)i*((PI*2)/nMinions);
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
         minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
@@ -157,7 +157,7 @@ void Alien::ExplodeAnimation () {
 
 void Alien::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
-    if ((bullet != nullptr) and bullet->IsTargetingEnemy()) {
+    if ((bullet != nullptr) and bullet->IsAimingAt(ALIEN_LABEL)) {
         hp -= bullet->GetDamage();
     }
 }

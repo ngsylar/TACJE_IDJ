@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "Collider.h"
 #include "Sprite.h"
 #include "Sound.h"
-#include "Collider.h"
 #include "PenguinCannon.h"
 #include "Bullet.h"
 
@@ -117,7 +117,7 @@ Vec2 PenguinBody::GetPosition () {
 
 void PenguinBody::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
-    if ((bullet != nullptr) and bullet->IsTargetingPlayer()) {
+    if ((bullet != nullptr) and bullet->IsAimingAt(PENGUINB_LABEL)) {
         hp -= bullet->GetDamage();
     }
 }

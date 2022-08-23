@@ -3,6 +3,7 @@
 
 #include "Component.h"
 
+#define MINION_LABEL                    "Enemy"
 #define MINION_SPRITE                   "assets/img/minion.png"
 #define MINION_ARC_DISTANCE             120.0f, 0.0f
 #define MINION_ARC_SPEED                0.25f
@@ -18,8 +19,8 @@
 #define MINION_BULLET_FRAME_TIME        0.04f
 #define MINION_BULLET_FRAME_ONESHOT     false
 #define MINION_BULLET_SPEED             600.0f
+#define MINION_BULLET_TARGETS           {"Player"}
 #define MINION_BULLET_DAMAGE            10
-#define MINION_BULLET_TARGETS_PLAYER    true
 #define MINION_BULLET_LAYER             6
 
 #define MINION_DEATH_LABEL              "Explosion"
