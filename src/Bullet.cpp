@@ -55,6 +55,7 @@ int Bullet::GetDamage () {
     return damage;
 }
 
+// sylar's extra sfx
 void Bullet::PlayHitSound () {
     if (hitSoundFilename.empty())
         return;

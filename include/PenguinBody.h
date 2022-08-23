@@ -23,7 +23,7 @@
 #define PENGUINB_DEATH_LAYER            7
 
 // sylar's extra positioning
-#define PENGUINB_ARC_DISTANCE   1.0f, 0.0f
+#define PENGUINB_ARC_DISTANCE           1.0f, 0.0f
 
 class PenguinBody: public Component {
     private:

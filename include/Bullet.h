@@ -12,7 +12,9 @@ class Bullet: public Component {
         float distanceLeft;
         int damage;
         std::vector<std::string> targets;
-        std::string hitSoundFilename;       // sylar's extra sfx
+
+        // sylar's extra sfx
+        std::string hitSoundFilename;
 
     public:
         Bullet(
@@ -32,9 +34,11 @@ class Bullet: public Component {
         void Render();
         bool IsAimingAt(std::string targetLabel);
         int GetDamage();
-        void PlayHitSound();
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
+
+        // sylar's extra sfx
+        void PlayHitSound();
 };
 
 #endif
