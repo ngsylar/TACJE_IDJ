@@ -65,6 +65,19 @@ void Minion::Shoot (Vec2 target) {
     Game::GetInstance().GetState().AddObject(bullet);
 }
 
+void Minion::ExplodeAnimation () {
+    GameObject* death = new GameObject(MINION_DEATH_LAYER, MINION_DEATH_LABEL);
+    death->AddComponent(
+        new Sprite(
+            *death, MINION_DEATH_SPRITE,
+            MINION_DEATH_FRAME_COUNT, MINION_DEATH_FRAME_TIME,
+            MINION_DEATH_FRAME_ONESHOT, MINION_DEATH_SELFDESTRUCTION
+        )
+    );
+    death->box.SetPosition(associated.box.GetCenter());
+    Game::GetInstance().GetState().AddObject(death);
+}
+
 Vec2 Minion::GetPosition () {
     return associated.box.GetCenter();
 }

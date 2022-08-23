@@ -24,7 +24,7 @@
 #define GAMEMAP_TILEMAP1            "assets/map/tileMap1.txt"
 #define GAMEMAP_START_POSITION      0.0f, 0.0f
 #define GAMEMAP_TILEMAP0_LAYER      0
-#define GAMEMAP_TILEMAP1_LAYER      7
+#define GAMEMAP_TILEMAP1_LAYER      8
 
 #define FACE_SPRITE                 "assets/img/penguinface.png"
 #define FACE_SOUND                  "assets/audio/boom.wav"

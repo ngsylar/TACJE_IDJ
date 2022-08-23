@@ -9,18 +9,16 @@ Sprite::Sprite (GameObject& associated): Component(associated) {
 
 Sprite::Sprite (
     GameObject& associated, std::string file,
-    int frameCount, float frameTime, bool frameOneshot,
-    float secondsToSelfDestruct
+    int frameCount, float frameTime, bool oneshot, bool destruct
 ): Sprite(associated) {
-    Open(file, frameCount, frameTime, frameOneshot);
-    selfDestructionTimer = Timer(secondsToSelfDestruct);
+    Open(file, frameCount, frameTime, oneshot, destruct);
 }
 
 Sprite::~Sprite () {}
 
 void Sprite::Open (
     std::string file,
-    int frameCount, float frameTime, bool oneshot
+    int frameCount, float frameTime, bool oneshot, bool destruct
 ) {
     texture = Resources::GetImage(file);
     scale = Vec2(SPRITE_DEFAULT_SCALE);
@@ -37,6 +35,7 @@ void Sprite::Open (
     this->frameCount = frameCount;
     frameTimer = Timer(frameTime);
     frameOneshot = oneshot;
+    selfDestruction = destruct;
     currentFrame = 0;
 
     frameWidth = width / frameCount;
@@ -120,16 +119,16 @@ void Sprite::SetFrameCount (int frameCount) {
 }
 
 void Sprite::Update (float dt) {
-    if (selfDestructionTimer.HasResetAndIsOver(dt)) {
-        associated.RequestDelete();
-        return;
-    }
     if (frameTimer.HasResetAndIsOver(dt)) {
         SetFrame(currentFrame+1);
         frameTimer.Reset();
         
-        if (frameOneshot)
+        if ((currentFrame == frameCount-1) and frameOneshot) {
             frameTimer.SetResetTime(0.0f);
+
+            if (selfDestruction)
+                associated.RequestDelete();
+        }
     }
 }
 

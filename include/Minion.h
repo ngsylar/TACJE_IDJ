@@ -22,6 +22,14 @@
 #define MINION_BULLET_TARGETS_PLAYER    true
 #define MINION_BULLET_LAYER             6
 
+#define MINION_DEATH_LABEL              "Explosion"
+#define MINION_DEATH_SPRITE             "assets/img/miniondeath.png"
+#define MINION_DEATH_FRAME_COUNT        4
+#define MINION_DEATH_FRAME_TIME         0.06f
+#define MINION_DEATH_FRAME_ONESHOT      true
+#define MINION_DEATH_SELFDESTRUCTION    true
+#define MINION_DEATH_LAYER              7
+
 class Minion: public Component {
     private:
         std::weak_ptr<GameObject> alienCenter;
@@ -37,6 +45,7 @@ class Minion: public Component {
         void Update(float dt);
         void Render();
         void Shoot(Vec2 target);
+        void ExplodeAnimation();
         Vec2 GetPosition();
         void NotifyCollision(GameObject& other);
         bool IsDead();

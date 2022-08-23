@@ -19,8 +19,7 @@ class Sprite: public Component {
         Vec2 scale;
         Timer frameTimer;
         int frameWidth, frameCount, currentFrame;
-        bool frameOneshot;
-        Timer selfDestructionTimer;
+        bool frameOneshot, selfDestruction;
 
     public:
         Sprite(GameObject& associated);
@@ -30,14 +29,15 @@ class Sprite: public Component {
             int frameCount=1,
             float frameTime=0.0f,
             bool frameOneshot=false,
-            float secondsToSelfDestruct=0.0f
+            bool selfDestruction=false
         );
         ~Sprite();
         void Open(
             std::string file,
             int frameCount=1,
             float frameTime=0.0f,
-            bool frameOneshot=false
+            bool frameOneshot=false,
+            bool selfDestruction=false
         );
         void SetClip(int x, int y, int w, int h);
         void Render();

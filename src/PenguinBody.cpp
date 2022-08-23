@@ -45,6 +45,7 @@ void PenguinBody::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     if (hp <= 0) {
+        ExplodeAnimation();
         associated.RequestDelete();
         pcannon.lock()->RequestDelete();
         return;
@@ -86,6 +87,19 @@ void PenguinBody::Update (float dt) {
 }
 
 void PenguinBody::Render () {}
+
+void PenguinBody::ExplodeAnimation () {
+    GameObject* death = new GameObject(PENGUINB_DEATH_LAYER, PENGUINB_DEATH_LABEL);
+    death->AddComponent(
+        new Sprite(
+            *death, PENGUINB_DEATH_SPRITE,
+            PENGUINB_DEATH_FRAME_COUNT, PENGUINB_DEATH_FRAME_TIME,
+            PENGUINB_DEATH_FRAME_ONESHOT, PENGUINB_DEATH_SELFDESTRUCTION
+        )
+    );
+    death->box.SetPosition(position);
+    Game::GetInstance().GetState().AddObject(death);
+}
 
 // sylar's extra positioning
 Vec2 PenguinBody::GetPosition () {

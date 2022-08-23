@@ -24,6 +24,8 @@ Alien::Action::Action (ActionType type, Vec2 pos) {
 }
 
 Alien::~Alien () {
+    for (int i=0; i < (int)minionArray.size(); i++)
+        ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
     minionArray.clear();
 }
 
@@ -49,12 +51,14 @@ void Alien::Update (float dt) {
     Minion* minion;
     
     if (hp <= 0) {
+        ExplodeAnimation();
         associated.RequestDelete();
         return;
     }
     for (int i=(int)minionArray.size()-1; i >= 0; i--) {
         minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
         if (minion->IsDead()) {
+            minion->ExplodeAnimation();
             minionArray[i].lock()->RequestDelete();
             minionArray.erase(minionArray.begin()+i);
         }
@@ -128,6 +132,19 @@ void Alien::BreathAnimation (float dt) {
 }
 
 void Alien::Render () {}
+
+void Alien::ExplodeAnimation () {
+    GameObject* death = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
+    death->AddComponent(
+        new Sprite(
+            *death, ALIEN_DEATH_SPRITE,
+            ALIEN_DEATH_FRAME_COUNT, ALIEN_DEATH_FRAME_TIME,
+            ALIEN_DEATH_FRAME_ONESHOT, ALIEN_DEATH_SELFDESTRUCTION
+        )
+    );
+    death->box.SetPosition(associated.box.GetCenter());
+    Game::GetInstance().GetState().AddObject(death);
+}
 
 void Alien::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");

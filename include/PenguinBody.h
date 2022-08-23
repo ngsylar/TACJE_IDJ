@@ -3,14 +3,22 @@
 
 #include "Component.h"
 
-#define PENGUINB_LABEL          "Player"
-#define PENGUINB_SPRITE         "assets/img/penguin.png"
-#define PENGUINB_START_POSITION 704, 640
-#define PENGUINB_START_HP       100
-#define PENGUINB_MAX_SPEED      600.0f
-#define PENGUINB_ACCELERATION   200.0f
-#define PENGUINB_ROTATION_SPEED 90.0f
-#define PENGUINB_LAYER          1
+#define PENGUINB_LABEL                  "Player"
+#define PENGUINB_SPRITE                 "assets/img/penguin.png"
+#define PENGUINB_START_POSITION         704, 640
+#define PENGUINB_START_HP               100
+#define PENGUINB_MAX_SPEED              600.0f
+#define PENGUINB_ACCELERATION           200.0f
+#define PENGUINB_ROTATION_SPEED         90.0f
+#define PENGUINB_LAYER                  1
+
+#define PENGUINB_DEATH_LABEL            "Explosion"
+#define PENGUINB_DEATH_SPRITE           "assets/img/penguindeath.png"
+#define PENGUINB_DEATH_FRAME_COUNT      5
+#define PENGUINB_DEATH_FRAME_TIME       0.06f
+#define PENGUINB_DEATH_FRAME_ONESHOT    true
+#define PENGUINB_DEATH_SELFDESTRUCTION  true
+#define PENGUINB_DEATH_LAYER            7
 
 // sylar's extra positioning
 #define PENGUINB_ARC_DISTANCE   1.0f, 0.0f
@@ -34,6 +42,7 @@ class PenguinBody: public Component {
         void Start();
         void Update(float dt);
         void Render();
+        void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 
