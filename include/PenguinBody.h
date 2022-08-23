@@ -13,6 +13,8 @@
 #define PENGUINB_LAYER                  1
 
 #define PENGUINB_DEATH_LABEL            "Explosion"
+#define PENGUINB_DEATH_SOUND            "assets/audio/boom.wav"
+#define PENGUINB_DEATH_SOUND_TIMES      1
 #define PENGUINB_DEATH_SPRITE           "assets/img/penguindeath.png"
 #define PENGUINB_DEATH_FRAME_COUNT      5
 #define PENGUINB_DEATH_FRAME_TIME       0.06f

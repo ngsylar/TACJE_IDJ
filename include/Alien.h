@@ -18,6 +18,8 @@
 #define ALIEN_LAYER                 4
 
 #define ALIEN_DEATH_LABEL           "Explosion"
+#define ALIEN_DEATH_SOUND           "assets/audio/boomAlien.wav"
+#define ALIEN_DEATH_SOUND_TIMES     1
 #define ALIEN_DEATH_SPRITE          "assets/img/aliendeath.png"
 #define ALIEN_DEATH_FRAME_COUNT     4
 #define ALIEN_DEATH_FRAME_TIME      0.06f

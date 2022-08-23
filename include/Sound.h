@@ -6,7 +6,6 @@
 
 #include "Component.h"
 
-#define SOUND_REPEAT_OFF    1
 #define SOUND_ERROR_PLAY    -1
 #define SOUND_AUTO_CHANNEL  -1
 
@@ -14,15 +13,16 @@ class Sound: public Component {
     private:
         Mix_Chunk* chunk;
         int channel;
+        bool selfDestruction;
         
     public:
         Sound(GameObject& associated);
         Sound(GameObject& associated, std::string file);
         ~Sound();
-        void Play(int times=SOUND_REPEAT_OFF);
         void Stop();
         void Open(std::string file);
         bool IsOpen();
+        void Play(int times=1, bool selfDestruction=false);
         bool Playing();
         void Update(float dt);
         void Render();

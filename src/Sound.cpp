@@ -16,14 +16,23 @@ void Sound::Open (std::string file) {
     channel = SOUND_AUTO_CHANNEL;
 }
 
-void Sound::Play (int times) {
+bool Sound::IsOpen () {
+    return (chunk != nullptr);
+}
+
+void Sound::Play (int times, bool destruct) {
     int loops;
 
     loops = times - ((times > 0)? 1:0);
+    selfDestruction = destruct;
     channel = Mix_PlayChannel(channel, chunk, loops);
     if (channel == SOUND_ERROR_PLAY) {
         SDL_Log("Mix_PlayChannel: %s", SDL_GetError());
     }
+}
+
+bool Sound::Playing () {
+    return Mix_Playing(channel);
 }
 
 void Sound::Stop () {
@@ -32,15 +41,10 @@ void Sound::Stop () {
     }
 }
 
-bool Sound::IsOpen () {
-    return (chunk != nullptr);
+void Sound::Update (float dt) {
+    if ((not Mix_Playing(channel)) and selfDestruction)
+        associated.RequestDelete();
 }
-
-bool Sound::Playing () {
-    return Mix_Playing(channel);
-}
-
-void Sound::Update (float dt) {}
 
 void Sound::Render () {}
 

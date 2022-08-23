@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Sprite.h"
+#include "Sound.h"
 #include "Collider.h"
 #include "PenguinCannon.h"
 #include "Bullet.h"
@@ -89,16 +90,24 @@ void PenguinBody::Update (float dt) {
 void PenguinBody::Render () {}
 
 void PenguinBody::ExplodeAnimation () {
-    GameObject* death = new GameObject(PENGUINB_DEATH_LAYER, PENGUINB_DEATH_LABEL);
-    death->AddComponent(
+    State& state = Game::GetInstance().GetState();
+
+    GameObject* explosion = new GameObject(PENGUINB_DEATH_LAYER, PENGUINB_DEATH_LABEL);
+    explosion->AddComponent(
         new Sprite(
-            *death, PENGUINB_DEATH_SPRITE,
+            *explosion, PENGUINB_DEATH_SPRITE,
             PENGUINB_DEATH_FRAME_COUNT, PENGUINB_DEATH_FRAME_TIME,
             PENGUINB_DEATH_FRAME_ONESHOT, PENGUINB_DEATH_SELFDESTRUCTION
         )
     );
-    death->box.SetPosition(position);
-    Game::GetInstance().GetState().AddObject(death);
+    explosion->box.SetPosition(position);
+    state.AddObject(explosion);
+
+    GameObject* boom = new GameObject();
+    Sound* explosionSound = new Sound(*boom, PENGUINB_DEATH_SOUND);
+    boom->AddComponent(explosionSound);
+    state.AddObject(boom);
+    explosionSound->Play(PENGUINB_DEATH_SOUND_TIMES, PENGUINB_DEATH_SELFDESTRUCTION);
 }
 
 // sylar's extra positioning

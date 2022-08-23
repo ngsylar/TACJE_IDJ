@@ -1,6 +1,7 @@
 #include "Minion.h"
 #include "Game.h"
 #include "Sprite.h"
+#include "Sound.h"
 #include "Collider.h"
 #include "Bullet.h"
 
@@ -66,16 +67,24 @@ void Minion::Shoot (Vec2 target) {
 }
 
 void Minion::ExplodeAnimation () {
-    GameObject* death = new GameObject(MINION_DEATH_LAYER, MINION_DEATH_LABEL);
-    death->AddComponent(
+    State& state = Game::GetInstance().GetState();
+
+    GameObject* explosion = new GameObject(MINION_DEATH_LAYER, MINION_DEATH_LABEL);
+    explosion->AddComponent(
         new Sprite(
-            *death, MINION_DEATH_SPRITE,
+            *explosion, MINION_DEATH_SPRITE,
             MINION_DEATH_FRAME_COUNT, MINION_DEATH_FRAME_TIME,
             MINION_DEATH_FRAME_ONESHOT, MINION_DEATH_SELFDESTRUCTION
         )
     );
-    death->box.SetPosition(associated.box.GetCenter());
-    Game::GetInstance().GetState().AddObject(death);
+    explosion->box.SetPosition(associated.box.GetCenter());
+    state.AddObject(explosion);
+    
+    GameObject* boom = new GameObject();
+    Sound* explosionSound = new Sound(*boom, MINION_DEATH_SOUND);
+    boom->AddComponent(explosionSound);
+    state.AddObject(boom);
+    explosionSound->Play(MINION_DEATH_SOUND_TIMES, MINION_DEATH_SELFDESTRUCTION);
 }
 
 Vec2 Minion::GetPosition () {

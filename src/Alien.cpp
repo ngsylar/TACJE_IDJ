@@ -1,14 +1,13 @@
 #include "Alien.h"
 #include "Game.h"
 #include "Camera.h"
-// #include "Sprite.h"      // idj's original alien
+#include "Sound.h"
 #include "Collider.h"
 #include "Minion.h"
 #include "Bullet.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
 
-    // Sprite* sprite;      // idj's original alien
     sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
@@ -134,16 +133,24 @@ void Alien::BreathAnimation (float dt) {
 void Alien::Render () {}
 
 void Alien::ExplodeAnimation () {
-    GameObject* death = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
-    death->AddComponent(
+    State& state = Game::GetInstance().GetState();
+
+    GameObject* explosion = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
+    explosion->AddComponent(
         new Sprite(
-            *death, ALIEN_DEATH_SPRITE,
+            *explosion, ALIEN_DEATH_SPRITE,
             ALIEN_DEATH_FRAME_COUNT, ALIEN_DEATH_FRAME_TIME,
             ALIEN_DEATH_FRAME_ONESHOT, ALIEN_DEATH_SELFDESTRUCTION
         )
     );
-    death->box.SetPosition(associated.box.GetCenter());
-    Game::GetInstance().GetState().AddObject(death);
+    explosion->box.SetPosition(associated.box.GetCenter());
+    state.AddObject(explosion);
+
+    GameObject* boom = new GameObject();
+    Sound* explosionSound = new Sound(*boom, ALIEN_DEATH_SOUND);
+    boom->AddComponent(explosionSound);
+    state.AddObject(boom);
+    explosionSound->Play(ALIEN_DEATH_SOUND_TIMES, ALIEN_DEATH_SELFDESTRUCTION);
 }
 
 void Alien::NotifyCollision (GameObject& other) {

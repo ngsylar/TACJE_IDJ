@@ -23,6 +23,8 @@
 #define MINION_BULLET_LAYER             6
 
 #define MINION_DEATH_LABEL              "Explosion"
+#define MINION_DEATH_SOUND              "assets/audio/boomMinion.wav"
+#define MINION_DEATH_SOUND_TIMES        1
 #define MINION_DEATH_SPRITE             "assets/img/miniondeath.png"
 #define MINION_DEATH_FRAME_COUNT        4
 #define MINION_DEATH_FRAME_TIME         0.06f
