@@ -47,14 +47,14 @@ class State {
         State();
         ~State();
         void Start();
-        bool QuitRequested();
         void LoadAssets();
-        void ClearResources();
         void Update(float dt);
         void Render();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
         void RemoveObject(int objectId, int renderingId);
+        bool QuitRequested();
+        void ClearResources();
 };
 
 #endif

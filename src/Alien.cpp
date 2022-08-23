@@ -23,8 +23,10 @@ Alien::Action::Action (ActionType type, Vec2 pos) {
 }
 
 Alien::~Alien () {
-    for (int i=0; i < (int)minionArray.size(); i++)
-        ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
+    if (not Game::GetInstance().GetState().QuitRequested()) {
+        for (int i=0; i < (int)minionArray.size(); i++)
+            ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
+    }
     minionArray.clear();
 }
 

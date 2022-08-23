@@ -66,12 +66,6 @@ void State::LoadAssets () {
     Camera::Follow(penguin);
 }
 
-void State::ClearResources () {
-    Resources::ClearImages();
-    Resources::ClearMusics();
-    Resources::ClearSounds();
-}
-
 void State::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
@@ -131,10 +125,6 @@ void State::Render () {
     }
 }
 
-bool State::QuitRequested () {
-    return quitRequested;
-}
-
 std::weak_ptr<GameObject> State::AddObject (GameObject* go) {
     std::shared_ptr<GameObject> sptrGo(go);
     std::weak_ptr<GameObject> wptrGo(sptrGo);
@@ -168,4 +158,14 @@ void State::RemoveObject (int objectId, int renderingId) {
 
     for (int i=objectId; i < (int)objectArray.size(); i++)
         objectArray[i]->index.Decrease();
+}
+
+bool State::QuitRequested () {
+    return quitRequested;
+}
+
+void State::ClearResources () {
+    Resources::ClearImages();
+    Resources::ClearMusics();
+    Resources::ClearSounds();
 }

@@ -4,6 +4,7 @@
 #include "Resources.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
+    selfDestruction = false;
     texture = nullptr;
 }
 

@@ -2,6 +2,7 @@
 #include "Resources.h"
 
 Sound::Sound (GameObject& associated): Component(associated) {
+    selfDestruction = false;
     chunk = nullptr;
 }
 
@@ -20,11 +21,11 @@ bool Sound::IsOpen () {
     return (chunk != nullptr);
 }
 
-void Sound::Play (int times, bool destruct) {
+void Sound::Play (int times, bool destructAfterPlay) {
     int loops;
 
     loops = times - ((times > 0)? 1:0);
-    selfDestruction = destruct;
+    selfDestruction = destructAfterPlay;
     channel = Mix_PlayChannel(channel, chunk, loops);
     if (channel == SOUND_ERROR_PLAY) {
         SDL_Log("Mix_PlayChannel: %s", SDL_GetError());
