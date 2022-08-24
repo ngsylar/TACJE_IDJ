@@ -15,7 +15,7 @@
 
 #define MINION_BULLET_LABEL             "Projectile"
 #define MINION_BULLET_SOUND_SHOT        "assets/audio/fireshot.wav"
-#define MINION_BULLET_SOUND_HIT         ""
+#define MINION_BULLET_SOUND_HIT         "assets/audio/fireimpact.wav"
 #define MINION_BULLET_SPRITE            "assets/img/minionbullet2.png"
 #define MINION_BULLET_FRAME_COUNT       3
 #define MINION_BULLET_FRAME_TIME        0.04f
