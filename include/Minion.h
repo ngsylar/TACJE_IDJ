@@ -39,7 +39,7 @@ class Minion: public Component {
     private:
         std::weak_ptr<GameObject> alienCenter;
         float arc;
-        int hp;
+        int hp, damageTaken;
     
     public:
         Minion(
@@ -49,6 +49,7 @@ class Minion: public Component {
         );
         void Update(float dt);
         void Render();
+        int GetHP();
         void Shoot(Vec2 target);
         void ExplodeAnimation();
         Vec2 GetPosition();

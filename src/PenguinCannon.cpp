@@ -60,17 +60,20 @@ void PenguinCannon::Update (float dt) {
 
 void PenguinCannon::Render () {}
 
+int PenguinCannon::GetHP () {
+    return pbodyCp->GetHP();
+}
+
 void PenguinCannon::Shoot (Vec2 target) {
     GameObject* bullet = new GameObject(PENGUINC_BULLET_LAYER, PENGUINC_BULLET_LABEL);
     Vec2 cannonPosition = associated.box.GetCenter();
     Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
     Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(angle);
-    float targetDistance = bulletPosition.DistanceTo(target);
 
     bullet->AddComponent(
         new Bullet(
             *bullet, PENGUINC_BULLET_SPRITE,
-            angle, PENGUINC_BULLET_SPEED, targetDistance,
+            angle, PENGUINC_BULLET_SPEED, PENGUINC_BULLET_RANGE,
             PENGUINC_BULLET_DAMAGE,
             PENGUINC_BULLET_FRAME_COUNT, PENGUINC_BULLET_FRAME_TIME, PENGUINC_BULLET_FRAME_ONESHOT,
             PENGUINC_BULLET_TARGETS,
@@ -85,9 +88,7 @@ void PenguinCannon::Shoot (Vec2 target) {
 }
 
 void PenguinCannon::NotifyCollision (GameObject& other) {
-    if (other.label == PENGUINC_BULLET_LABEL) {
-        pbodyCp->NotifyCollision(other);
-    }
+    pbodyCp->NotifyCollision(other);
 }
 
 bool PenguinCannon::Is (std::string type) {

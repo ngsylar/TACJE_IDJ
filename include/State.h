@@ -10,6 +10,7 @@
 #include "SDL_include.h"
 
 #include "GameObject.h"
+#include "Timer.h"
 #include "Music.h"
 
 #define BG_LABEL                    "Background"
@@ -31,6 +32,7 @@
 
 class State {
     private:
+        Timer collisionTolerance;
         Music music;
         bool started;
         bool quitRequested;
@@ -50,6 +52,7 @@ class State {
         void LoadAssets();
         void Update(float dt);
         void Render();
+        void DetectCollisions();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(std::string label);

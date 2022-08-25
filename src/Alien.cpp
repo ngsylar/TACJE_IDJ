@@ -4,6 +4,8 @@
 #include "Collider.h"
 #include "Sound.h"
 #include "Minion.h"
+#include "PenguinBody.h"
+#include "PenguinCannon.h"
 #include "Bullet.h"
 
 Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
@@ -15,6 +17,7 @@ Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
 
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
+    damageTaken = 0;
 
     restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, ALIEN_TIMER_START);
     cooldown = Timer(ALIEN_SHOT_COOLDOWN, ALIEN_TIMER_START);
@@ -114,6 +117,10 @@ void Alien::Update (float dt) {
 
 void Alien::Render () {}
 
+int Alien::GetHP () {
+    return hp;
+}
+
 // sylar's alien breath extra effects
 void Alien::BreathAnimation (float dt) {
     float currentScale = sprite->GetScale().x;
@@ -153,7 +160,18 @@ void Alien::ExplodeAnimation () {
 void Alien::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
     if ((bullet != nullptr) and bullet->IsAimingAt(ALIEN_LABEL)) {
-        hp -= bullet->GetDamage();
+        damageTaken = bullet->GetDamage();
+        return;
+    }
+    PenguinCannon* playerc = (PenguinCannon*)other.GetComponent("PenguinCannon");
+    if (playerc != nullptr) {
+        damageTaken = playerc->GetHP();
+        return;
+    }
+    PenguinBody* playerb = (PenguinBody*)other.GetComponent("PenguinBody");
+    if (playerb != nullptr) {
+        damageTaken = playerb->GetHP();
+        return;
     }
 }
 

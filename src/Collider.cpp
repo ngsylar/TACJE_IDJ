@@ -1,11 +1,11 @@
 #include "Collider.h"
 
-#ifdef DEBUG
+// #ifdef DEBUG
 #include "Camera.h"
 #include "Game.h"
 
 #include <SDL2/SDL.h>
-#endif // DEBUG
+// #endif // DEBUG
 
 Collider::Collider (
     GameObject& associated,
@@ -19,7 +19,7 @@ void Collider::Update (float dt) {
     float angle = Deg2Rad(associated.angleDeg);
 
     box.SetPosition(
-        associated.box.GetCenter() + offset.Rotate(-angle)
+        associated.box.GetCenter() + offset.Rotate(angle)
     );
     box.SetSize(
         associated.box.w * scale.x, associated.box.h * scale.y
@@ -27,7 +27,7 @@ void Collider::Update (float dt) {
 }
 
 void Collider::Render () {
-#ifdef DEBUG
+// #ifdef DEBUG
     Vec2 center( box.GetCenter() );
     SDL_Point points[5];
 
@@ -50,7 +50,7 @@ void Collider::Render () {
 
     SDL_SetRenderDrawColor(Game::GetInstance().GetRenderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLines(Game::GetInstance().GetRenderer(), points, 5);
-#endif // DEBUG
+// #endif // DEBUG
 }
 
 void Collider::SetScale (Vec2 scale) {

@@ -32,9 +32,10 @@ State::~State () {
 
 void State::Start () {
     LoadAssets();
-    for (int i=0; i < (int)objectArray.size(); i++) {
+    collisionTolerance = Timer(0.25f);
+    
+    for (int i=0; i < (int)objectArray.size(); i++)
         objectArray[i]->Start();
-    }
     started = true;
 }
 
@@ -79,23 +80,12 @@ void State::Update (float dt) {
         objectArray[i]->Update(dt);
     }
 
-    for (int i=0; i < (int)objectArray.size()-1; i++)
-        for (int j=i+1; j < (int)objectArray.size(); j++) {
-            Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
-            Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
-            if (not (colliderA and colliderB))
-                continue;
-            
-            if (Collision::IsColliding(
-                colliderA->box, colliderB->box,
-                Deg2Rad(objectArray[i]->angleDeg),
-                Deg2Rad(objectArray[j]->angleDeg)
-            )) {
-                objectArray[i]->NotifyCollision(*objectArray[j]);
-                objectArray[j]->NotifyCollision(*objectArray[i]);
-            }
-        }
-
+    if (collisionTolerance.IsOver()) {
+        DetectCollisions();
+    } else {
+        collisionTolerance.Update(dt);
+    }
+    
     // // idj's original object deletion
     // for (int i=(int)objectArray.size()-1; i >= 0; i--) {
     //     objectArray.erase(objectArray.begin()+i);
@@ -123,6 +113,28 @@ void State::Render () {
     for (int i=0; i < (int)renderingArray.size(); i++) {
         renderingArray[i].lock()->Render();
     }
+}
+
+void State::DetectCollisions () {
+    bool thereIsCollision;
+
+    for (int i=0; i < (int)objectArray.size()-1; i++)
+        for (int j=i+1; j < (int)objectArray.size(); j++) {
+            Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
+            Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
+            if (not (colliderA and colliderB))
+                continue;
+
+            thereIsCollision = Collision::IsColliding(
+                colliderA->box, colliderB->box,
+                Deg2Rad(objectArray[i]->angleDeg),
+                Deg2Rad(objectArray[j]->angleDeg)
+            );
+            if (thereIsCollision) {
+                objectArray[i]->NotifyCollision(*objectArray[j]);
+                objectArray[j]->NotifyCollision(*objectArray[i]);
+            }
+        }
 }
 
 std::weak_ptr<GameObject> State::AddObject (GameObject* go) {

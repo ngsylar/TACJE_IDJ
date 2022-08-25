@@ -30,20 +30,19 @@ class PenguinBody: public Component {
         std::weak_ptr<GameObject> pcannon;
         Vec2 speed;
         float angle, linearSpeed, rotationRadSpeed;
-        int hp;
+        int hp, damageTaken;
         
         // sylar's extra positioning
         Vec2 position, arcPlacement, center, arcDisplacement;
         float deltaAngle;
     
     public:
-        static PenguinBody* player;
-
         PenguinBody(GameObject& associated);
         ~PenguinBody();
         void Start();
         void Update(float dt);
         void Render();
+        int GetHP();
         void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);

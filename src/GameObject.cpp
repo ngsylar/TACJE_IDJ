@@ -50,9 +50,8 @@ void GameObject::AddComponent (Component* cpt) {
         return;
 
     components.emplace_back(cpt);
-    if (started) {
+    if (started)
         cpt->Start();
-    }
 }
 
 void GameObject::RemoveComponent (Component* cpt) {

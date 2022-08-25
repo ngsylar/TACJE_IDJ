@@ -28,19 +28,3 @@ bool Timer::HasInterval () {
 bool Timer::IsOver () {
     return (currentTime >= resetTime);
 }
-
-// bool Timer::IsOver (float dt) {
-//     if (resetTime == 0.0f)
-//         return true;
-    
-//     currentTime += dt;
-//     return (currentTime >= resetTime);
-// }
-
-// bool Timer::HasResetAndIsOver (float dt) {
-//     if (resetTime > 0.0f) {
-//         currentTime += dt;
-//         return (currentTime >= resetTime);
-//     }
-//     return false;
-// }

@@ -6,9 +6,9 @@
 #include "Sprite.h"
 #include "Sound.h"
 #include "PenguinCannon.h"
+#include "Alien.h"
+#include "Minion.h"
 #include "Bullet.h"
-
-PenguinBody* PenguinBody::player;
 
 PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
 
@@ -17,15 +17,15 @@ PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
-    player = this;
     hp = PENGUINB_START_HP;
+    damageTaken = 0;
+
     linearSpeed = 0.0f;
     angle = 0.0f;
 }
 
 PenguinBody::~PenguinBody () {
     Camera::Unfollow();
-    player = nullptr;
 }
 
 void PenguinBody::Start () {
@@ -45,6 +45,10 @@ void PenguinBody::Start () {
 void PenguinBody::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
+    if (damageTaken > 0) {
+        hp -= damageTaken;
+        damageTaken = 0;
+    }
     if (hp <= 0) {
         ExplodeAnimation();
         associated.RequestDelete();
@@ -89,6 +93,10 @@ void PenguinBody::Update (float dt) {
 
 void PenguinBody::Render () {}
 
+int PenguinBody::GetHP () {
+    return hp;
+}
+
 void PenguinBody::ExplodeAnimation () {
     State& state = Game::GetInstance().GetState();
 
@@ -118,7 +126,18 @@ Vec2 PenguinBody::GetPosition () {
 void PenguinBody::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
     if ((bullet != nullptr) and bullet->IsAimingAt(PENGUINB_LABEL)) {
-        hp -= bullet->GetDamage();
+        damageTaken = bullet->GetDamage();
+        return;
+    }
+    Minion* minion = (Minion*)other.GetComponent("Minion");
+    if (minion != nullptr) {
+        damageTaken = minion->GetHP();
+        return;
+    }
+    Alien* alien = (Alien*)other.GetComponent("Alien");
+    if (alien != nullptr) {
+        damageTaken = alien->GetHP();
+        return;
     }
 }
 

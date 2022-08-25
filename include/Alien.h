@@ -3,7 +3,6 @@
 
 #include <queue>
 
-#include "InputManager.h"               // remover essa linha
 #include "Component.h"
 #include "Sprite.h"                     // sylar's extra positioning
 
@@ -14,9 +13,8 @@
 #define ALIEN_LINEAR_SPEED              200.0f
 #define ALIEN_MINIMUM_DISTANCE          10.0f
 #define ALIEN_ROTATION_SPEED            20.0f
-#define ALIEN_MINIONS_AMOUNT            6
 #define ALIEN_LAYER                     4
-
+#define ALIEN_MINIONS_AMOUNT            6
 #define ALIEN_FOE_LABEL                 "Player"
 #define ALIEN_TIMER_START               -2.0f
 #define ALIEN_MOVEMENT_COOLDOWN         4.0f
@@ -37,7 +35,7 @@ class Alien: public Component {
         enum AlienState {RESTING, MOVING, SLEEPING};
         // enum ShotStyle {SINGLE, MULTIPLE, SPIRAL};
 
-        int hp;
+        int hp, damageTaken;
         AlienState state;
         Timer restTimer, cooldown;
         Vec2 target, speed;
@@ -56,6 +54,7 @@ class Alien: public Component {
         void Start();
         void Update(float dt);
         void Render();
+        int GetHP();
         void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);

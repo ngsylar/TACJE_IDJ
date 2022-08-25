@@ -20,8 +20,9 @@
 #define PENGUINC_BULLET_FRAME_TIME      0.04f
 #define PENGUINC_BULLET_FRAME_ONESHOT   true
 #define PENGUINC_BULLET_ARC_DISTANCE    50.0f, 0.0f
-#define PENGUINC_BULLET_SPEED           600.0f
 #define PENGUINC_BULLET_TARGETS         {"Enemy"}
+#define PENGUINC_BULLET_SPEED           600.0f
+#define PENGUINC_BULLET_RANGE           800.0f
 #define PENGUINC_BULLET_DAMAGE          10
 #define PENGUINC_BULLET_LAYER           2
 
@@ -42,6 +43,7 @@ class PenguinCannon: public Component {
         PenguinCannon(GameObject& associated, GameObject& penguinBody);
         void Update(float dt);
         void Render();
+        int GetHP();
         void Shoot(Vec2 target);
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);

@@ -20,16 +20,16 @@ void Camera::Update (float dt) {
         pos = focus->box.GetCenter() - (Vec2(WINDOW_SIZE) * 0.5f);
     }
     else {
-        if (input.IsKeyDown(KEY_ARROW_UP)) {
+        if (input.IsKeyDown(KEY_W)) {
             speed.y = -1;
         }
-        if (input.IsKeyDown(KEY_ARROW_DOWN)) {
+        if (input.IsKeyDown(KEY_S)) {
             speed.y = 1;
         }
-        if (input.IsKeyDown(KEY_ARROW_LEFT)) {
+        if (input.IsKeyDown(KEY_A)) {
             speed.x = -1;
         }
-        if (input.IsKeyDown(KEY_ARROW_RIGHT)) {
+        if (input.IsKeyDown(KEY_D)) {
             speed.x = 1;
         }
         if (speed.x and speed.y) {

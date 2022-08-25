@@ -3,6 +3,8 @@
 #include "Collider.h"
 #include "Sprite.h"
 #include "Sound.h"
+#include "PenguinBody.h"
+#include "PenguinCannon.h"
 #include "Bullet.h"
 
 Minion::Minion (
@@ -22,12 +24,18 @@ Minion::Minion (
 
     this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
     arc = arcOffsetDeg;
+
     hp = sprite->GetScale().x * MINION_HP_MODIFIER;
+    damageTaken = 0;
 }
 
 void Minion::Update (float dt) {
     if (hp <= 0) {
         return;
+    }
+    if (damageTaken > 0) {
+        hp -= damageTaken;
+        damageTaken = 0;
     }
     if (alienCenter.expired()) {
         associated.RequestDelete();
@@ -46,6 +54,10 @@ void Minion::Update (float dt) {
 }
 
 void Minion::Render () {}
+
+int Minion::GetHP () {
+    return hp;
+}
 
 void Minion::Shoot (Vec2 target) {
     Vec2 minionPosition = associated.box.GetCenter();
@@ -95,7 +107,18 @@ Vec2 Minion::GetPosition () {
 void Minion::NotifyCollision (GameObject& other) {
     Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
     if ((bullet != nullptr) and bullet->IsAimingAt(MINION_LABEL)) {
-        hp -= bullet->GetDamage();
+        damageTaken = bullet->GetDamage();
+        return;
+    }
+    PenguinCannon* playerc = (PenguinCannon*)other.GetComponent("PenguinCannon");
+    if (playerc != nullptr) {
+        damageTaken = playerc->GetHP();
+        return;
+    }
+    PenguinBody* playerb = (PenguinBody*)other.GetComponent("PenguinBody");
+    if (playerb != nullptr) {
+        damageTaken = playerb->GetHP();
+        return;
     }
 }
 
