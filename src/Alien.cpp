@@ -75,7 +75,11 @@ void Alien::Update (float dt) {
     if (penguin.expired()) {
         state = SLEEPING;
     }
-    else if (state == RESTING) {
+    else if (minionArray.empty()) {
+        target = penguin.lock()->box.GetCenter();
+        state = MOVING;
+    }
+    if (state == RESTING) {
         cooldown.Update(dt);
         if (cooldown.IsOver() and (not minionArray.empty())) {
             float targetDistance = 999999.0f;
