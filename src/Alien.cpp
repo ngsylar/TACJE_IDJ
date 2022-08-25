@@ -15,11 +15,10 @@ Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
 
     this->nMinions = nMinions;
     hp = ALIEN_START_HP;
-}
 
-Alien::Action::Action (ActionType type, Vec2 pos) {
-    this->type = type;
-    this->pos = pos;
+    restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, ALIEN_TIMER_START);
+    cooldown = Timer(ALIEN_SHOT_COOLDOWN, ALIEN_TIMER_START);
+    state = RESTING;
 }
 
 Alien::~Alien () {
@@ -40,15 +39,10 @@ void Alien::Start () {
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
         minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
     }
-}
-
-Alien::Action Alien::ScheduleAction(InputManager* input, Action::ActionType type) {
-    Action action(type, input->GetMousePosition());
-    return action;
+    penguin = Game::GetInstance().GetState().GetObjectPtr(ALIEN_FOE_LABEL);
 }
 
 void Alien::Update (float dt) {
-    InputManager& input = InputManager::GetInstance();
     Minion* minion;
     
     if (hp <= 0) {
@@ -56,6 +50,7 @@ void Alien::Update (float dt) {
         associated.RequestDelete();
         return;
     }
+
     for (int i=(int)minionArray.size()-1; i >= 0; i--) {
         minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
         if (minion->IsDead()) {
@@ -64,58 +59,60 @@ void Alien::Update (float dt) {
             minionArray.erase(minionArray.begin()+i);
         }
     }
+
+    if (penguin.expired()) {
+        state = SLEEPING;
+    }
     
-    if (input.MousePress(MOUSE_BUTTON_RIGHT)) {
-        taskQueue.push(ScheduleAction(&input, Action::MOVE));
-    }
-    if (input.MousePress(MOUSE_BUTTON_LEFT)) {
-        taskQueue.push(ScheduleAction(&input, Action::SHOOT));
-    }
+    else if (state == RESTING) {
+        cooldown.Update(dt);
+        if (cooldown.IsOver() and (not minionArray.empty())) {
+            float targetDistance = 999999.0f;
+            float minionDistance;
+            int minionShooterId;
 
-    if (not taskQueue.empty()) {
-        Action action = taskQueue.front();
+            target = penguin.lock()->box.GetCenter();
 
-        if (action.type == Action::MOVE) {
-            Vec2 alienPosition = associated.box.GetCenter();
+            for (int i=0; i < (int)minionArray.size(); i++) {
+                minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+                minionDistance = minion->GetPosition().DistanceTo(target);
 
-            if (alienPosition.DistanceTo(action.pos) > ALIEN_PASSING_DISTANCE) {
-                float targetAngle = alienPosition.AngleTo(action.pos);
-                speed = alienPosition.DirectionFrom(targetAngle);
-                associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
-            }
-            else {
-                associated.box.SetPosition(action.pos);
-                taskQueue.pop();
-                speed = Vec2();
-            }
-        }
-        else if (action.type == Action::SHOOT) {
-            if (not minionArray.empty()) {
-                float targetDistance = 999999.0f;
-                float minionDistance;
-                int minionShooterId;
-
-                for (int i=0; i < (int)minionArray.size(); i++) {
-                    minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
-                    minionDistance = minion->GetPosition().DistanceTo(action.pos);
-
-                    if (minionDistance < targetDistance) {
-                        targetDistance = minionDistance;
-                        minionShooterId = i;
-                    }
+                if (minionDistance < targetDistance) {
+                    targetDistance = minionDistance;
+                    minionShooterId = i;
                 }
-                // minion = (Minion*)minionArray[rand()%nMinions].lock()->GetComponent("Minion");
-                minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
-                minion->Shoot(action.pos);
             }
-            taskQueue.pop();
+            minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
+            minion->Shoot(target);
+            cooldown.Reset();
+        }
+
+        restTimer.Update(dt);
+        if (restTimer.IsOver()) {
+            target = penguin.lock()->box.GetCenter();
+            restTimer.Reset();
+            state = MOVING;
         }
     }
-    associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
+    else if (state == MOVING) {
+        Vec2 currentPosition = associated.box.GetCenter();
 
-    // sylar's alien breath extra effects
-    BreathAnimation(dt);
+        if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISTANCE) {
+            float targetAngle = currentPosition.AngleTo(target);
+            speed = currentPosition.DirectionFrom(targetAngle);
+            associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
+        } else {
+            associated.box.SetPosition(target);
+            speed = Vec2();
+            state = RESTING;
+        }
+    }
+
+    associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
+    BreathAnimation(dt);    // sylar's alien breath extra effects
 }
+
+void Alien::Render () {}
 
 // sylar's alien breath extra effects
 void Alien::BreathAnimation (float dt) {
@@ -132,10 +129,8 @@ void Alien::BreathAnimation (float dt) {
     sprite->SetScale(currentScale);
 }
 
-void Alien::Render () {}
-
 void Alien::ExplodeAnimation () {
-    State& state = Game::GetInstance().GetState();
+    State& gameState = Game::GetInstance().GetState();
 
     GameObject* explosion = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
     explosion->AddComponent(
@@ -146,12 +141,12 @@ void Alien::ExplodeAnimation () {
         )
     );
     explosion->box.SetPosition(associated.box.GetCenter());
-    state.AddObject(explosion);
+    gameState.AddObject(explosion);
 
     GameObject* boom = new GameObject();
     Sound* explosionSound = new Sound(*boom, ALIEN_DEATH_SOUND);
     boom->AddComponent(explosionSound);
-    state.AddObject(boom);
+    gameState.AddObject(boom);
     explosionSound->Play(ALIEN_DEATH_SOUND_TIMES, ALIEN_DEATH_SELFDESTRUCTION);
 }
 

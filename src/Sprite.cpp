@@ -120,15 +120,19 @@ void Sprite::SetFrameCount (int frameCount) {
 }
 
 void Sprite::Update (float dt) {
-    if (frameTimer.HasResetAndIsOver(dt)) {
-        SetFrame(currentFrame+1);
-        frameTimer.Reset();
-        
-        if ((currentFrame == frameCount-1) and frameOneshot) {
-            frameTimer.SetResetTime(0.0f);
+    if (frameTimer.HasInterval()) {
+        frameTimer.Update(dt);
 
-            if (selfDestruction)
-                associated.RequestDelete();
+        if (frameTimer.IsOver()) {
+            SetFrame(currentFrame+1);
+            frameTimer.Reset();
+            
+            if ((currentFrame == frameCount-1) and frameOneshot) {
+                frameTimer.SetResetTime(0.0f);
+
+                if (selfDestruction)
+                    associated.RequestDelete();
+            }
         }
     }
 }

@@ -151,6 +151,16 @@ std::weak_ptr<GameObject> State::GetObjectPtr (GameObject* go) {
     return wptrGo;
 }
 
+std::weak_ptr<GameObject> State::GetObjectPtr (std::string label) {
+    std::weak_ptr<GameObject> wptrGo;
+
+    for (int i=0; i < (int)objectArray.size(); i++) {
+        if (objectArray[i]->label == label)
+            wptrGo = objectArray[i];
+    }
+    return wptrGo;
+}
+
 // sylar's extra layer rendering
 void State::RemoveObject (int objectId, int renderingId) {
     renderingArray.erase(renderingArray.begin()+renderingId);

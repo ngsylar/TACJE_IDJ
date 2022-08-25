@@ -52,6 +52,7 @@ class State {
         void Render();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+        std::weak_ptr<GameObject> GetObjectPtr(std::string label);
         void RemoveObject(int objectId, int renderingId);
         bool QuitRequested();
         void ClearResources();

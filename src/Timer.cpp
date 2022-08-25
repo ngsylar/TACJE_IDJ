@@ -21,26 +21,26 @@ float Timer::Get () {
     return currentTime;
 }
 
+bool Timer::HasInterval () {
+    return (resetTime > 0.0f);
+}
+
 bool Timer::IsOver () {
     return (currentTime >= resetTime);
 }
 
-bool Timer::IsOver (float dt) {
-    if (resetTime == 0.0f)
-        return true;
+// bool Timer::IsOver (float dt) {
+//     if (resetTime == 0.0f)
+//         return true;
     
-    currentTime += dt;
-    return (currentTime >= resetTime);
-}
+//     currentTime += dt;
+//     return (currentTime >= resetTime);
+// }
 
-bool Timer::HasReset () {
-    return (resetTime > 0.0f);
-}
-
-bool Timer::HasResetAndIsOver (float dt) {
-    if (resetTime > 0.0f) {
-        currentTime += dt;
-        return (currentTime >= resetTime);
-    }
-    return false;
-}
+// bool Timer::HasResetAndIsOver (float dt) {
+//     if (resetTime > 0.0f) {
+//         currentTime += dt;
+//         return (currentTime >= resetTime);
+//     }
+//     return false;
+// }
