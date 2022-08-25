@@ -1,11 +1,11 @@
 #include "Collider.h"
 
-// #ifdef DEBUG
 #include "Camera.h"
-#include "Game.h"
 
+// DEBUG
+#include "Game.h"
+#include "InputManager.h"
 #include <SDL2/SDL.h>
-// #endif // DEBUG
 
 Collider::Collider (
     GameObject& associated,
@@ -13,6 +13,7 @@ Collider::Collider (
 ): Component(associated) {
     this->scale = scale;
     this->offset = offset;
+    debugMode = false;
 }
 
 void Collider::Update (float dt) {
@@ -24,10 +25,20 @@ void Collider::Update (float dt) {
     box.SetSize(
         associated.box.w * scale.x, associated.box.h * scale.y
     );
+
+    // DEBUG
+    InputManager& input = InputManager::GetInstance();
+
+    // DEBUG
+    if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_P))
+        debugMode = not debugMode;
 }
 
+// DEBUG
 void Collider::Render () {
-// #ifdef DEBUG
+    if (not debugMode)
+        return;
+
     Vec2 center( box.GetCenter() );
     SDL_Point points[5];
 
@@ -50,7 +61,6 @@ void Collider::Render () {
 
     SDL_SetRenderDrawColor(Game::GetInstance().GetRenderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLines(Game::GetInstance().GetRenderer(), points, 5);
-// #endif // DEBUG
 }
 
 void Collider::SetScale (Vec2 scale) {

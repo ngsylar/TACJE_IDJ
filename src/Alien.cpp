@@ -8,19 +8,23 @@
 #include "PenguinCannon.h"
 #include "Bullet.h"
 
-Alien::Alien (GameObject& associated, int nMinions): Component(associated) {
+int Alien::alienCount = 0;
+
+Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
+    alienCount++;
 
     sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
-    this->nMinions = nMinions;
+    this->minionCount = minionCount;
     hp = ALIEN_START_HP;
     damageTaken = 0;
 
-    restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, ALIEN_TIMER_START);
-    cooldown = Timer(ALIEN_SHOT_COOLDOWN, ALIEN_TIMER_START);
+    float startTime = ALIEN_TIMER_START + (ALIEN_TIMER_START * alienCount);
+    restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, startTime);
+    cooldown = Timer(ALIEN_SHOT_COOLDOWN, startTime);
     state = RESTING;
 }
 
@@ -30,15 +34,16 @@ Alien::~Alien () {
             ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
     }
     minionArray.clear();
+    alienCount--;
 }
 
 void Alien::Start () {
     GameObject* minion;
     float minionArcPlacement;
 
-    for (int i=0; i < nMinions; i++) {
+    for (int i=0; i < minionCount; i++) {
         minion = new GameObject(MINION_LAYER, MINION_LABEL);
-        minionArcPlacement = (float)i*((PI*2)/nMinions);
+        minionArcPlacement = (float)i*((PI*2)/minionCount);
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
         minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
     }
@@ -48,6 +53,10 @@ void Alien::Start () {
 void Alien::Update (float dt) {
     Minion* minion;
     
+    if (damageTaken > 0) {
+        hp -= damageTaken;
+        damageTaken = 0;
+    }
     if (hp <= 0) {
         ExplodeAnimation();
         associated.RequestDelete();
@@ -66,7 +75,6 @@ void Alien::Update (float dt) {
     if (penguin.expired()) {
         state = SLEEPING;
     }
-    
     else if (state == RESTING) {
         cooldown.Update(dt);
         if (cooldown.IsOver() and (not minionArray.empty())) {

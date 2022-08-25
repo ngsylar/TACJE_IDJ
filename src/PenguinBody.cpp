@@ -56,6 +56,11 @@ void PenguinBody::Update (float dt) {
         return;
     }
 
+    // remover
+    if (input.KeyPress(KEY_SPACE)) {
+        SDL_Log("%f %f", associated.box.GetCenter().x, associated.box.GetCenter().y);
+    }
+
     if (input.IsKeyDown(KEY_W)) {
         if (linearSpeed < PENGUINB_MAX_SPEED) {
             linearSpeed += PENGUINB_ACCELERATION * dt;

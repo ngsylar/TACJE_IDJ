@@ -54,11 +54,21 @@ void State::LoadAssets () {
     gameMap1->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
     gameMap1->AddComponent(gameMapTmap1);
     AddObject(gameMap1);
+    
+    GameObject* alien0 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    alien0->AddComponent(new Alien(*alien0, ALIEN_MINION_COUNT));
+    alien0->box.SetPosition(ALIEN0_START_POSITION);
+    AddObject(alien0);
 
-    GameObject* alien = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien->AddComponent(new Alien(*alien, ALIEN_MINIONS_AMOUNT));
-    alien->box.SetPosition(ALIEN_START_POSITION);
-    AddObject(alien);
+    GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
+    alien1->box.SetPosition(ALIEN1_START_POSITION);
+    AddObject(alien1);
+
+    GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
+    alien2->box.SetPosition(ALIEN2_START_POSITION);
+    AddObject(alien2);
 
     GameObject* penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));

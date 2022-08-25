@@ -11,6 +11,9 @@
 #define MOUSE_BUTTON_LEFT   SDL_BUTTON_LEFT
 #define MOUSE_BUTTON_RIGHT  SDL_BUTTON_RIGHT
 #define KEY_ESCAPE          SDLK_ESCAPE
+#define KEY_CTRL_LEFT       SDLK_LCTRL
+#define KEY_SHIFT_LEFT      SDLK_LSHIFT
+#define KEY_P               SDLK_p
 #define KEY_W               SDLK_w
 #define KEY_A               SDLK_a
 #define KEY_S               SDLK_s

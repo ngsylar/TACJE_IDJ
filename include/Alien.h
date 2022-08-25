@@ -8,17 +8,20 @@
 
 #define ALIEN_LABEL                     "Enemy"
 #define ALIEN_SPRITE                    "assets/img/alien.png"
-#define ALIEN_START_POSITION            512, 300
 #define ALIEN_START_HP                  100
 #define ALIEN_LINEAR_SPEED              200.0f
 #define ALIEN_MINIMUM_DISTANCE          10.0f
 #define ALIEN_ROTATION_SPEED            20.0f
 #define ALIEN_LAYER                     4
-#define ALIEN_MINIONS_AMOUNT            6
+#define ALIEN_MINION_COUNT              6
 #define ALIEN_FOE_LABEL                 "Player"
 #define ALIEN_TIMER_START               -2.0f
-#define ALIEN_MOVEMENT_COOLDOWN         4.0f
+#define ALIEN_MOVEMENT_COOLDOWN         6.0f
 #define ALIEN_SHOT_COOLDOWN             0.75f
+
+#define ALIEN0_START_POSITION            512, 300
+#define ALIEN1_START_POSITION            1070, 760
+#define ALIEN2_START_POSITION            286, 920
 
 #define ALIEN_DEATH_LABEL               "Explosion"
 #define ALIEN_DEATH_SOUND               "assets/audio/boomAlien.wav"
@@ -39,7 +42,7 @@ class Alien: public Component {
         AlienState state;
         Timer restTimer, cooldown;
         Vec2 target, speed;
-        int nMinions;
+        int minionCount;
         std::vector<std::weak_ptr<GameObject>> minionArray;
         std::weak_ptr<GameObject> penguin;
         
@@ -49,7 +52,9 @@ class Alien: public Component {
         void BreathAnimation(float dt);
 
     public:
-        Alien(GameObject& associated, int nMinions);
+        static int alienCount;
+
+        Alien(GameObject& associated, int minionCount);
         ~Alien();
         void Start();
         void Update(float dt);
