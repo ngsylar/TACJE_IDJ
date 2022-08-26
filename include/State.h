@@ -40,7 +40,7 @@ class State {
         GameObject* pauseScreen;
         Timer collisionTolerance;
         Music music;
-        bool started, paused, quitRequested;
+        bool debugMode, started, paused, quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
 
         // sylar's extra layer rendering
@@ -62,6 +62,7 @@ class State {
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(std::string label);
         void RemoveObject(int objectId, int renderingId);
+        bool IsDebugging();
         bool QuitRequested();
         void ClearResources();
 };

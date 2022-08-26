@@ -17,9 +17,10 @@ State::State () {
     music.Open(BG_MUSIC);
     music.Play(MUSIC_REPEAT_ON);
 
-    quitRequested = false;
+    debugMode = false;
     started = false;
     paused = false;
+    quitRequested = false;
 }
 
 State::~State () {
@@ -76,6 +77,11 @@ void State::LoadAssets () {
 
 void State::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
+
+    // DEBUG
+    if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_P)) {
+        debugMode = not debugMode;
+    }
 
     if (input.QuitRequested()) {
         quitRequested = true;
@@ -198,6 +204,10 @@ void State::RemoveObject (int objectId, int renderingId) {
 
     for (int i=objectId; i < (int)objectArray.size(); i++)
         objectArray[i]->index.Decrease();
+}
+
+bool State::IsDebugging () {
+    return debugMode;
 }
 
 bool State::QuitRequested () {

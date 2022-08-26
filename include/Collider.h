@@ -6,7 +6,6 @@
 class Collider: public Component {
     private:
         Vec2 scale, offset;
-        bool debugMode;
 
     public:
         Rect box;

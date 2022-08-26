@@ -1,12 +1,8 @@
 #include "GentooEngine.h"
 
-Collider::Collider (
-    GameObject& associated,
-    Vec2 scale, Vec2 offset
-): Component(associated) {
+Collider::Collider (GameObject& associated, Vec2 scale, Vec2 offset): Component(associated) {
     this->scale = scale;
     this->offset = offset;
-    debugMode = false;
 }
 
 void Collider::Update (float dt) {
@@ -18,18 +14,11 @@ void Collider::Update (float dt) {
     box.SetSize(
         associated.box.w * scale.x, associated.box.h * scale.y
     );
-
-    // DEBUG
-    InputManager& input = InputManager::GetInstance();
-
-    // DEBUG
-    if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_P))
-        debugMode = not debugMode;
 }
 
 // DEBUG
 void Collider::Render () {
-    if (not debugMode)
+    if (not Game::GetInstance().GetState().IsDebugging())
         return;
 
     Vec2 center( box.GetCenter() );
