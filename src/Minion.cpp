@@ -30,15 +30,15 @@ Minion::Minion (
 }
 
 void Minion::Update (float dt) {
-    if (hp <= 0) {
+    if (alienCenter.expired()) {
+        associated.RequestDelete();
         return;
     }
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
     }
-    if (alienCenter.expired()) {
-        associated.RequestDelete();
+    if (hp <= 0) {
         return;
     }
     

@@ -48,6 +48,7 @@ void PenguinBody::Update (float dt) {
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
+        // SDL_Log("Player %d", hp);    // remover linha
     }
     if (hp <= 0) {
         ExplodeAnimation();
@@ -136,7 +137,7 @@ void PenguinBody::NotifyCollision (GameObject& other) {
     }
     Alien* alien = (Alien*)other.GetComponent("Alien");
     if (alien != nullptr) {
-        damageTaken = alien->GetHP();
+        damageTaken = hp;
         return;
     }
 }

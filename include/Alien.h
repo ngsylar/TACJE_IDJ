@@ -8,7 +8,7 @@
 
 #define ALIEN_LABEL                     "Enemy"
 #define ALIEN_SPRITE                    "assets/img/alien.png"
-#define ALIEN_START_HP                  100
+#define ALIEN_START_HP                  200
 #define ALIEN_LINEAR_SPEED              200.0f
 #define ALIEN_MINIMUM_DISTANCE          10.0f
 #define ALIEN_ROTATION_SPEED            20.0f

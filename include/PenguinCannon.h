@@ -23,7 +23,7 @@
 #define PENGUINC_BULLET_TARGETS         {"Enemy"}
 #define PENGUINC_BULLET_SPEED           600.0f
 #define PENGUINC_BULLET_RANGE           800.0f
-#define PENGUINC_BULLET_DAMAGE          10
+#define PENGUINC_BULLET_DAMAGE          20
 #define PENGUINC_BULLET_LAYER           2
 
 class PenguinCannon: public Component {

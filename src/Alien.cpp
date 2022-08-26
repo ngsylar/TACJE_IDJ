@@ -29,10 +29,10 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 }
 
 Alien::~Alien () {
-    if (not Game::GetInstance().GetState().QuitRequested()) {
-        for (int i=0; i < (int)minionArray.size(); i++)
+    if (not Game::GetInstance().GetState().QuitRequested())
+        for (int i=(int)minionArray.size()-1; i >= 0; i--) {
             ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
-    }
+        }
     minionArray.clear();
     alienCount--;
 }
@@ -56,6 +56,7 @@ void Alien::Update (float dt) {
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
+        // SDL_Log("Alien %d", hp);     // remover linha
     }
     if (hp <= 0) {
         ExplodeAnimation();

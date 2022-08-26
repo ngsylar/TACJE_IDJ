@@ -22,7 +22,7 @@
 #define MINION_BULLET_FRAME_ONESHOT     false
 #define MINION_BULLET_SPEED             600.0f
 #define MINION_BULLET_TARGETS           {"Player"}
-#define MINION_BULLET_DAMAGE            10
+#define MINION_BULLET_DAMAGE            5
 #define MINION_BULLET_LAYER             6
 
 #define MINION_DEATH_LABEL              "Explosion"
