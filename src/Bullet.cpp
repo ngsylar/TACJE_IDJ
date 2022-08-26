@@ -49,7 +49,6 @@ void Bullet::Update (float dt) {
         associated.box.Translate(displacement);
         distanceLeft -= displacement.Magnitude();
     } else {
-        PlayHitSound();
         associated.RequestDelete();
     }
 }

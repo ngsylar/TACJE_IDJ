@@ -62,13 +62,12 @@ int Minion::GetHP () {
 void Minion::Shoot (Vec2 target) {
     Vec2 minionPosition = associated.box.GetCenter();
     float angle = minionPosition.AngleTo(target);
-    float distance = minionPosition.DistanceTo(target);
 
     GameObject* bullet = new GameObject(MINION_BULLET_LAYER, MINION_BULLET_LABEL);
     bullet->AddComponent(
         new Bullet(
             *bullet, MINION_BULLET_SPRITE,
-            angle, MINION_BULLET_SPEED, distance,
+            angle, MINION_BULLET_SPEED, MINION_BULLET_RANGE,
             MINION_BULLET_DAMAGE,
             MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME, MINION_BULLET_FRAME_ONESHOT,
             MINION_BULLET_TARGETS,

@@ -19,7 +19,7 @@
 #define BG_LAYER                    -1
 
 #define PAUSESCREEN_LABEL           "Pause"
-#define PAUSESCREEN_SPRITE          "assets/img/pause.png"
+#define PAUSESCREEN_SPRITE          "assets/ui/pause.png"
 #define PAUSESCREEN_POSITION        0, 0
 #define PAUSESCREEN_LAYER           0
 
@@ -62,7 +62,6 @@ class State {
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(std::string label);
         void RemoveObject(int objectId, int renderingId);
-        bool Paused();
         bool QuitRequested();
         void ClearResources();
 };

@@ -94,6 +94,8 @@ void State::Update (float dt) {
         ((Sprite*)pauseScreen->GetComponent("Sprite"))->Render(PAUSESCREEN_POSITION);
         paused = not paused;
     } if (paused) {
+        if (input.MousePress(MOUSE_BUTTON_LEFT))
+            paused = not paused;
         return;
     }
     
@@ -121,9 +123,8 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
-    if (paused) {
+    if (paused)
         return;
-    }
 
     // // idj's original object rendering
     // for (int i=0; i < (int)objectArray.size(); i++) {
@@ -206,10 +207,6 @@ void State::RemoveObject (int objectId, int renderingId) {
 
     for (int i=objectId; i < (int)objectArray.size(); i++)
         objectArray[i]->index.Decrease();
-}
-
-bool State::Paused () {
-    return paused;
 }
 
 bool State::QuitRequested () {
