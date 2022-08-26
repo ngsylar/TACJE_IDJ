@@ -1,7 +1,4 @@
-#include "Sprite.h"
-#include "Game.h"
-#include "Camera.h"
-#include "Resources.h"
+#include "GentooEngine.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
     selfDestruction = false;

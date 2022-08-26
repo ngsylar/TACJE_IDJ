@@ -1,7 +1,4 @@
-#include <algorithm>
-
-#include "InputManager.h"
-#include "Camera.h"
+#include "GentooEngine.h"
 
 InputManager& InputManager::GetInstance () {
     static InputManager inputManager;

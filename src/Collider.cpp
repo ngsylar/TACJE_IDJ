@@ -1,8 +1,4 @@
-#include "Collider.h"
-#include "Camera.h"         // DEBUG
-#include "Game.h"           // DEBUG
-#include "InputManager.h"   // DEBUG
-#include <SDL2/SDL.h>       // DEBUG
+#include "GentooEngine.h"
 
 Collider::Collider (
     GameObject& associated,

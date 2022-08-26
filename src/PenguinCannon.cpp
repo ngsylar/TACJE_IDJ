@@ -1,9 +1,5 @@
+#include "GentooEngine.h"
 #include "PenguinCannon.h"
-#include "Game.h"
-#include "Camera.h"
-#include "InputManager.h"
-#include "Sprite.h"
-#include "Collider.h"
 #include "Bullet.h"
 
 PenguinCannon::PenguinCannon (

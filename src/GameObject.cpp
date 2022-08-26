@@ -1,5 +1,4 @@
-#include "GameObject.h"
-#include "Component.h"
+#include "GentooEngine.h"
 
 GameObject::GameObject (int layer, std::string label) {
     isDead = false;

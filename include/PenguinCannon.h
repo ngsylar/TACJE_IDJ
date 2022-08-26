@@ -1,9 +1,9 @@
 #ifndef PENGUIN_CANNON_H
 #define PENGUIN_CANNON_H
 
+#include "Timer.h"
 #include "Component.h"
 #include "Sound.h"                      // sylar's extra sfx
-#include "Timer.h"
 #include "PenguinBody.h"                // sylar's extra positioning
 
 #define PENGUINC_SPRITE                 "assets/img/cubngun.png"

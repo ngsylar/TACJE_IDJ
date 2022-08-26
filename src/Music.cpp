@@ -1,5 +1,4 @@
-#include "Music.h"
-#include "Resources.h"
+#include "GentooEngine.h"
 
 Music::Music () {
     music = nullptr;

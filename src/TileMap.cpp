@@ -1,5 +1,4 @@
-#include "TileMap.h"
-#include "Camera.h"
+#include "GentooEngine.h"
 
 TileMap::TileMap (
     GameObject& associated, TileSet* tileSet, std::string file, float parallaxFactor

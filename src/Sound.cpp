@@ -1,5 +1,4 @@
-#include "Sound.h"
-#include "Resources.h"
+#include "GentooEngine.h"
 
 Sound::Sound (GameObject& associated): Component(associated) {
     selfDestruction = false;

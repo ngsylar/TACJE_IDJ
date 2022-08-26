@@ -1,11 +1,8 @@
+#include "GentooEngine.h"
 #include "Minion.h"
-#include "Game.h"
-#include "Collider.h"
-#include "Sprite.h"
-#include "Sound.h"
+#include "Bullet.h"
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
-#include "Bullet.h"
 
 Minion::Minion (
     GameObject& associated,

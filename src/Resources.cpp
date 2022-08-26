@@ -1,8 +1,4 @@
-#define INCLUDE_SDL_IMAGE
-#include "SDL_include.h"
-
-#include "Resources.h"
-#include "Game.h"
+#include "GentooEngine.h"
 
 std::unordered_map<std::string, SDL_Texture*> Resources::imageTable;
 std::unordered_map<std::string, Mix_Music*> Resources::musicTable;

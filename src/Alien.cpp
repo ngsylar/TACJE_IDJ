@@ -1,12 +1,9 @@
+#include "GentooEngine.h"
 #include "Alien.h"
-#include "Game.h"
-#include "Camera.h"
-#include "Collider.h"
-#include "Sound.h"
 #include "Minion.h"
+#include "Bullet.h"
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
-#include "Bullet.h"
 
 int Alien::alienCount = 0;
 

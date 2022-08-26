@@ -1,5 +1,4 @@
-#include "CameraFollower.h"
-#include "Camera.h"
+#include "GentooEngine.h"
 
 CameraFollower::CameraFollower (GameObject& associated): Component(associated) {}
 

@@ -1,6 +1,5 @@
+#include "GentooEngine.h"
 #include "Bullet.h"
-#include "Collider.h"
-#include "Sprite.h"
 
 Bullet::Bullet (
     GameObject& associated, std::string spriteName,

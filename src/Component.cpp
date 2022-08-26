@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "GentooEngine.h"
 
 Component::Component (GameObject& associated): associated(associated) {}
 

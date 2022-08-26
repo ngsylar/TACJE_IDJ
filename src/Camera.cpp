@@ -1,6 +1,4 @@
-#include "Camera.h"
-#include "Game.h"
-#include "InputManager.h"
+#include "GentooEngine.h"
 
 GameObject* Camera::focus = nullptr;
 Vec2 Camera::pos, Camera::speed;

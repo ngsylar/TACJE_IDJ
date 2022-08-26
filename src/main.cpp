@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "GentooEngine.h"
 
 int main (int argc, char* argv[]) {
     Game& game = Game::GetInstance();

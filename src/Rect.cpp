@@ -1,4 +1,4 @@
-#include "Rect.h"
+#include "GentooEngine.h"
 
 Rect::Rect () {
     x = 0;

@@ -1,9 +1,4 @@
-#define INCLUDE_SDL_IMAGE
-#define INCLUDE_SDL_MIXER
-#include "SDL_include.h"
-
-#include "Game.h"
-#include "InputManager.h"
+#include "GentooEngine.h"
 
 Game* Game::instance = nullptr;
 

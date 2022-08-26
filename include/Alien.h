@@ -1,8 +1,6 @@
 #ifndef ALIEN_H
 #define ALIEN_H
 
-#include <queue>
-
 #include "Component.h"
 #include "Sprite.h"                     // sylar's extra positioning
 
