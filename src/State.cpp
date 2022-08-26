@@ -12,6 +12,10 @@
 #include "PenguinBody.h"
 
 State::State () {
+    pauseScreen = new GameObject(PAUSESCREEN_LAYER, PAUSESCREEN_LABEL);
+    Sprite* pauseSprite = new Sprite(*pauseScreen, PAUSESCREEN_SPRITE);
+    pauseScreen->AddComponent(pauseSprite);
+
     GameObject* bg = new GameObject(BG_LAYER, BG_LABEL);
     CameraFollower* bgCamera = new CameraFollower(*bg);
     Sprite* bgSprite = new Sprite(*bg, BG_SPRITE);
@@ -24,10 +28,12 @@ State::State () {
 
     quitRequested = false;
     started = false;
+    paused = false;
 }
 
 State::~State () {
     objectArray.clear();
+    delete pauseScreen;
 }
 
 void State::Start () {
@@ -80,8 +86,14 @@ void State::LoadAssets () {
 void State::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
-    if (input.QuitRequested() or input.IsKeyDown(KEY_ESCAPE)) {
+    if (input.QuitRequested()) {
         quitRequested = true;
+        return;
+    }
+    else if (input.KeyPress(KEY_ESCAPE)) {
+        ((Sprite*)pauseScreen->GetComponent("Sprite"))->Render(PAUSESCREEN_POSITION);
+        paused = not paused;
+    } if (paused) {
         return;
     }
     
@@ -109,6 +121,10 @@ void State::Update (float dt) {
 }
 
 void State::Render () {
+    if (paused) {
+        return;
+    }
+
     // // idj's original object rendering
     // for (int i=0; i < (int)objectArray.size(); i++) {
     //     objectArray[i]->Render();
@@ -190,6 +206,10 @@ void State::RemoveObject (int objectId, int renderingId) {
 
     for (int i=objectId; i < (int)objectArray.size(); i++)
         objectArray[i]->index.Decrease();
+}
+
+bool State::Paused () {
+    return paused;
 }
 
 bool State::QuitRequested () {

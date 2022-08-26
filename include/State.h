@@ -18,6 +18,11 @@
 #define BG_MUSIC                    "assets/audio/stageState.ogg"
 #define BG_LAYER                    -1
 
+#define PAUSESCREEN_LABEL           "Pause"
+#define PAUSESCREEN_SPRITE          "assets/img/pause.png"
+#define PAUSESCREEN_POSITION        0, 0
+#define PAUSESCREEN_LAYER           0
+
 #define GAMEMAP_LABEL               "GameMap"
 #define GAMEMAP_TILESET             "assets/img/tileset.png"
 #define GAMEMAP_TILESET_TILE_SIZE   64, 64
@@ -32,10 +37,10 @@
 
 class State {
     private:
+        GameObject* pauseScreen;
         Timer collisionTolerance;
         Music music;
-        bool started;
-        bool quitRequested;
+        bool started, paused, quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
 
         // sylar's extra layer rendering
@@ -57,6 +62,7 @@ class State {
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(std::string label);
         void RemoveObject(int objectId, int renderingId);
+        bool Paused();
         bool QuitRequested();
         void ClearResources();
 };

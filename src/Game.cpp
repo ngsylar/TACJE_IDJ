@@ -73,9 +73,9 @@ Game::Game (std::string title, int width, int height) {
     }
 
     srand(time(NULL));
-    frameStart = 0;
-    dt = 0;
     this->state = new State();
+    frameStart = 0;
+    dt = 0.0f;
 }
 
 Game::~Game () {
@@ -114,7 +114,7 @@ void Game::Run () {
     InputManager& inputManager = InputManager::GetInstance();
 
     state->Start();
-    while (!state->QuitRequested()) {
+    while (not state->QuitRequested()) {
         CalculateDeltaTime();
         inputManager.Update();
         state->Update(dt);

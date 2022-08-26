@@ -1,11 +1,8 @@
 #include "Collider.h"
-
-#include "Camera.h"
-
-// DEBUG
-#include "Game.h"
-#include "InputManager.h"
-#include <SDL2/SDL.h>
+#include "Camera.h"         // DEBUG
+#include "Game.h"           // DEBUG
+#include "InputManager.h"   // DEBUG
+#include <SDL2/SDL.h>       // DEBUG
 
 Collider::Collider (
     GameObject& associated,
