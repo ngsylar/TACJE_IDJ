@@ -19,15 +19,24 @@ Minion::Minion (
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
-    this->alienCenter = Game::GetInstance().GetState().GetObjectPtr(&alienCenter);
+    this->alienCenter = Game::GetInstance().GetCurrentState().GetObjectPtr(&alienCenter);
     arc = arcOffsetDeg;
 
     hp = sprite->GetScale().x * MINION_HP_MODIFIER;
     damageTaken = 0;
 }
 
+void Minion::Start () {
+    Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
+    float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
+    Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
+    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(-arc);
+    associated.box.SetPosition(minionPlacement);
+}
+
 void Minion::Update (float dt) {
     if (alienCenter.expired()) {
+        ExplodeAnimation();
         associated.RequestDelete();
         return;
     }
@@ -72,11 +81,11 @@ void Minion::Shoot (Vec2 target) {
         )
     );
     bullet->box.SetPosition(minionPosition);
-    Game::GetInstance().GetState().AddObject(bullet);
+    Game::GetInstance().GetCurrentState().AddObject(bullet);
 }
 
 void Minion::ExplodeAnimation () {
-    State& state = Game::GetInstance().GetState();
+    State& state = Game::GetInstance().GetCurrentState();
 
     GameObject* explosion = new GameObject(MINION_DEATH_LAYER, MINION_DEATH_LABEL);
     explosion->AddComponent(

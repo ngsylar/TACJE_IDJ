@@ -10,12 +10,40 @@ GameObject::GameObject (int layer, std::string label) {
 }
 
 // sylar's extra layer rendering
-GameObject::StatePassKey::StatePassKey () {
+GameObject::Index::Index () {
     index = -1;
 }
 
 GameObject::~GameObject () {
     components.clear();
+}
+
+// sylar's extra layer rendering
+void GameObject::Index::Set (int index) {
+    this->index = index;
+}
+
+// sylar's extra layer rendering
+int GameObject::Index::Get () {
+    return index;
+}
+
+// sylar's extra layer rendering
+void GameObject::Index::Decrease () {
+    index--;
+}
+
+// sylar's extra layer rendering
+bool GameObject::Index::Exists () {
+    return (index > -1);
+}
+
+// sylar's extra layer rendering
+bool GameObject::CompareLayers (
+    std::weak_ptr<GameObject>& goA,
+    std::weak_ptr<GameObject>& goB
+) {
+    return (goA.lock()->layer < goB.lock()->layer);
 }
 
 void GameObject::Start () {
@@ -75,32 +103,4 @@ void GameObject::NotifyCollision (GameObject& other) {
     for (int i=0; i < (int)components.size(); i++) {
         components[i]->NotifyCollision(other);
     }
-}
-
-// sylar's extra layer rendering
-void GameObject::StatePassKey::Set (int index) {
-    this->index = index;
-}
-
-// sylar's extra layer rendering
-int GameObject::StatePassKey::Get () {
-    return index;
-}
-
-// sylar's extra layer rendering
-void GameObject::StatePassKey::Decrease () {
-    index--;
-}
-
-// sylar's extra layer rendering
-bool GameObject::StatePassKey::Exists () {
-    return (index > -1);
-}
-
-// sylar's extra layer rendering
-bool GameObject::CompareLayers (
-    std::weak_ptr<GameObject>& goA,
-    std::weak_ptr<GameObject>& goB
-) {
-    return (goA.lock()->layer < goB.lock()->layer);
 }

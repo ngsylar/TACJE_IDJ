@@ -8,6 +8,7 @@ Game::Game (std::string title, int width, int height) {
     // Game Instance
     if (instance != nullptr) {
         SDL_Log("Something went wrong...");
+        delete instance;
         exit(1);
     } else {
         instance = this;
@@ -68,35 +69,25 @@ Game::Game (std::string title, int width, int height) {
     }
 
     srand(time(NULL));
-    this->state = new State();
+    storedState = nullptr;
     frameStart = 0;
     dt = 0.0f;
 }
 
 Game::~Game () {
-    delete state;
+    delete storedState;
+    while (not stateStack.empty())
+        stateStack.pop();
+    Resources::ClearAll();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
+
     instance = nullptr;
-}
-
-Game& Game::GetInstance () {
-    if (instance == nullptr) {
-        instance = new Game(WINDOW_TITLE, WINDOW_SIZE);
-    }
-    return *instance;
-}
-
-State& Game::GetState () {
-    return *state;
-}
-
-SDL_Renderer* Game::GetRenderer () {
-    return renderer;
 }
 
 void Game::CalculateDeltaTime () {
@@ -105,17 +96,66 @@ void Game::CalculateDeltaTime () {
     frameStart = frameCurrent;
 }
 
+float Game::GetDeltaTime () {
+    return dt;
+}
+
+Game& Game::GetInstance () {
+    if (instance == nullptr)
+        instance = new Game(WINDOW_TITLE, WINDOW_SIZE);
+    return *instance;
+}
+
+SDL_Renderer* Game::GetRenderer () {
+    return renderer;
+}
+
+void Game::AddState (State* state) {
+    storedState = state;
+}
+
+State& Game::GetCurrentState () {
+    return *stateStack.top();
+}
+
 void Game::Run () {
     InputManager& inputManager = InputManager::GetInstance();
 
-    state->Start();
-    while (not state->QuitRequested()) {
+    if (storedState != nullptr) {
+        stateStack.emplace(storedState);
+        storedState = nullptr;
+    }
+    if (stateStack.empty())
+        return;
+
+    stateStack.top()->StartBase();
+    while (not stateStack.top()->QuitRequested()) {
         CalculateDeltaTime();
+
+        if (stateStack.top()->PopRequested()) {
+            stateStack.pop();
+            if (not stateStack.empty())
+                stateStack.top()->Resume();
+        }
+        if (storedState != nullptr) {
+            if (not stateStack.empty())
+                stateStack.top()->Pause();
+            stateStack.emplace(storedState);
+            storedState = nullptr;
+            stateStack.top()->StartBase();
+        }
+        if (stateStack.empty())
+            break;
+        
         inputManager.Update();
-        state->Update(dt);
-        state->Render();
+        stateStack.top()->UpdateBase(dt);
+        stateStack.top()->RenderBase();
         SDL_RenderPresent(renderer);
         SDL_Delay(GAME_DELAY);
     }
-    state->ClearResources();
+}
+
+void Game::DeleteInstance () {
+    delete instance;
+    instance = nullptr;
 }

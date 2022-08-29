@@ -15,7 +15,7 @@ PenguinCannon::PenguinCannon (
     shotSound = new Sound(associated, PENGUINC_SHOT_SOUND);
     associated.AddComponent(shotSound);
 
-    pbody = Game::GetInstance().GetState().GetObjectPtr(&penguinBody);
+    pbody = Game::GetInstance().GetCurrentState().GetObjectPtr(&penguinBody);
     angle = 0;
 
     // sylar's extra positioning
@@ -77,7 +77,7 @@ void PenguinCannon::Shoot (Vec2 target) {
         )
     );
     bullet->box.SetPosition(bulletPosition);
-    Game::GetInstance().GetState().AddObject(bullet);
+    Game::GetInstance().GetCurrentState().AddObject(bullet);
 
     // sylar's extra sfx
     shotSound->Play();

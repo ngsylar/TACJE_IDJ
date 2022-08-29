@@ -18,7 +18,7 @@ void Collider::Update (float dt) {
 
 // DEBUG
 void Collider::Render () {
-    if (not Game::GetInstance().GetState().IsDebugging())
+    if (not Game::GetInstance().GetCurrentState().Debugging())
         return;
 
     Vec2 center( box.GetCenter() );

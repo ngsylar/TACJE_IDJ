@@ -16,7 +16,7 @@ class GameObject {
     
     public:
         // sylar's extra layer rendering
-        class StatePassKey {
+        class Index {
             private:
                 friend class State;
                 int index;
@@ -25,7 +25,7 @@ class GameObject {
                 void Decrease();
             
             public:
-                StatePassKey();
+                Index();
                 int Get();
                 bool Exists();
         };
@@ -35,7 +35,7 @@ class GameObject {
         float angleDeg;
         
         // sylar's extra layer rendering
-        StatePassKey index;
+        Index index;
         int layer;
 
         GameObject(int layer=0, std::string label="");

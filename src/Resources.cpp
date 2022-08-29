@@ -60,7 +60,7 @@ Mix_Chunk* Resources::GetSound (std::string file) {
 
 void Resources::ClearImages () {
     std::unordered_map<std::string, SDL_Texture*>::iterator texture;
-    for (texture=imageTable.begin(); texture!=imageTable.end(); texture++) {
+    for (texture=imageTable.begin(); texture != imageTable.end(); texture++) {
         SDL_DestroyTexture(texture->second);
     }
     imageTable.clear();
@@ -68,7 +68,7 @@ void Resources::ClearImages () {
 
 void Resources::ClearMusics () {
     std::unordered_map<std::string, Mix_Music*>::iterator music;
-    for (music=musicTable.begin(); music!=musicTable.end(); music++) {
+    for (music=musicTable.begin(); music != musicTable.end(); music++) {
         Mix_FreeMusic(music->second);
     }
     musicTable.clear();
@@ -76,8 +76,14 @@ void Resources::ClearMusics () {
 
 void Resources::ClearSounds () {
     std::unordered_map<std::string, Mix_Chunk*>::iterator chunk;
-    for (chunk=soundTable.begin(); chunk!=soundTable.end(); chunk++) {
+    for (chunk=soundTable.begin(); chunk != soundTable.end(); chunk++) {
         Mix_FreeChunk(chunk->second);
     }
     soundTable.clear();
+}
+
+void Resources::ClearAll() {
+    ClearSounds();
+    ClearMusics();
+    ClearImages();
 }

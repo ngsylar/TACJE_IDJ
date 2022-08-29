@@ -1,6 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <memory>
+#include <stack>
+
 #define INCLUDE_SDL
 #include "SDL_include.h"
 
@@ -21,7 +24,8 @@ class Game {
         static Game* instance;
         SDL_Window* window;
         SDL_Renderer* renderer;
-        State* state;
+        std::stack<std::unique_ptr<State>> stateStack;
+        State* storedState;
         std::string title;
         int width, height;
         int frameStart;
@@ -32,11 +36,13 @@ class Game {
 
     public:
         ~Game();
-        static Game& GetInstance();
-        State& GetState();
-        SDL_Renderer* GetRenderer();
         float GetDeltaTime();
+        static Game& GetInstance();
+        SDL_Renderer* GetRenderer();
+        void AddState(State* state);
+        State& GetCurrentState();
         void Run();
+        static void DeleteInstance();
 };
 
 #endif

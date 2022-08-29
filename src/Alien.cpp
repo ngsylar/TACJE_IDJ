@@ -26,15 +26,12 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 }
 
 Alien::~Alien () {
-    if (not Game::GetInstance().GetState().QuitRequested())
-        for (int i=(int)minionArray.size()-1; i >= 0; i--) {
-            ((Minion*)minionArray[i].lock()->GetComponent("Minion"))->ExplodeAnimation();
-        }
     minionArray.clear();
     alienCount--;
 }
 
 void Alien::Start () {
+    State& gameState = Game::GetInstance().GetCurrentState();
     GameObject* minion;
     float minionArcPlacement;
 
@@ -42,9 +39,9 @@ void Alien::Start () {
         minion = new GameObject(MINION_LAYER, MINION_LABEL);
         minionArcPlacement = (float)i*((PI*2)/minionCount);
         minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
-        minionArray.push_back(Game::GetInstance().GetState().AddObject(minion));
+        minionArray.push_back(gameState.AddObject(minion));
     }
-    penguin = Game::GetInstance().GetState().GetObjectPtr(ALIEN_FOE_LABEL);
+    penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
 }
 
 void Alien::Update (float dt) {
@@ -147,7 +144,7 @@ void Alien::BreathAnimation (float dt) {
 }
 
 void Alien::ExplodeAnimation () {
-    State& gameState = Game::GetInstance().GetState();
+    State& gameState = Game::GetInstance().GetCurrentState();
 
     GameObject* explosion = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
     explosion->AddComponent(

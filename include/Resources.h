@@ -21,6 +21,7 @@ class Resources {
         static void ClearImages();
         static void ClearMusics();
         static void ClearSounds();
+        static void ClearAll();
 };
 
 #endif

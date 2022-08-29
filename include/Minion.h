@@ -48,6 +48,7 @@ class Minion: public Component {
             GameObject& alienCenter,
             float arcOffsetDeg=0.0f
         );
+        void Start();
         void Update(float dt);
         void Render();
         int GetHP();
