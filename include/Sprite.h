@@ -13,7 +13,7 @@
 
 class Sprite: public Component {
     private:
-        SDL_Texture* texture;
+        std::shared_ptr<SDL_Texture> texture;
         SDL_Rect clipRect;
         int width, height;
         Vec2 scale;

@@ -22,12 +22,11 @@ void Sprite::Open (
     scale = Vec2(SPRITE_DEFAULT_SCALE);
 
     int qtexture = SDL_QueryTexture(
-        texture, nullptr, nullptr,
+        texture.get(), nullptr, nullptr,
         &width, &height
     );
     if (qtexture == SPRITE_ERROR) {
         SDL_Log("SDL_QueryTexture: %s", SDL_GetError());
-        exit(1);
     }
     
     this->frameCount = frameCount;
@@ -60,14 +59,13 @@ void Sprite::Render (int startX, int startY) {
 
     int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
-        texture, &clipRect, &dstrect,
+        texture.get(), &clipRect, &dstrect,
         associated.angleDeg, nullptr,
         SDL_FLIP_NONE
     );
 
     if (rendercpy == SPRITE_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
-        exit(1);
     }
 }
 

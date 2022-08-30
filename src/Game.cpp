@@ -8,11 +8,9 @@ Game::Game (std::string title, int width, int height) {
     // Game Instance
     if (instance != nullptr) {
         SDL_Log("Something went wrong...");
-        delete instance;
         exit(1);
-    } else {
-        instance = this;
-    }
+    } instance = this;
+    
     this->title = title;
     this->width = width;
     this->height = height;
@@ -21,14 +19,12 @@ Game::Game (std::string title, int width, int height) {
     flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
     if (SDL_Init(flags) != GAME_SUCCESS) {
         SDL_Log("SDL_Init: %s", SDL_GetError());
-        exit(1);
     } else SDL_Log("SDL_Init: OK");
 
     // IMG
     flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
     if (IMG_Init(flags) == GAME_FAILURE) {
         SDL_Log("IMG_Init: %s", IMG_GetError());
-        exit(1);
     } else SDL_Log("IMG_Init: OK");
 
     // Mixer
@@ -55,7 +51,6 @@ Game::Game (std::string title, int width, int height) {
     );
     if (window == nullptr) {
         SDL_Log("Unable to create window: %s", SDL_GetError());
-        exit(1);
     }
 
     // renderer
@@ -65,7 +60,6 @@ Game::Game (std::string title, int width, int height) {
     );
     if (renderer == nullptr) {
         SDL_Log("Unable to start renderer: %s", SDL_GetError());
-        exit(1);
     }
 
     srand(time(NULL));

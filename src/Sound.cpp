@@ -25,7 +25,7 @@ void Sound::Play (int times, bool destructAfterPlay) {
 
     loops = times - ((times > 0)? 1:0);
     selfDestruction = destructAfterPlay;
-    channel = Mix_PlayChannel(channel, chunk, loops);
+    channel = Mix_PlayChannel(channel, chunk.get(), loops);
     if (channel == SOUND_ERROR_PLAY) {
         SDL_Log("Mix_PlayChannel: %s", SDL_GetError());
     }

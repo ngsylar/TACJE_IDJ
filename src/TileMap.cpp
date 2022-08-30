@@ -21,9 +21,9 @@ void TileMap::Load (std::string fileName) {
     char delimiter;
 
     file.open(fileName);
-    if (!file) {
+    if (not file) {
         SDL_Log("Unable to open file: %s", fileName.c_str());
-        exit(1);
+        return;
     }
 
     file >> mapWidth >> delimiter >> mapHeight >> delimiter >> mapDepth >> delimiter;

@@ -16,7 +16,7 @@ void Music::Open (std::string file) {
 }
 
 void Music::Play (int times) {
-    if (Mix_PlayMusic(music, times) == MUSIC_ERROR_PLAY)
+    if (Mix_PlayMusic(music.get(), times) == MUSIC_ERROR_PLAY)
         SDL_Log("Mix_PlayMusic: %s", SDL_GetError());
 }
 

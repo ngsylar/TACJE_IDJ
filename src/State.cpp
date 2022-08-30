@@ -4,6 +4,7 @@ State::State () {
     debugMode = false;
     started = false;
     popRequested = false;
+    quitRequested = false;
 }
 
 State::~State () {
