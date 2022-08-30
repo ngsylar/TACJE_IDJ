@@ -128,6 +128,7 @@ void Game::Run () {
 
         if (stateStack.top()->PopRequested()) {
             stateStack.pop();
+            Resources::ClearUniques();
             if (not stateStack.empty())
                 stateStack.top()->Resume();
         }
