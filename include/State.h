@@ -11,17 +11,16 @@ class State {
         // // sylar's extra layer rendering
         // std::vector<std::weak_ptr<GameObject>> renderingArray;
         // bool scheduleLayerSort;
-        
     
     public:
         State();
         virtual ~State();
-        void StartBase();
-        void UpdateBase(float dt);
-        void RenderBase();
         virtual void LoadAssets();
+        virtual void StartBase();
         virtual void Start();
+        virtual void UpdateBase(float dt);
         virtual void Update(float dt);
+        virtual void RenderBase();
         virtual void Render();
         virtual void Pause();
         virtual void Resume();

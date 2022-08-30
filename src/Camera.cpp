@@ -1,6 +1,7 @@
 #include "GentooEngine.h"
 
 GameObject* Camera::focus = nullptr;
+bool Camera::freeCamera = false;
 Vec2 Camera::pos, Camera::speed;
 
 void Camera::Follow (GameObject* newFocus) {
@@ -11,13 +12,21 @@ void Camera::Unfollow () {
     focus = nullptr;
 }
 
+void Camera::EnableFree () {
+    freeCamera = true;
+}
+
+void Camera::DisableFree () {
+    freeCamera = false;
+}
+
 void Camera::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     if (focus) {
         pos = focus->box.GetCenter() - (Vec2(WINDOW_SIZE) * 0.5f);
     }
-    else {
+    else if (freeCamera) {
         if (input.IsKeyDown(KEY_W)) {
             speed.y = -1;
         }

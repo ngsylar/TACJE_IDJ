@@ -8,7 +8,6 @@
 
 #define MUSIC_REPEAT_ON     -1
 #define MUSIC_FADE_TIME     1500
-#define MUSIC_STOP_TIME     0
 #define MUSIC_ERROR_PLAY    -1
 #define MUSIC_ERROR_FADE    0
 
@@ -20,9 +19,10 @@ class Music {
         Music();
         Music(std::string file);
         ~Music();
-        void Play(int times=MUSIC_REPEAT_ON);
-        void Stop(int msToStop=MUSIC_FADE_TIME);
         void Open(std::string file);
+        void Play(int times=0);
+        void Play(std::string file, int times=0);
+        void Stop(int msToStop=0);
         bool IsOpen();
 };
 

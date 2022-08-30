@@ -8,18 +8,16 @@ StageState::StageState () {
     // Sprite* pauseSprite = new Sprite(*pauseScreen, PAUSESCREEN_SPRITE);
     // pauseScreen->AddComponent(pauseSprite);
 
-    GameObject* bg = new GameObject(BG_LAYER, BG_LABEL);
+    GameObject* bg = new GameObject(BACKGROUND_LAYER, BACKGROUND_LABEL);
     CameraFollower* bgCamera = new CameraFollower(*bg);
-    Sprite* bgSprite = new Sprite(*bg, BG_SPRITE);
+    Sprite* bgSprite = new Sprite(*bg, BACKGROUND_SPRITE);
     bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     AddObject(bg);
-
-    music.Open(BG_MUSIC);
-    music.Play(MUSIC_REPEAT_ON);
 }
 
 StageState::~StageState () {
+    Camera::DisableFree();
     // objectArray.clear();
     // delete pauseScreen;
 }
@@ -63,15 +61,20 @@ void StageState::LoadAssets () {
 }
 
 void StageState::Start () {
+    music.Open(BACKGROUND_MUSIC);
+    music.Play(MUSIC_REPEAT_ON);
+
 //     LoadAssets();
 //     collisionTolerance = Timer(0.25f);
     
 //     for (int i=0; i < (int)objectArray.size(); i++)
 //         objectArray[i]->Start();
 //     started = true;
+
+    Camera::EnableFree();
 }
 
-void StageState::Update (float dt) {
+// void StageState::Update (float dt) {
 //     InputManager& input = InputManager::GetInstance();
 
 //     // DEBUG
@@ -109,7 +112,7 @@ void StageState::Update (float dt) {
 //         if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
 //             RemoveObject(renderingArray[i].lock()->index.Get(), i);
 //     }
-}
+// }
 
 // void StageState::Render () {
 //     if (paused)
@@ -152,3 +155,11 @@ void StageState::Update (float dt) {
 //             }
 //         }
 // }
+
+void StageState::Pause () {
+    Camera::DisableFree();
+}
+
+void StageState::Resume () {
+    Camera::EnableFree();
+}

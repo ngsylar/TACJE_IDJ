@@ -8,12 +8,15 @@
 class Camera {
     private:
         static GameObject* focus;
+        static bool freeCamera;
     
     public:
         static Vec2 pos, speed;
 
         static void Follow(GameObject* newFocus);
         static void Unfollow();
+        static void EnableFree();
+        static void DisableFree();
         static void Update(float dt);
 };
 
