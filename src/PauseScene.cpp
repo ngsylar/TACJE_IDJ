@@ -24,7 +24,7 @@ void PauseScene::Update (float dt) {
 
     if (input.KeyPress(KEY_ESCAPE)) {
         popRequested = true;
-        gameplayScene->popRequested = true;;
+        gameplayScene->popRequested = true;
         return;
     }
 

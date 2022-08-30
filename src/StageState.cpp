@@ -67,11 +67,6 @@ void StageState::Start () {
 
 void StageState::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
-
-    if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_R)) {
-        quitRequested = true;
-        return;
-    }
     
     if (input.KeyPress(KEY_ESCAPE)) {
         Game::GetInstance().AddState(new PauseScene(this));

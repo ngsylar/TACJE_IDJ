@@ -1,6 +1,6 @@
 @echo off
 
 xcopy "extlib\*.dll"
-JOGO.exe
+Lets_Get_The_Aliens.exe
 del "*.dll" /f /q
 cmd /k

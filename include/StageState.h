@@ -9,11 +9,6 @@
 #define BACKGROUND_MUSIC            "assets/audio/stageState.ogg"
 #define BACKGROUND_LAYER            -1
 
-// #define PAUSESCREEN_LABEL           "Pause"
-// #define PAUSESCREEN_SCREEN          "assets/ui/pause.k3y"
-// #define PAUSESCREEN_POSITION        0, 0
-// #define PAUSESCREEN_LAYER           0
-
 #define GAMEMAP_LABEL               "GameMap"
 #define GAMEMAP_TILESET             "assets/img/tileset.png"
 #define GAMEMAP_TILESET_TILE_SIZE   64, 64
