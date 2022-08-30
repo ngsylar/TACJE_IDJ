@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "StageState.h"
+#include "PauseScene.h"
 #include "Alien.h"
 #include "PenguinBody.h"
 
@@ -18,8 +19,6 @@ StageState::StageState () {
 
 StageState::~StageState () {
     Camera::DisableFree();
-    // objectArray.clear();
-    // delete pauseScreen;
 }
 
 // editar: modificar TileSet para ser usado por mais de um GameObject
@@ -61,39 +60,22 @@ void StageState::LoadAssets () {
 }
 
 void StageState::Start () {
+    Camera::EnableFree();
     music.Open(BACKGROUND_MUSIC);
     music.Play(MUSIC_REPEAT_ON);
-
-//     LoadAssets();
-//     collisionTolerance = Timer(0.25f);
-    
-//     for (int i=0; i < (int)objectArray.size(); i++)
-//         objectArray[i]->Start();
-//     started = true;
-
-    Camera::EnableFree();
 }
 
-// void StageState::Update (float dt) {
-//     InputManager& input = InputManager::GetInstance();
+void StageState::Update (float dt) {
+    InputManager& input = InputManager::GetInstance();
 
-//     // DEBUG
-//     if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_P)) {
-//         debugMode = not debugMode;
-//     }
-
-//     if (input.QuitRequested()) {
-//         quitRequested = true;
-//         return;
-//     }
-//     else if (input.KeyPress(KEY_ESCAPE)) {
-//         ((Sprite*)pauseScreen->GetComponent("Sprite"))->Render(PAUSESCREEN_POSITION);
-//         paused = not paused;
-//     } if (paused) {
-//         if (input.MousePress(MOUSE_BUTTON_LEFT))
-//             paused = not paused;
-//         return;
-//     }
+    if (input.IsKeyDown(KEY_CTRL_LEFT) and input.IsKeyDown(KEY_SHIFT_LEFT) and input.KeyPress(KEY_R)) {
+        quitRequested = true;
+        return;
+    }
+    
+    if (input.KeyPress(KEY_ESCAPE)) {
+        Game::GetInstance().AddState(new PauseScene(this));
+    }
     
 //     Camera::Update(dt);
 //     for (int i=0; i < (int)objectArray.size(); i++) {
@@ -112,7 +94,7 @@ void StageState::Start () {
 //         if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
 //             RemoveObject(renderingArray[i].lock()->index.Get(), i);
 //     }
-// }
+}
 
 // void StageState::Render () {
 //     if (paused)
@@ -132,28 +114,6 @@ void StageState::Start () {
 //     for (int i=0; i < (int)renderingArray.size(); i++) {
 //         renderingArray[i].lock()->Render();
 //     }
-// }
-
-// void StageState::DetectCollisions () {
-//     bool thereIsCollision;
-
-//     for (int i=0; i < (int)objectArray.size()-1; i++)
-//         for (int j=i+1; j < (int)objectArray.size(); j++) {
-//             Collider* colliderA = (Collider*)objectArray[i]->GetComponent("Collider");
-//             Collider* colliderB = (Collider*)objectArray[j]->GetComponent("Collider");
-//             if (not (colliderA and colliderB))
-//                 continue;
-
-//             thereIsCollision = Collision::IsColliding(
-//                 colliderA->box, colliderB->box,
-//                 Deg2Rad(objectArray[i]->angleDeg),
-//                 Deg2Rad(objectArray[j]->angleDeg)
-//             );
-//             if (thereIsCollision) {
-//                 objectArray[i]->NotifyCollision(*objectArray[j]);
-//                 objectArray[j]->NotifyCollision(*objectArray[i]);
-//             }
-//         }
 // }
 
 void StageState::Pause () {

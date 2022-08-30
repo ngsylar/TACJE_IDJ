@@ -87,7 +87,7 @@ Game::~Game () {
     IMG_Quit();
     SDL_Quit();
 
-    instance = nullptr;
+    SDL_Log("instance deleted");
 }
 
 void Game::CalculateDeltaTime () {

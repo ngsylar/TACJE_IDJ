@@ -48,3 +48,9 @@ void Camera::Update (float dt) {
     speed.x = 0;
     speed.y = 0;
 }
+
+void Camera::Reset () {
+    focus = nullptr;
+    pos = Vec2();
+    speed = Vec2();
+}

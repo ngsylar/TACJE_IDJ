@@ -18,6 +18,7 @@ class Camera {
         static void EnableFree();
         static void DisableFree();
         static void Update(float dt);
+        static void Reset();
 };
 
 #endif

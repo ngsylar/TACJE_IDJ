@@ -3,19 +3,15 @@
 #include "StageState.h"
 
 TitleState::TitleState () {
-    screen = new GameObject(TITLESCREEN_LAYER, TITLESCREEN_LABEL);
-    Sprite* bgSprite = new Sprite(*screen, TITLESCREEN_SPRITE);
-    screen->AddComponent(bgSprite);
-}
-
-TitleState::~TitleState () {
-    delete screen;
+    GameObject* screen = new GameObject(TITLESCREEN_LAYER, TITLESCREEN_LABEL);
+    Sprite* sprite = new Sprite(*screen, TITLESCREEN_SPRITE);
+    screen->AddComponent(sprite);
+    AddObject(screen);
 }
 
 void TitleState::Start () {
-    screen->Render();
-    music.Open(TITLESCREEN_MUSIC);
-    music.Play(MUSIC_REPEAT_ON);
+    Camera::Reset();
+    music.Play(TITLESCREEN_MUSIC);
 }
 
 void TitleState::Update (float dt) {
@@ -36,6 +32,6 @@ void TitleState::Pause () {
 }
 
 void TitleState::Resume () {
-    screen->Render();
+    Camera::Reset();
     music.Play(TITLESCREEN_MUSIC);
 }

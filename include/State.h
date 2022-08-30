@@ -5,7 +5,7 @@
 
 class State {
     protected:
-        bool debugMode, started, /*paused,*/ popRequested, quitRequested;
+        bool debugMode, started, popRequested, quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
 
         // // sylar's extra layer rendering

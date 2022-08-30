@@ -11,12 +11,10 @@
 
 class TitleState: public State {
     private:
-        GameObject* screen;
         Music music;
     
     public:
         TitleState();
-        ~TitleState();
         void Start();
         void Update(float dt);
         void Pause();

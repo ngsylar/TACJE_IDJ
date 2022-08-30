@@ -14,6 +14,7 @@
 #define KEY_CTRL_LEFT       SDLK_LCTRL
 #define KEY_SHIFT_LEFT      SDLK_LSHIFT
 #define KEY_P               SDLK_p
+#define KEY_R               SDLK_r
 #define KEY_W               SDLK_w
 #define KEY_A               SDLK_a
 #define KEY_S               SDLK_s

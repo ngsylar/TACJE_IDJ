@@ -9,10 +9,10 @@
 #define BACKGROUND_MUSIC            "assets/audio/stageState.ogg"
 #define BACKGROUND_LAYER            -1
 
-#define PAUSESCREEN_LABEL           "Pause"
-#define PAUSESCREEN_SCREEN          "assets/ui/pause.k3y"
-#define PAUSESCREEN_POSITION        0, 0
-#define PAUSESCREEN_LAYER           0
+// #define PAUSESCREEN_LABEL           "Pause"
+// #define PAUSESCREEN_SCREEN          "assets/ui/pause.k3y"
+// #define PAUSESCREEN_POSITION        0, 0
+// #define PAUSESCREEN_LAYER           0
 
 #define GAMEMAP_LABEL               "GameMap"
 #define GAMEMAP_TILESET             "assets/img/tileset.png"
@@ -25,6 +25,7 @@
 
 class StageState: public State {
     private:
+        friend class PauseScene;
         // GameObject* pauseScreen;
         // TileSet* tileSet;
         Music music;
@@ -34,11 +35,11 @@ class StageState: public State {
         // bool scheduleLayerSort;
 
     public:
-
         StageState();
         ~StageState();
         void LoadAssets();
         void Start();
+        void Update(float dt);
         void Pause();
         void Resume();
 };
