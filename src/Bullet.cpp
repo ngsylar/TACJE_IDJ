@@ -7,7 +7,7 @@ Bullet::Bullet (
     int damage,
     int frameCount, float frameTime, bool framesOneshot,
     std::vector<std::string> targetLabels,
-    std::string shotSoundFilename, std::string hitSoundFilename
+    std::string shotSoundFileName, std::string hitSoundFileName
 ): Component(associated) {
 
     Sprite* sprite = new Sprite(
@@ -20,10 +20,10 @@ Bullet::Bullet (
     associated.AddComponent(collider);
 
     // sylar's extra sfx
-    if (shotSoundFilename.empty()) {
+    if (shotSoundFileName.empty()) {
         shotSound = nullptr;
     } else {
-        shotSound = new Sound(associated, shotSoundFilename);
+        shotSound = new Sound(associated, shotSoundFileName);
         associated.AddComponent(shotSound);
     }
 
@@ -33,7 +33,7 @@ Bullet::Bullet (
     targets = targetLabels;
     this->damage = damage;
 
-    this->hitSoundFilename = hitSoundFilename;
+    this->hitSoundFileName = hitSoundFileName;
 }
 
 void Bullet::Start () {
@@ -68,11 +68,11 @@ int Bullet::GetDamage () {
 
 // sylar's extra sfx
 void Bullet::PlayHitSound () {
-    if (hitSoundFilename.empty())
+    if (hitSoundFileName.empty())
         return;
 
     GameObject* hit = new GameObject();
-    Sound* hitSound = new Sound(*hit, hitSoundFilename);
+    Sound* hitSound = new Sound(*hit, hitSoundFileName);
     hit->AddComponent(hitSound);
     hitSound->Play(BULLET_HIT_SOUND_TIMES, BULLET_HIT_SELFDESTRUCTION);
 }

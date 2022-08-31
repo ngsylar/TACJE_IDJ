@@ -46,24 +46,25 @@ void Sprite::SetClip (int x, int y, int w, int h) {
 
 void Sprite::Render () {
     Render(
-        (int)associated.box.x-Camera::pos.x,
-        (int)associated.box.y-Camera::pos.y
+        (int)associated.box.x - Camera::pos.x,
+        (int)associated.box.y - Camera::pos.y
     );
 }
 
 void Sprite::Render (int startX, int startY) {
-    SDL_Rect dstrect = SDL_Rect{
+    if (texture == nullptr)
+        return;
+
+    SDL_Rect destRect = SDL_Rect{
         startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
-
     int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
-        texture.get(), &clipRect, &dstrect,
+        texture.get(), &clipRect, &destRect,
         associated.angleDeg, nullptr,
         SDL_FLIP_NONE
     );
-
     if (rendercpy == SPRITE_ERROR) {
         SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
     }
@@ -108,14 +109,14 @@ void Sprite::SetFrameCount (int frameCount) {
     frameWidth = width / frameCount;
     currentFrame = 0;
     
-    clipRect.x = currentFrame;
+    clipRect.x = currentFrame * frameWidth;
     clipRect.w = frameWidth;
 
     associated.box.w = (float)frameWidth * scale.x;
 }
 
 void Sprite::Update (float dt) {
-    if (frameTimer.HasInterval()) {
+    if (frameTimer.HasResetTime()) {
         frameTimer.Update(dt);
 
         if (frameTimer.IsOver()) {

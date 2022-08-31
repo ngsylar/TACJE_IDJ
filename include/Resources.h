@@ -7,6 +7,7 @@
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_MIXER
+#define INCLUDE_SDL_TTF
 #include "SDL_include.h"
 
 class Resources {
@@ -14,15 +15,18 @@ class Resources {
         static std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> imageTable;
         static std::unordered_map<std::string, std::shared_ptr<Mix_Music>> musicTable;
         static std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>> soundTable;
+        static std::unordered_map<std::string, std::shared_ptr<TTF_Font>> fontTable;
     
     public:
         static std::shared_ptr<SDL_Texture> GetImage(std::string file);
         static std::shared_ptr<Mix_Music> GetMusic(std::string file);
         static std::shared_ptr<Mix_Chunk> GetSound(std::string file);
-        static void ClearUniqueImages();
-        static void ClearUniqueMusics();
-        static void ClearUniqueSounds();
-        static void ClearUniques();
+        static std::shared_ptr<TTF_Font> GetFont(std::string file, int size);
+        static void ClearRemainingImages();
+        static void ClearRemainingMusics();
+        static void ClearRemainingSounds();
+        static void ClearRemainingFonts();
+        static void ClearRemaining();
         static void ClearAll();
 };
 

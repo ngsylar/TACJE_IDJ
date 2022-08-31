@@ -5,10 +5,9 @@ Game* Game::instance = nullptr;
 Game::Game (std::string title, int width, int height) {
     int flags, opaudio;
 
-    // Game Instance
+    // Game instance
     if (instance != nullptr) {
-        SDL_Log("Something went wrong...");
-        exit(1);
+        SDL_Log("Error: instance already exists...");
     } instance = this;
     
     this->title = title;
@@ -33,15 +32,18 @@ Game::Game (std::string title, int width, int height) {
         SDL_Log("Mix_Init: %s", Mix_GetError());
     }
     opaudio = Mix_OpenAudio(
-        MIX_DEFAULT_FREQUENCY,
-        MIX_DEFAULT_FORMAT,
-        MIX_DEFAULT_CHANNELS,
-        MIXER_CHUNK_SIZE
+        MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+        MIX_DEFAULT_CHANNELS, MIXER_CHUNK_SIZE
     );
     if (opaudio != GAME_SUCCESS) {
         SDL_Log("Mix_OpenAudio: %s", Mix_GetError());
     } else SDL_Log("Mix_Init: OK");
     Mix_AllocateChannels(MIXER_CHANNELS);
+
+    // TTF
+    if (TTF_Init() != GAME_SUCCESS) {
+        SDL_Log("TTF_Init: %s", TTF_GetError());
+    } else SDL_Log("TTF_Init: OK");
 
     // window
     window = SDL_CreateWindow(
@@ -50,7 +52,7 @@ Game::Game (std::string title, int width, int height) {
         this->width, this->height, WINDOW_FLAGS
     );
     if (window == nullptr) {
-        SDL_Log("Unable to create window: %s", SDL_GetError());
+        SDL_Log("Error: unable to create window: %s", SDL_GetError());
     }
 
     // renderer
@@ -59,7 +61,7 @@ Game::Game (std::string title, int width, int height) {
         SDL_RENDERER_ACCELERATED
     );
     if (renderer == nullptr) {
-        SDL_Log("Unable to start renderer: %s", SDL_GetError());
+        SDL_Log("Error: unable to start renderer: %s", SDL_GetError());
     }
 
     srand(time(NULL));
@@ -78,10 +80,11 @@ Game::~Game () {
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
     Mix_Quit();
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 
-    SDL_Log("instance deleted");
+    SDL_Log("Info: Game Over");
 }
 
 void Game::CalculateDeltaTime () {
@@ -128,7 +131,7 @@ void Game::Run () {
 
         if (stateStack.top()->PopRequested()) {
             stateStack.pop();
-            Resources::ClearUniques();
+            Resources::ClearRemaining();
             if (not stateStack.empty())
                 stateStack.top()->Resume();
         }

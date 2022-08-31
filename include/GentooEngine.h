@@ -1,4 +1,4 @@
-// C++
+// C++ Library
 #include <fstream>
 #include <cstdlib>
 #include <algorithm>
@@ -10,18 +10,18 @@
 #include <unordered_map>
 #include <string>
 
-// SDL2
+// SDL2 Library
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
 #define INCLUDE_SDL_TTF
 #include "SDL_include.h"
 
-// Math
+// Math Custom Library
 #include "Timer.h"
 #include "Vec2.h"
 
-// Engine System
+// Engine System Components
 #include "Rect.h"
 #include "GameObject.h"
 #include "Camera.h"
@@ -30,7 +30,7 @@
 #include "Component.h"
 #include "Resources.h"
 
-// Engine Components
+// Engine Object Components
 #include "CameraFollower.h"
 #include "Collider.h"
 #include "Sprite.h"
@@ -38,7 +38,8 @@
 #include "TileMap.h"
 #include "Music.h"
 #include "Sound.h"
+#include "Text.h"
 
-// Engine Core
+// Engine Control Core
 #include "State.h"
 #include "Game.h"

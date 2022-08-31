@@ -21,7 +21,7 @@ float Timer::Get () {
     return currentTime;
 }
 
-bool Timer::HasInterval () {
+bool Timer::HasResetTime () {
     return (resetTime > 0.0f);
 }
 

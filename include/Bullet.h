@@ -16,7 +16,7 @@ class Bullet: public Component {
 
         // sylar's extra sfx
         Sound* shotSound;
-        std::string hitSoundFilename;
+        std::string hitSoundFileName;
 
     public:
         Bullet(
@@ -30,8 +30,8 @@ class Bullet: public Component {
             float spriteFrameTime=0.0f,
             bool spriteFramesOneshot=false,
             std::vector<std::string> targetLabels={},
-            std::string shotSoundFilename="",
-            std::string hitSoundFilename=""
+            std::string shotSoundFileName="",
+            std::string hitSoundFileName=""
         );
         void Start();
         void Update(float dt);

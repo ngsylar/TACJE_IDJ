@@ -67,13 +67,16 @@ void Alien::Update (float dt) {
         }
     }
 
+    // State Sleeping
     if (penguin.expired()) {
         state = SLEEPING;
     }
+    // State Chasing
     else if (minionArray.empty()) {
         target = penguin.lock()->box.GetCenter();
         state = MOVING;
     }
+    // State Resting/Shooting
     if (state == RESTING) {
         cooldown.Update(dt);
         if (cooldown.IsOver() and (not minionArray.empty())) {
@@ -104,6 +107,7 @@ void Alien::Update (float dt) {
             state = MOVING;
         }
     }
+    // State Moving
     else if (state == MOVING) {
         Vec2 currentPosition = associated.box.GetCenter();
 

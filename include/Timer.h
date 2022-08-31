@@ -11,7 +11,7 @@ class Timer {
         void Update(float dt);
         void Reset();
         float Get();
-        bool HasInterval();
+        bool HasResetTime();
         bool IsOver();
 };
 
