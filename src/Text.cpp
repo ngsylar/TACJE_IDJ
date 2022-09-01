@@ -99,9 +99,9 @@ void Text::Update (float dt) {
     flickTimer.Update(dt);
     if (flickTimer.IsOver()) {
         flicker = not flicker;
-        flickTimer.Reset();
-        flickTimer.SetResetTime(flicker? concealTime : displayTime);
         SDL_SetTextureAlphaMod(texture, (flicker? 0x00 : color.a));
+        flickTimer.SetResetTime(flicker? concealTime : displayTime);
+        flickTimer.Reset();
     }
 }
 

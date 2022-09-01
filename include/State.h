@@ -8,9 +8,9 @@ class State {
         bool debugMode, started, popRequested, quitRequested;
         std::vector<std::shared_ptr<GameObject>> objectArray;
 
-        // // sylar's extra layer rendering
-        // std::vector<std::weak_ptr<GameObject>> renderingArray;
-        // bool scheduleLayerSort;
+        // sylar's extra layer rendering
+        std::vector<std::weak_ptr<GameObject>> renderingArray;
+        bool scheduleSortingLayer;
     
     public:
         State();
@@ -27,11 +27,8 @@ class State {
         virtual std::weak_ptr<GameObject> AddObject(GameObject* object);
         virtual std::weak_ptr<GameObject> GetObjectPtr(GameObject* object);
         virtual std::weak_ptr<GameObject> GetObjectPtr(std::string label);
-        virtual void RemoveObject(int objectId, int renderingId);
         void DetectCollisions();
         bool Debugging();
-        // bool Started();
-        // bool Paused();
         bool PopRequested();
         bool QuitRequested();
 };

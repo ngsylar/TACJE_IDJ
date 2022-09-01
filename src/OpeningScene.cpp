@@ -3,39 +3,75 @@
 #include "TitleState.h"
 
 OpeningScene::OpeningScene () {
-    GameObject* engineScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
-    Sprite* engineSprite = new Sprite(*engineScreen, OPENING_ENGINE_SPRITE);
-    engineScreen->AddComponent(engineSprite);
-    AddObject(engineScreen);
+    screenTimer.SetResetTime(OPENING_CONCEAL_TIME);
+    currentScreen = 0;
+    exchanger = true;
+}
 
-    GameObject* productScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
-    Sprite* productSprite = new Sprite(*productScreen, OPENING_PRODUCT_SPRITE);
-    productScreen->AddComponent(productSprite);
-    AddObject(productScreen);
+void OpeningScene::LoadAssets () {
+    std::weak_ptr<GameObject> blankScreen_wptr, engineScreen_wptr;
+
+    GameObject* blankScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
+    Sprite* blankScreenSprite = new Sprite(*blankScreen, OPENING_BLANK_SPRITE);
+    blankScreen->AddComponent(blankScreenSprite);
+    blankScreen_wptr = AddObject(blankScreen);
+
+    GameObject* engineScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
+    Sprite* engineScreenSprite = new Sprite(*engineScreen, OPENING_ENGINE_SPRITE);
+    engineScreen->AddComponent(engineScreenSprite);
+    engineScreen_wptr = AddObject(engineScreen);
+
+    renderingArray.insert(
+        renderingArray.end(), {blankScreen_wptr, engineScreen_wptr, blankScreen_wptr}
+    );
+
+    std::vector<std::string> screens = OPENING_GAME_SPRITES;
+    GameObject* newScreen;
+    Sprite* newSprite;
+
+    for (int i=0; i < (int)screens.size(); i++) {
+        newScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
+        newSprite = new Sprite(*newScreen, screens[i]);
+        newScreen->AddComponent(newSprite);
+        renderingArray.push_back(AddObject(newScreen));
+    }
+    renderingArray.push_back(blankScreen_wptr);
 }
 
 void OpeningScene::Start () {
     Camera::Reset();
-    screenTimer.SetResetTime(OPENING_RESET_TIME);
 }
 
 void OpeningScene::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
-    if (objectArray.empty()) {
-        popRequested = true;
-        Game::GetInstance().AddState(new TitleState());
-        return;
-    }
-
     screenTimer.Update(dt);
     if (screenTimer.IsOver() or input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE)) {
-        objectArray.erase(objectArray.begin());
+        currentScreen++;
+        exchanger = not exchanger;
+        screenTimer.SetResetTime(exchanger? OPENING_CONCEAL_TIME : OPENING_DISPLAY_TIME);
         screenTimer.Reset();
+    }
+
+    if (currentScreen >= (int)renderingArray.size()) {
+        Game::GetInstance().AddState(new TitleState());
+        popRequested = true;
+        return;
     }
 }
 
 void OpeningScene::RenderBase () {
-    if (not objectArray.empty())
-        objectArray.front()->Render();
+    if (not renderingArray[currentScreen].expired())
+        renderingArray[currentScreen].lock()->Render();
+}
+
+std::weak_ptr<GameObject> OpeningScene::AddObject (GameObject* object) {
+    std::shared_ptr<GameObject> sptrGo(object);
+    std::weak_ptr<GameObject> wptrGo(sptrGo);
+
+    objectArray.push_back(sptrGo);
+    if (started)
+        object->Start();
+
+    return wptrGo;
 }

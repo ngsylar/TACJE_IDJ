@@ -10,17 +10,6 @@ TitleState::TitleState () {
 }
 
 void TitleState::LoadAssets () {
-    GameObject* startTextShadow = new GameObject(TITLESCREEN_TEXT_SHADOW_LAYER, TITLESCREEN_LABEL);
-    Text* textShadow = new Text(
-        *startTextShadow, TITLESCREEN_TEXT_CONTENT,
-        TITLESCREEN_TEXT_FONT_FILE, TITLESCREEN_TEXT_FONT_SIZE,
-        Text::BLENDED, TEXT_COLOR_SHADOW,
-        TITLESCREEN_TEXT_DISPLAY_TIME, TITLESCREEN_TEXT_CONCEAL_TIME
-    );
-    startTextShadow->AddComponent(textShadow);
-    startTextShadow->box.SetPosition(TITLESCREEN_TEXT_SHADOW_POSITION);
-    AddObject(startTextShadow);
-
     GameObject* startText = new GameObject(TITLESCREEN_TEXT_LAYER, TITLESCREEN_LABEL);
     Text* text = new Text(
         *startText, TITLESCREEN_TEXT_CONTENT,
@@ -31,6 +20,17 @@ void TitleState::LoadAssets () {
     startText->AddComponent(text);
     startText->box.SetPosition(TITLESCREEN_TEXT_POSITION);
     AddObject(startText);
+
+    GameObject* startTextShadow = new GameObject(TITLESCREEN_TEXT_SHADOW_LAYER, TITLESCREEN_LABEL);
+    Text* textShadow = new Text(
+        *startTextShadow, TITLESCREEN_TEXT_CONTENT,
+        TITLESCREEN_TEXT_FONT_FILE, TITLESCREEN_TEXT_FONT_SIZE,
+        Text::BLENDED, TEXT_COLOR_SHADOW,
+        TITLESCREEN_TEXT_DISPLAY_TIME, TITLESCREEN_TEXT_CONCEAL_TIME
+    );
+    startTextShadow->AddComponent(textShadow);
+    startTextShadow->box.SetPosition(TITLESCREEN_TEXT_SHADOW_POSITION);
+    AddObject(startTextShadow);
 }
 
 void TitleState::Start () {

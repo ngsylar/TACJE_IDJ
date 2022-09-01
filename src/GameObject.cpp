@@ -9,33 +9,8 @@ GameObject::GameObject (int layer, std::string label) {
     this->layer = layer;
 }
 
-// sylar's extra layer rendering
-GameObject::Index::Index () {
-    index = -1;
-}
-
 GameObject::~GameObject () {
     components.clear();
-}
-
-// sylar's extra layer rendering
-void GameObject::Index::Set (int index) {
-    this->index = index;
-}
-
-// sylar's extra layer rendering
-int GameObject::Index::Get () {
-    return index;
-}
-
-// sylar's extra layer rendering
-void GameObject::Index::Decrease () {
-    index--;
-}
-
-// sylar's extra layer rendering
-bool GameObject::Index::Exists () {
-    return (index > -1);
 }
 
 // sylar's extra layer rendering

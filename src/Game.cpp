@@ -7,7 +7,7 @@ Game::Game (std::string title, int width, int height) {
 
     // Game instance
     if (instance != nullptr) {
-        SDL_Log("Error: instance already exists...");
+        SDL_Log("Instance already exists...");
     } instance = this;
     
     this->title = title;
@@ -52,7 +52,7 @@ Game::Game (std::string title, int width, int height) {
         this->width, this->height, WINDOW_FLAGS
     );
     if (window == nullptr) {
-        SDL_Log("Error: unable to create window: %s", SDL_GetError());
+        SDL_Log("Unable to create window: %s", SDL_GetError());
     }
 
     // renderer
@@ -61,7 +61,7 @@ Game::Game (std::string title, int width, int height) {
         SDL_RENDERER_ACCELERATED
     );
     if (renderer == nullptr) {
-        SDL_Log("Error: unable to start renderer: %s", SDL_GetError());
+        SDL_Log("Unable to start renderer: %s", SDL_GetError());
     }
 
     srand(time(NULL));
@@ -84,7 +84,7 @@ Game::~Game () {
     IMG_Quit();
     SDL_Quit();
 
-    SDL_Log("Info: Game Over");
+    SDL_Log("Game Over");
 }
 
 void Game::CalculateDeltaTime () {
@@ -126,7 +126,7 @@ void Game::Run () {
         return;
 
     stateStack.top()->StartBase();
-    while (not stateStack.top()->QuitRequested()) {
+    while (not GetCurrentState().QuitRequested()) {
         CalculateDeltaTime();
 
         if (stateStack.top()->PopRequested()) {
@@ -146,8 +146,8 @@ void Game::Run () {
             break;
         
         inputManager.Update();
-        stateStack.top()->UpdateBase(dt);
-        stateStack.top()->RenderBase();
+        GetCurrentState().UpdateBase(dt);
+        GetCurrentState().RenderBase();
         SDL_RenderPresent(renderer);
         SDL_Delay(GAME_DELAY);
     }

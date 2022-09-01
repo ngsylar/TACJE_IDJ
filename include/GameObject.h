@@ -15,27 +15,11 @@ class GameObject {
         bool started, isDead;
     
     public:
-        // sylar's extra layer rendering
-        class Index {
-            private:
-                friend class State;
-                int index;
-
-                void Set(int index);
-                void Decrease();
-            
-            public:
-                Index();
-                int Get();
-                bool Exists();
-        };
-
         std::string label;
         Rect box;
         float angleDeg;
         
         // sylar's extra layer rendering
-        Index index;
         int layer;
 
         GameObject(int layer=0, std::string label="");

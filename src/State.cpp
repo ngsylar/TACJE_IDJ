@@ -41,36 +41,36 @@ void State::UpdateBase (float dt) {
 
     DetectCollisions();
 
-    // idj's original object deletion
     for (int i=(int)objectArray.size()-1; i >= 0; i--) {
         if (objectArray[i]->IsDead())
             objectArray.erase(objectArray.begin()+i);
     }
-    
-    // // sylar's extra layer rendering
-    // for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
-    //     if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
-    //         RemoveObject(renderingArray[i].lock()->index.Get(), i);
-    // }
 }
 
 void State::RenderBase () {
-    Render();
-
-    // idj's original object rendering
-    for (int i=0; i < (int)objectArray.size(); i++) {
-        objectArray[i]->Render();
+    // sylar's extra layer rendering
+    for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
+        if (renderingArray[i].expired())
+            renderingArray.erase(renderingArray.begin()+i);
     }
 
-    // // sylar's extra layer rendering
-    // if (scheduleLayerSort) {
-    //     std::sort(renderingArray.begin(), renderingArray.end(), GameObject::CompareLayers);
-    //     scheduleLayerSort = false;
+    Render();
+
+    // // idj's original object rendering
+    // for (int i=0; i < (int)objectArray.size(); i++) {
+    //     objectArray[i]->Render();
     // }
-    // // sylar's extra layer rendering
-    // for (int i=0; i < (int)renderingArray.size(); i++) {
-    //     renderingArray[i].lock()->Render();
-    // }
+
+    // sylar's extra layer rendering
+    if (scheduleSortingLayer) {
+        std::sort(renderingArray.begin(), renderingArray.end(), GameObject::CompareLayers);
+        scheduleSortingLayer = false;
+    }
+    
+    // sylar's extra layer rendering
+    for (int i=0; i < (int)renderingArray.size(); i++) {
+        renderingArray[i].lock()->Render();
+    }
 }
 
 void State::LoadAssets () {}
@@ -90,13 +90,12 @@ std::weak_ptr<GameObject> State::AddObject (GameObject* object) {
     std::weak_ptr<GameObject> wptrGo(sptrGo);
 
     objectArray.push_back(sptrGo);
-    // object->index.Set(objectArray.size()-1);    // sylar's extra layer rendering
     if (started)
         object->Start();
 
-    // // sylar's extra layer rendering
-    // renderingArray.push_back(wptrGo);
-    // scheduleLayerSort = true;
+    // sylar's extra layer rendering
+    renderingArray.push_back(wptrGo);
+    scheduleSortingLayer = true;
     
     return wptrGo;
 }
@@ -119,15 +118,6 @@ std::weak_ptr<GameObject> State::GetObjectPtr (std::string label) {
             wptrGo = objectArray[i];
     }
     return wptrGo;
-}
-
-// sylar's extra layer rendering
-void State::RemoveObject (int objectId, int renderingId) {
-    // renderingArray.erase(renderingArray.begin()+renderingId);
-    objectArray.erase(objectArray.begin()+objectId);
-
-    // for (int i=objectId; i < (int)objectArray.size(); i++)
-    //     objectArray[i]->index.Decrease();
 }
 
 void State::DetectCollisions () {
@@ -155,14 +145,6 @@ void State::DetectCollisions () {
 bool State::Debugging () {
     return debugMode;
 }
-
-// bool State::Started () {
-//     return started;
-// }
-
-// bool State::Paused () {
-//     return paused;
-// }
 
 bool State::PopRequested () {
     return popRequested;

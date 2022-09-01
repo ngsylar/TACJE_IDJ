@@ -5,10 +5,6 @@
 #include "PenguinBody.h"
 
 StageState::StageState () {
-    // pauseScreen = new GameObject(PAUSESCREEN_LAYER, PAUSESCREEN_LABEL);
-    // Sprite* pauseSprite = new Sprite(*pauseScreen, PAUSESCREEN_SPRITE);
-    // pauseScreen->AddComponent(pauseSprite);
-
     GameObject* bg = new GameObject(BACKGROUND_LAYER, BACKGROUND_LABEL);
     CameraFollower* bgCamera = new CameraFollower(*bg);
     Sprite* bgSprite = new Sprite(*bg, BACKGROUND_SPRITE);
@@ -71,45 +67,7 @@ void StageState::Update (float dt) {
     if (input.KeyPress(KEY_ESCAPE)) {
         Game::GetInstance().AddState(new PauseScene(this));
     }
-    
-//     Camera::Update(dt);
-//     for (int i=0; i < (int)objectArray.size(); i++) {
-//         objectArray[i]->Update(dt);
-//     }
-
-//     DetectCollisions();
-    
-//     // // idj's original object deletion
-//     // for (int i=(int)objectArray.size()-1; i >= 0; i--) {
-//     //     objectArray.erase(objectArray.begin()+i);
-//     // }
-    
-//     // sylar's extra layer rendering
-//     for (int i=(int)renderingArray.size()-1; i >= 0; i--) {
-//         if (renderingArray[i].lock()->IsDead() and renderingArray[i].lock()->index.Exists())
-//             RemoveObject(renderingArray[i].lock()->index.Get(), i);
-//     }
 }
-
-// void StageState::Render () {
-//     if (paused)
-//         return;
-
-//     // // idj's original object rendering
-//     // for (int i=0; i < (int)objectArray.size(); i++) {
-//     //     objectArray[i]->Render();
-//     // }
-
-//     // sylar's extra layer rendering
-//     if (scheduleLayerSort) {
-//         std::sort(renderingArray.begin(), renderingArray.end(), GameObject::CompareLayers);
-//         scheduleLayerSort = false;
-//     }
-//     // sylar's extra layer rendering
-//     for (int i=0; i < (int)renderingArray.size(); i++) {
-//         renderingArray[i].lock()->Render();
-//     }
-// }
 
 void StageState::Pause () {
     Camera::DisableFree();

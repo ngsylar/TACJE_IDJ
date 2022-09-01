@@ -4,21 +4,28 @@
 #include "Timer.h"
 #include "State.h"
 
-#define OPENING_LABEL           "EngineOpening"
+#define OPENING_LABEL           "GameOpening"
+#define OPENING_BLANK_SPRITE    "assets/ui/blank.k3y"
 #define OPENING_ENGINE_SPRITE   "assets/ui/engine.k3y"
-#define OPENING_PRODUCT_SPRITE  "assets/ui/disclaimer.k3y"
+#define OPENING_DISPLAY_TIME    2.0f
+#define OPENING_CONCEAL_TIME    0.25f
 #define OPENING_LAYER           0
-#define OPENING_RESET_TIME      5.0f
+
+#define OPENING_GAME_SPRITES    {"assets/ui/disclaimer.k3y"}
 
 class OpeningScene: public State {
     private:
         Timer screenTimer;
+        int currentScreen;
+        bool exchanger;
     
     public:
         OpeningScene();
+        void LoadAssets();
         void Start();
         void Update(float dt);
         void RenderBase();
+        std::weak_ptr<GameObject> AddObject(GameObject* object);
 };
 
 #endif

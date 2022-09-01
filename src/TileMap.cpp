@@ -22,7 +22,7 @@ void TileMap::Load (std::string fileName) {
 
     file.open(fileName);
     if (not file) {
-        SDL_Log("Error: unable to open file: %s", fileName.c_str());
+        SDL_Log("Unable to open file: %s", fileName.c_str());
         return;
     }
 
