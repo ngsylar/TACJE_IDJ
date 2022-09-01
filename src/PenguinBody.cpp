@@ -79,7 +79,7 @@ void PenguinBody::Update (float dt) {
     associated.box.Translate(displacement);
     position += displacement;   // sylar's extra positioning
 
-    Rect tilemapLimits(((StageState&)Game::GetInstance().GetCurrentState()).GetTilemapLimits());
+    Rect tilemapLimits(((StageState&)Game::GetInstance().GetCurrentState()).GetGameMapLimits());
     
     if (position.x < tilemapLimits.x) {
         // associated.box.x = tilemapLimits.x;              // idj's original positioning

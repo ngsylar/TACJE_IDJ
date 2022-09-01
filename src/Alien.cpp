@@ -67,60 +67,60 @@ void Alien::Update (float dt) {
         }
     }
 
-    // // State Sleeping
-    // if (penguin.expired()) {
-    //     state = SLEEPING;
-    // }
-    // // State Chasing
-    // else if (minionArray.empty()) {
-    //     target = penguin.lock()->box.GetCenter();
-    //     state = MOVING;
-    // }
-    // // State Resting/Shooting
-    // if (state == RESTING) {
-    //     cooldown.Update(dt);
-    //     if (cooldown.IsOver() and (not minionArray.empty())) {
-    //         float targetDistance = 999999.0f;
-    //         float minionDistance;
-    //         int minionShooterId;
+    // State Sleeping
+    if (penguin.expired()) {
+        state = SLEEPING;
+    }
+    // State Chasing
+    else if (minionArray.empty()) {
+        target = penguin.lock()->box.GetCenter();
+        state = MOVING;
+    }
+    // State Resting/Shooting
+    if (state == RESTING) {
+        cooldown.Update(dt);
+        if (cooldown.IsOver() and (not minionArray.empty())) {
+            float targetDistance = 999999.0f;
+            float minionDistance;
+            int minionShooterId;
 
-    //         target = penguin.lock()->box.GetCenter();
+            target = penguin.lock()->box.GetCenter();
 
-    //         for (int i=0; i < (int)minionArray.size(); i++) {
-    //             minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
-    //             minionDistance = minion->GetPosition().DistanceTo(target);
+            for (int i=0; i < (int)minionArray.size(); i++) {
+                minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+                minionDistance = minion->GetPosition().DistanceTo(target);
 
-    //             if (minionDistance < targetDistance) {
-    //                 targetDistance = minionDistance;
-    //                 minionShooterId = i;
-    //             }
-    //         }
-    //         minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
-    //         minion->Shoot(target);
-    //         cooldown.Reset();
-    //     }
+                if (minionDistance < targetDistance) {
+                    targetDistance = minionDistance;
+                    minionShooterId = i;
+                }
+            }
+            minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
+            minion->Shoot(target);
+            cooldown.Reset();
+        }
 
-    //     restTimer.Update(dt);
-    //     if (restTimer.IsOver()) {
-    //         target = penguin.lock()->box.GetCenter();
-    //         restTimer.Reset();
-    //         state = MOVING;
-    //     }
-    // }
-    // // State Moving
-    // else if (state == MOVING) {
-    //     Vec2 currentPosition = associated.box.GetCenter();
+        restTimer.Update(dt);
+        if (restTimer.IsOver()) {
+            target = penguin.lock()->box.GetCenter();
+            restTimer.Reset();
+            state = MOVING;
+        }
+    }
+    // State Moving
+    else if (state == MOVING) {
+        Vec2 currentPosition = associated.box.GetCenter();
 
-    //     if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISTANCE) {
-    //         float targetAngle = currentPosition.AngleTo(target);
-    //         speed = currentPosition.DirectionFrom(targetAngle);
-    //         associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
-    //     } else {
-    //         associated.box.SetPosition(target);
-    //         speed = Vec2();
-    //         state = RESTING;
-    //     }
-    // }
+        if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISTANCE) {
+            float targetAngle = currentPosition.AngleTo(target);
+            speed = currentPosition.DirectionFrom(targetAngle);
+            associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
+        } else {
+            associated.box.SetPosition(target);
+            speed = Vec2();
+            state = RESTING;
+        }
+    }
 
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
     BreathAnimation(dt);    // sylar's alien breath extra effects

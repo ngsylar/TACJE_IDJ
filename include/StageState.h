@@ -37,7 +37,7 @@ class StageState: public State {
         void Update(float dt);
         void Pause();
         void Resume();
-        Rect GetTilemapLimits();
+        Rect GetGameMapLimits();
 };
 
 #endif

@@ -24,7 +24,7 @@ void EndState::Start () {
 void EndState::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
-    if (input.KeyPress(KEY_ESCAPE) or (input.KeyPress(KEY_SPACE)) or input.MousePress(MOUSE_BUTTON_LEFT)) {
+    if ((not Mix_PlayingMusic()) or input.KeyPress(KEY_ESCAPE) or (input.KeyPress(KEY_SPACE)) or input.MousePress(MOUSE_BUTTON_LEFT)) {
         Game::GetInstance().AddState(new TitleState());
         popRequested = true;
         return;
