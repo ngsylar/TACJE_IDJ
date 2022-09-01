@@ -1,4 +1,5 @@
 #include "GentooEngine.h"
+#include "StageState.h"
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
 #include "Alien.h"
@@ -77,6 +78,26 @@ void PenguinBody::Update (float dt) {
     Vec2 displacement = speed * dt;
     associated.box.Translate(displacement);
     position += displacement;   // sylar's extra positioning
+
+    Rect tilemapLimits(((StageState&)Game::GetInstance().GetCurrentState()).GetTilemapLimits());
+    
+    if (position.x < tilemapLimits.x) {
+        // associated.box.x = tilemapLimits.x;              // idj's original positioning
+        associated.box.x -= (position.x - tilemapLimits.x); // sylar's extra positioning
+        position.x = tilemapLimits.x;                       // sylar's extra positioning
+    } else if (position.x > tilemapLimits.w) {
+        // associated.box.x = tilemapLimits.w;              // idj's original positioning
+        associated.box.x -= (position.x - tilemapLimits.w); // sylar's extra positioning
+        position.x = tilemapLimits.w;                       // sylar's extra positioning
+    } if (position.y < tilemapLimits.y) {
+        // associated.box.y = tilemapLimits.y;              // idj's original positioning
+        associated.box.y -= (position.y - tilemapLimits.y); // sylar's extra positioning
+        position.y = tilemapLimits.y;                       // sylar's extra positioning
+    } else if (position.y > tilemapLimits.h) {
+        // associated.box.y = tilemapLimits.h;              // idj's original positioning
+        associated.box.y -= (position.y - tilemapLimits.h); // sylar's extra positioning
+        position.y = tilemapLimits.h;                       // sylar's extra positioning
+    }
 
     // sylar's extra positioning
     if (deltaAngle != 0.0f) {

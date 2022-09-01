@@ -44,10 +44,10 @@ void StageState::LoadAssets () {
     alien0->box.SetPosition(ALIEN0_START_POSITION);
     AddObject(alien0);
 
-    GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
-    alien1->box.SetPosition(ALIEN1_START_POSITION);
-    AddObject(alien1);
+    // GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
+    // alien1->box.SetPosition(ALIEN1_START_POSITION);
+    // AddObject(alien1);
 
     // GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
     // alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
@@ -58,11 +58,12 @@ void StageState::LoadAssets () {
     penguin->AddComponent(new PenguinBody(*penguin));
     penguin->box.SetPosition(PENGUINB_START_POSITION);
     AddObject(penguin);
-    Camera::Follow(penguin);
 }
 
 void StageState::Start () {
     Camera::EnableFree();
+    Camera::Follow(penguin);
+    gameMapLimits = Rect(GAMEMAP_TILEMAP0_LIMITS);
     music.Open(BACKGROUND_MUSIC);
     music.Play(MUSIC_REPEAT_ON);
 }
@@ -103,4 +104,8 @@ void StageState::Pause () {
 
 void StageState::Resume () {
     Camera::EnableFree();
+}
+
+Rect StageState::GetTilemapLimits () {
+    return gameMapLimits;
 }
