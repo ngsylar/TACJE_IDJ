@@ -35,7 +35,7 @@ void TitleState::LoadAssets () {
 
 void TitleState::Start () {
     Camera::Reset();
-    music.Play(TITLESCREEN_MUSIC_FILE);
+    // music.Play(TITLESCREEN_MUSIC_FILE);
 }
 
 void TitleState::Update (float dt) {
@@ -48,14 +48,15 @@ void TitleState::Update (float dt) {
 
     if (input.KeyPress(KEY_SPACE) or input.MousePress(MOUSE_BUTTON_LEFT)) {
         Game::GetInstance().AddState(new StageState());
+        popRequested = true;
     }
 }
 
 void TitleState::Pause () {
-    music.Stop();
+    // music.Stop();
 }
 
 void TitleState::Resume () {
     Camera::Reset();
-    music.Play(TITLESCREEN_MUSIC_FILE);
+    // music.Play(TITLESCREEN_MUSIC_FILE);
 }

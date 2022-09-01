@@ -46,7 +46,7 @@ void OpeningScene::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     screenTimer.Update(dt);
-    if (screenTimer.IsOver() or input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE)) {
+    if (screenTimer.IsOver() or input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE) or input.MousePress(MOUSE_BUTTON_LEFT)) {
         currentScreen++;
         exchanger = not exchanger;
         screenTimer.SetResetTime(exchanger? OPENING_CONCEAL_TIME : OPENING_DISPLAY_TIME);

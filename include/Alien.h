@@ -40,6 +40,7 @@ class Alien: public Component {
         AlienState state;
         Timer restTimer, cooldown;
         Vec2 target, speed;
+        static int alienCount;
         int minionCount;
         std::vector<std::weak_ptr<GameObject>> minionArray;
         std::weak_ptr<GameObject> penguin;
@@ -50,8 +51,6 @@ class Alien: public Component {
         void BreathAnimation(float dt);
 
     public:
-        static int alienCount;
-
         Alien(GameObject& associated, int minionCount);
         ~Alien();
         void Start();
@@ -60,6 +59,7 @@ class Alien: public Component {
         int GetHP();
         void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
+        static int GetAlienCount();
         bool Is(std::string type);
 };
 

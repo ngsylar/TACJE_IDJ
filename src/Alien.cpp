@@ -19,7 +19,7 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     hp = ALIEN_START_HP;
     damageTaken = 0;
 
-    float startTime = ALIEN_TIMER_START + (ALIEN_TIMER_START * alienCount);
+    float startTime = ALIEN_SHOT_COOLDOWN + (ALIEN_TIMER_START * alienCount);
     restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, startTime);
     cooldown = Timer(ALIEN_SHOT_COOLDOWN, startTime);
     state = RESTING;
@@ -184,6 +184,10 @@ void Alien::NotifyCollision (GameObject& other) {
         damageTaken = playerb->GetHP();
         return;
     }
+}
+
+int Alien::GetAlienCount () {
+    return alienCount;
 }
 
 bool Alien::Is (std::string type) {

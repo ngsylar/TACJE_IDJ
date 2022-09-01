@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "PauseScene.h"
+#include "GameData.h"
 
 PauseScene::PauseScene (StageState* gameplayScene) {
     this->gameplayScene = gameplayScene;
@@ -23,8 +24,8 @@ void PauseScene::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     if (input.KeyPress(KEY_ESCAPE)) {
+        GameData::stageStatePop = true;
         popRequested = true;
-        gameplayScene->popRequested = true;
         return;
     }
 

@@ -1,6 +1,9 @@
 #include "GentooEngine.h"
 #include "StageState.h"
+#include "TitleState.h"
 #include "PauseScene.h"
+#include "EndState.h"
+#include "GameData.h"
 #include "Alien.h"
 #include "PenguinBody.h"
 
@@ -11,6 +14,9 @@ StageState::StageState () {
     bg->AddComponent(bgCamera);
     bg->AddComponent(bgSprite);
     AddObject(bg);
+
+    continueTimer.SetResetTime(CONTINUE_TIME);
+    gameOver = false;
 }
 
 StageState::~StageState () {
@@ -43,12 +49,12 @@ void StageState::LoadAssets () {
     alien1->box.SetPosition(ALIEN1_START_POSITION);
     AddObject(alien1);
 
-    GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
-    alien2->box.SetPosition(ALIEN2_START_POSITION);
-    AddObject(alien2);
+    // GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
+    // alien2->box.SetPosition(ALIEN2_START_POSITION);
+    // AddObject(alien2);
 
-    GameObject* penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
+    penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));
     penguin->box.SetPosition(PENGUINB_START_POSITION);
     AddObject(penguin);
@@ -63,6 +69,28 @@ void StageState::Start () {
 
 void StageState::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
+
+    if (gameOver) {
+        continueTimer.Update(dt);
+        if (continueTimer.IsOver()) {
+            Game::GetInstance().AddState(new EndState());
+            continueTimer.Reset();
+            popRequested = true;
+        }
+        return;
+    } else if (GetObjectPtr(penguin).expired()) {
+        gameOver = true;
+    } else if (Alien::GetAlienCount() <= 0) {
+        GameData::playerVictory = true;
+        gameOver = true;
+    }
+
+    if (GameData::StageStatePopRequested()) {
+        Game::GetInstance().AddState(new TitleState());
+        GameData::stageStatePop = false;
+        popRequested = true;
+        return;
+    }
     
     if (input.KeyPress(KEY_ESCAPE)) {
         Game::GetInstance().AddState(new PauseScene(this));

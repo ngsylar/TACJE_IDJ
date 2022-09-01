@@ -18,10 +18,14 @@
 #define GAMEMAP_TILEMAP1            "assets/map/tileMap1.txt"
 #define GAMEMAP_TILEMAP1_LAYER      8
 
+#define CONTINUE_TIME               2.0f
+
 class StageState: public State {
     private:
-        friend class PauseScene;
+        GameObject* penguin;
         Music music;
+        Timer continueTimer;
+        bool gameOver;
 
     public:
         StageState();

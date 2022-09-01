@@ -1,5 +1,5 @@
-#ifndef TITLE_STATE_H
-#define TITLE_STATE_H
+#ifndef PAUSE_SCENE_H
+#define PAUSE_SCENE_H
 
 #include "State.h"
 #include "StageState.h"
