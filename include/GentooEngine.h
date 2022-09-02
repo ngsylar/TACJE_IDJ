@@ -43,3 +43,6 @@
 // Engine Control Core
 #include "State.h"
 #include "Game.h"
+
+// editar: fazer tratamento de erros
+// editar: transformar alguns ponteiros em weak_ptr

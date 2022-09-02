@@ -80,6 +80,7 @@ void StageState::Update (float dt) {
         }
         return;
     } else if (GetObjectPtr(penguin).expired()) {
+        GameData::playerVictory = false;
         gameOver = true;
     } else if (Alien::GetAlienCount() <= 0) {
         GameData::playerVictory = true;

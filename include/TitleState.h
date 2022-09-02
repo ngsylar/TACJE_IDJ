@@ -9,7 +9,7 @@
 #define TITLESCREEN_SPRITE_FILE             "assets/img/title.jpg"
 #define TITLESCREEN_SPRITE_LAYER            0
 
-#define TITLESCREEN_TEXT_CONTENT            "Pressione Espaco"
+#define TITLESCREEN_TEXT_CONTENT            "Press Espace"
 #define TITLESCREEN_TEXT_FONT_FILE          "assets/font/Call_me_maybe.ttf"
 #define TITLESCREEN_TEXT_FONT_SIZE          48
 #define TITLESCREEN_TEXT_DISPLAY_TIME       0.75f

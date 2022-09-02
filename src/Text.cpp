@@ -93,7 +93,7 @@ void Text::Start () {
 }
 
 void Text::Update (float dt) {
-    if (not (texture or flickTimer.HasResetTime()))
+    if (not (texture and flickTimer.HasResetTime()))
         return;
     
     flickTimer.Update(dt);

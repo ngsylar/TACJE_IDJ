@@ -1,5 +1,4 @@
 #include "GentooEngine.h"
-// editar: tratar erros
 
 Game* Game::instance = nullptr;
 
