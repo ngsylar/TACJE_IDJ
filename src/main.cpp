@@ -2,7 +2,6 @@
 #include "OpeningScene.h"
 #include "InMemoriam.h"
 
-// editar: tratar erros
 int main (int argc, char* argv[]) {
     Game::GetInstance().AddState(new OpeningScene());
     Game::GetInstance().Run();

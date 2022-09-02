@@ -25,17 +25,17 @@ void OpeningScene::LoadAssets () {
         renderingArray.end(), {blankScreen_wptr, engineScreen_wptr, blankScreen_wptr}
     );
 
-    std::vector<std::string> screens = OPENING_GAME_SPRITES;
-    GameObject* newScreen;
-    Sprite* newSprite;
+    // std::vector<std::string> screens = OPENING_GAME_SPRITES;
+    // GameObject* newScreen;
+    // Sprite* newSprite;
 
-    for (int i=0; i < (int)screens.size(); i++) {
-        newScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
-        newSprite = new Sprite(*newScreen, screens[i]);
-        newScreen->AddComponent(newSprite);
-        renderingArray.push_back(AddObject(newScreen));
-    }
-    renderingArray.push_back(blankScreen_wptr);
+    // for (int i=0; i < (int)screens.size(); i++) {
+    //     newScreen = new GameObject(OPENING_LAYER, OPENING_LABEL);
+    //     newSprite = new Sprite(*newScreen, screens[i]);
+    //     newScreen->AddComponent(newSprite);
+    //     renderingArray.push_back(AddObject(newScreen));
+    // }
+    // renderingArray.push_back(blankScreen_wptr);
 }
 
 void OpeningScene::Start () {
@@ -56,12 +56,11 @@ void OpeningScene::Update (float dt) {
     if (currentScreen >= (int)renderingArray.size()) {
         Game::GetInstance().AddState(new TitleState());
         popRequested = true;
-        return;
     }
 }
 
 void OpeningScene::RenderBase () {
-    if (not renderingArray[currentScreen].expired())
+    if ((currentScreen < (int)renderingArray.size()) and (not renderingArray[currentScreen].expired()))
         renderingArray[currentScreen].lock()->Render();
 }
 

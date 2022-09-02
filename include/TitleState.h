@@ -20,8 +20,8 @@
 #define TITLESCREEN_TEXT_SHADOW_LAYER       1
 
 class TitleState: public State {
-    private:
-        Music music;
+    // private:
+    //     Music music;
     
     public:
         TitleState();

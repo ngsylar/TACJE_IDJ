@@ -36,7 +36,7 @@ DEP_FILES = $(addprefix $(DEP_PATH)/,$(addsuffix .d,$(FILE_NAMES)))
 OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 # executavel
-EXEC = Lets_Get_The_Aliens
+EXEC = GAME
 
 
 
