@@ -19,3 +19,5 @@ make        # para compilar
 ```
 
 * No windows, inclua as dlls necessárias na pasta raiz (para abrir _JOGO.exe_) ou em _extlib_ (para abrir _JOGO.bat_) (veja _[extlib/requirements.txt](extlib/requirements.txt)_).
+
+Para apagar os executáveis compilados, execute o arquivo _clear_obj.bat_.
