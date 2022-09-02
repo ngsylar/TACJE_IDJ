@@ -1,6 +1,8 @@
-# TAC Jogos Eletrônicos
+# TAC / IDJ
 
 UnB :: Tópicos Avançados em Computadores :: 2021/1
+
+UnB :: Introdução ao Desenvolvimento de Jogos :: 2022/1
 
 Gabriel Rocha Fontenele :: 15/1026760
 
