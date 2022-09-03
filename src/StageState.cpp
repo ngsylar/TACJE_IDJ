@@ -94,7 +94,7 @@ void StageState::Update (float dt) {
         return;
     }
     
-    if (input.KeyPress(KEY_ESCAPE)) {
+    if (input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE)) {
         Game::GetInstance().AddState(new PauseScene(this));
     }
 }
