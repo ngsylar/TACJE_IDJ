@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Sprite.h"                     // sylar's extra positioning
+#include "Minion.h"
 
 #define ALIEN_LABEL                     "Enemy"
 #define ALIEN_SPRITE                    "assets/img/alien.png"
@@ -17,9 +18,9 @@
 #define ALIEN_MOVEMENT_COOLDOWN         6.0f
 #define ALIEN_SHOT_COOLDOWN             0.75f
 
-#define ALIEN0_START_POSITION            512, 300
-#define ALIEN1_START_POSITION            1070, 760
-#define ALIEN2_START_POSITION            286, 920
+#define ALIEN0_START_POSITION           512, 300
+#define ALIEN1_START_POSITION           1070, 760
+#define ALIEN2_START_POSITION           286, 920
 
 #define ALIEN_DEATH_LABEL               "Explosion"
 #define ALIEN_DEATH_SOUND               "assets/audio/boomAlien.wav"
@@ -48,17 +49,20 @@ class Alien: public Component {
         // sylar's alien breath extra effects
         Sprite* sprite;
         bool breathIn;
+
+        void ActionRest(float dt, Minion* minion);
+        void ActionMove(float dt);
         void BreathAnimation(float dt);
+        void ExplodeAnimation();
 
     public:
         Alien(GameObject& associated, int minionCount);
         ~Alien();
         void Start();
         void Update(float dt);
+        void NotifyCollision(GameObject& other);
         void Render();
         int GetHP();
-        void ExplodeAnimation();
-        void NotifyCollision(GameObject& other);
         static int GetAlienCount();
         bool Is(std::string type);
 };
