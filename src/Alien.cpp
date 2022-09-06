@@ -11,9 +11,9 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 
     sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
-    Collider* collider = new Collider(
-        associated, sprite->GetScale(), -associated.box.offset
-    );
+    associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);
+
+    Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
     this->minionCount = minionCount;
@@ -74,7 +74,7 @@ void Alien::Update (float dt) {
     }
     // State Chasing
     else if (minionArray.empty()) {
-        target = penguin.lock()->box.GetCenter();
+        target = penguin.lock()->box.GetPosition();
         state = MOVING;
     }
     // State Resting/Shooting
@@ -87,7 +87,7 @@ void Alien::Update (float dt) {
     }
 
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
-    // BreathAnimation(dt);    // sylar's alien breath extra effects
+    BreathAnimation(dt);    // sylar's alien breath extra effects
 
     // remover
     if (InputManager::GetInstance().MousePress(MOUSE_BUTTON_RIGHT)) {
@@ -123,7 +123,7 @@ void Alien::ActionRest (float dt, Minion* minion) {
         float minionDistance;
         int minionShooterId;
 
-        target = penguin.lock()->box.GetCenter();
+        target = penguin.lock()->box.GetPosition();
 
         for (int i=0; i < (int)minionArray.size(); i++) {
             minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
@@ -141,7 +141,7 @@ void Alien::ActionRest (float dt, Minion* minion) {
 
     restTimer.Update(dt);
     if (restTimer.IsOver()) {
-        target = penguin.lock()->box.GetCenter();
+        target = penguin.lock()->box.GetPosition();
         restTimer.Reset();
         state = MOVING;
     }
@@ -150,7 +150,7 @@ void Alien::ActionRest (float dt, Minion* minion) {
 void Alien::ActionMove (float dt) {
     Vec2 currentPosition = associated.box.GetPosition();
 
-    if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISTANCE) {
+    if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISPLACEMENT) {
         float targetAngle = currentPosition.AngleTo(target);
         speed = currentPosition.DirectionFrom(targetAngle);
         associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
@@ -187,7 +187,7 @@ void Alien::ExplodeAnimation () {
             ALIEN_DEATH_FRAME_ONESHOT, ALIEN_DEATH_SELFDESTRUCTION
         )
     );
-    explosion->box.SetPosition(associated.box.GetCenter());
+    explosion->box.SetPosition(associated.box.GetPosition());
     gameState.AddObject(explosion);
 
     GameObject* boom = new GameObject();

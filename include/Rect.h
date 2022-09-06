@@ -17,8 +17,6 @@ class Rect {
 
         // Modifier
         void SetSize(float w, float h);
-        void SetOffset(float x, float y);
-        void SetOffset(Vec2 offset);
         void SetPosition(float x, float y);
         void SetPosition(Vec2 point);
         void Translate(Vec2 target);

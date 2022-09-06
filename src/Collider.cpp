@@ -3,18 +3,19 @@
 Collider::Collider (GameObject& associated, Vec2 scale, Vec2 offset): Component(associated) {
     this->scale = scale;
     this->offset = offset;
-    SDL_Log("%f %f", offset.x, offset.y);
 }
 
 void Collider::Update (float dt) {
     float angle = Deg2Rad(associated.angleDeg);
 
-    box.SetPosition(
-        associated.box.GetPosition() + offset.Rotate(angle)
-    );
-    box.SetSize(
-        associated.box.w * scale.x, associated.box.h * scale.y
-    );
+    // // idj's original positioning
+    // box.SetPosition(associated.box.GetGlobalCenter() + offset.Rotate(angle));
+    // box.SetSize(associated.box.w * scale.x, associated.box.h * scale.y);
+
+    // sylar's extra positioning
+    Vec2 offsetDifference = offset - associated.box.offset;
+    box.SetPosition(associated.box.GetPosition() + offsetDifference.Rotate(angle));
+    box.SetSize(associated.box.w * scale.x, associated.box.h * scale.y);
 }
 
 // DEBUG

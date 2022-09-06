@@ -45,7 +45,6 @@ void StageState::LoadAssets () {
     // AddObject(alien0);
 
     GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien1->box.SetOffset(-7.0f, 1.0f); // editar
     alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
     alien1->box.SetPosition(ALIEN1_START_POSITION);
     AddObject(alien1);
@@ -58,7 +57,7 @@ void StageState::LoadAssets () {
     GameObject* centro = new GameObject(MINION_LAYER, "CENTRO");
     centro->AddComponent(new Sprite(*centro, "spike/objectCenter.png"));
     Game::GetInstance().GetCurrentState().AddObject(centro);
-    centro->box.SetPosition(alien1->box.GetPosition());
+    centro->box.SetPosition(ALIEN1_START_POSITION);
 
     penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));

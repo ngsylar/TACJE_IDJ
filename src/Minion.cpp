@@ -27,7 +27,7 @@ Minion::Minion (
 }
 
 void Minion::Start () {
-    Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
+    Vec2 alienPosition = alienCenter.lock()->box.GetPosition();
     float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
     Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
     Vec2 minionPosition = alienPosition + arcRadius.Rotate(-arc);
@@ -49,7 +49,7 @@ void Minion::Update (float dt) {
     }
     
     arc += PI * MINION_ARC_SPEED * dt;
-    Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
+    Vec2 alienPosition = alienCenter.lock()->box.GetPosition();
     float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
     Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
     Vec2 minionPosition = alienPosition + arcRadius.Rotate(-arc);
@@ -65,7 +65,7 @@ int Minion::GetHP () {
 }
 
 void Minion::Shoot (Vec2 target) {
-    Vec2 minionPosition = associated.box.GetCenter();
+    Vec2 minionPosition = associated.box.GetPosition();
     float angle = minionPosition.AngleTo(target);
 
     GameObject* bullet = new GameObject(MINION_BULLET_LAYER, MINION_BULLET_LABEL);
@@ -94,7 +94,7 @@ void Minion::ExplodeAnimation () {
             MINION_DEATH_FRAME_ONESHOT, MINION_DEATH_SELFDESTRUCTION
         )
     );
-    explosion->box.SetPosition(associated.box.GetCenter());
+    explosion->box.SetPosition(associated.box.GetPosition());
     state.AddObject(explosion);
     
     GameObject* boom = new GameObject();
@@ -105,7 +105,7 @@ void Minion::ExplodeAnimation () {
 }
 
 Vec2 Minion::GetPosition () {
-    return associated.box.GetCenter();
+    return associated.box.GetPosition();
 }
 
 void Minion::NotifyCollision (GameObject& other) {

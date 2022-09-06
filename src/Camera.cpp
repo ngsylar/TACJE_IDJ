@@ -24,7 +24,7 @@ void Camera::Update (float dt) {
     InputManager& input = InputManager::GetInstance();
 
     if (focus) {
-        pos = focus->box.GetCenter() - (Vec2(WINDOW_SIZE) * 0.5f);
+        pos = focus->box.GetPosition() - (Vec2(WINDOW_SIZE) * 0.5f);
     }
     else if (freeCamera) {
         if (input.IsKeyDown(KEY_W)) {

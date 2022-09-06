@@ -83,7 +83,7 @@ void Sprite::Render (int startX, int startY) {
 
 void Sprite::SetScale (float scaleX, float scaleY) {
     Vec2 size = Vec2((float)frameWidth, (float)height);
-    Vec2 position = associated.box.GetCenter();
+    Vec2 position = associated.box.GetPosition();
     scale = Vec2(scaleX, scaleY);
     
     associated.box.SetSize(size.x*scale.x, size.y*scale.y);

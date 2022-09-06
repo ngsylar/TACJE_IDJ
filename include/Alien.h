@@ -9,14 +9,15 @@
 #define ALIEN_SPRITE                    "assets/img/alien.png"
 #define ALIEN_START_HP                  200
 #define ALIEN_LINEAR_SPEED              200.0f
-#define ALIEN_MINIMUM_DISTANCE          10.0f
 #define ALIEN_ROTATION_SPEED            20.0f
+#define ALIEN_MINIMUM_DISPLACEMENT      10.0f
+#define ALIEN_CENTER_OFFSET             -7.0f, 1.0f
 #define ALIEN_LAYER                     4
 #define ALIEN_MINION_COUNT              6
-#define ALIEN_FOE_LABEL                 "Player"
 #define ALIEN_TIMER_START               -2.0f
 #define ALIEN_MOVEMENT_COOLDOWN         6.0f
 #define ALIEN_SHOT_COOLDOWN             0.75f
+#define ALIEN_FOE_LABEL                 "Player"
 
 #define ALIEN0_START_POSITION           512, 300
 #define ALIEN1_START_POSITION           1070, 760

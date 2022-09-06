@@ -32,16 +32,6 @@ void Rect::SetSize (float w, float h) {
     this->h = h;
 }
 
-void Rect::SetOffset (float oX, float oY) {
-    offset = Vec2(oX, oY);
-    SetPosition(GetGlobalCenter());
-}
-
-void Rect::SetOffset (Vec2 offset) {
-    this->offset = offset;
-    SetPosition(GetGlobalCenter());
-}
-
 void Rect::SetPosition (float pX, float pY) {
     x = (pX - w/2.0f) - offset.x;
     y = (pY - h/2.0f) - offset.y;
