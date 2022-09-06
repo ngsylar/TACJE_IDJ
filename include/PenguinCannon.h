@@ -22,7 +22,7 @@
 #define PENGUINC_BULLET_ARC_DISTANCE    50.0f, 0.0f
 #define PENGUINC_BULLET_TARGETS         {"Enemy"}
 #define PENGUINC_BULLET_SPEED           600.0f
-#define PENGUINC_BULLET_RANGE           1000.0f
+#define PENGUINC_BULLET_RANGE           2000.0f
 #define PENGUINC_BULLET_DAMAGE          20
 #define PENGUINC_BULLET_LAYER           2
 

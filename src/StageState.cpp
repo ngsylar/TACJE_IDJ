@@ -39,20 +39,26 @@ void StageState::LoadAssets () {
     gameMap1->AddComponent(gameMapTmap1);
     AddObject(gameMap1);
     
-    GameObject* alien0 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien0->AddComponent(new Alien(*alien0, ALIEN_MINION_COUNT));
-    alien0->box.SetPosition(ALIEN0_START_POSITION);
-    AddObject(alien0);
+    // GameObject* alien0 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // alien0->AddComponent(new Alien(*alien0, ALIEN_MINION_COUNT));
+    // alien0->box.SetPosition(ALIEN0_START_POSITION);
+    // AddObject(alien0);
 
     GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    alien1->box.SetOffset(-7.0f, 1.0f); // editar
     alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
     alien1->box.SetPosition(ALIEN1_START_POSITION);
     AddObject(alien1);
 
-    GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
-    alien2->box.SetPosition(ALIEN2_START_POSITION);
-    AddObject(alien2);
+    // GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
+    // alien2->box.SetPosition(ALIEN2_START_POSITION);
+    // AddObject(alien2);
+
+    GameObject* centro = new GameObject(MINION_LAYER, "CENTRO");
+    centro->AddComponent(new Sprite(*centro, "spike/objectCenter.png"));
+    Game::GetInstance().GetCurrentState().AddObject(centro);
+    centro->box.SetPosition(alien1->box.GetPosition());
 
     penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));
@@ -96,6 +102,11 @@ void StageState::Update (float dt) {
     
     if (input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE)) {
         Game::GetInstance().AddState(new PauseScene(this));
+    }
+
+    // remover
+    if (InputManager::GetInstance().MousePress(MOUSE_BUTTON_RIGHT)) {
+        GetObjectPtr("CENTRO").lock()->box.SetPosition(InputManager::GetInstance().GetMousePosition());
     }
 }
 

@@ -5,7 +5,7 @@
 
 #define MINION_LABEL                    "Enemy"
 #define MINION_SPRITE                   "assets/img/minion.png"
-#define MINION_ARC_DISTANCE             120.0f, 0.0f
+#define MINION_ARC_RADIUS               120.0f, 0.0f
 #define MINION_ARC_SPEED                0.25f
 #define MINION_SCALE_MIN                0.66f
 #define MINION_SCALE_MAX                1.06f
@@ -22,7 +22,7 @@
 #define MINION_BULLET_FRAME_ONESHOT     false
 #define MINION_BULLET_TARGETS           {"Player"}
 #define MINION_BULLET_SPEED             600.0f
-#define MINION_BULLET_RANGE             1000.0f
+#define MINION_BULLET_RANGE             2000.0f
 #define MINION_BULLET_DAMAGE            5
 #define MINION_BULLET_LAYER             6
 

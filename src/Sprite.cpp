@@ -1,8 +1,16 @@
 #include "GentooEngine.h"
 
 Sprite::Sprite (GameObject& associated): Component(associated) {
-    selfDestruction = false;
     texture = nullptr;
+    clipRect = {0, 0, 0, 0};
+    width = 0;
+    height = 0;
+    scale = Vec2(1.0f, 1.0f);
+    frameWidth = 0;
+    frameCount = 0;
+    currentFrame = 0;
+    frameOneshot = false;
+    selfDestruction = false;
 }
 
 Sprite::Sprite (
@@ -33,7 +41,6 @@ void Sprite::Open (
     frameTimer = Timer(frameTime);
     frameOneshot = oneshot;
     selfDestruction = destruct;
-    currentFrame = 0;
 
     frameWidth = width / frameCount;
     SetClip(SPRITE_CLIP_START_POINT, frameWidth, height);
@@ -59,10 +66,14 @@ void Sprite::Render (int startX, int startY) {
         startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
+    SDL_Point boxCenter = SDL_Point{
+        (int)(associated.box.w/2.0f + associated.box.offset.x),
+        (int)(associated.box.h/2.0f + associated.box.offset.y)
+    };
     int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
         texture.get(), &clipRect, &destRect,
-        associated.angleDeg, nullptr,
+        associated.angleDeg, &boxCenter,
         SDL_FLIP_NONE
     );
     if (rendercpy == SPRITE_ERROR) {

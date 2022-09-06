@@ -25,9 +25,9 @@ PenguinBody::~PenguinBody () {
 }
 
 void PenguinBody::Start () {
-    GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
-    pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
-    pcannon = Game::GetInstance().GetCurrentState().AddObject(pcannonObj);
+    // GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
+    // pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
+    // pcannon = Game::GetInstance().GetCurrentState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);
 
     // sylar's extra positioning
@@ -49,7 +49,7 @@ void PenguinBody::Update (float dt) {
     if (hp <= 0) {
         ExplodeAnimation();
         associated.RequestDelete();
-        pcannon.lock()->RequestDelete();
+        // pcannon.lock()->RequestDelete();
         return;
     }
 

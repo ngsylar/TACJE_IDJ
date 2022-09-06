@@ -11,7 +11,9 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 
     sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
-    Collider* collider = new Collider(associated);
+    Collider* collider = new Collider(
+        associated, sprite->GetScale(), -associated.box.offset
+    );
     associated.AddComponent(collider);
 
     this->minionCount = minionCount;
@@ -77,7 +79,7 @@ void Alien::Update (float dt) {
     }
     // State Resting/Shooting
     if (state == RESTING) {
-        ActionRest(dt, minion);
+        // ActionRest(dt, minion);
     }
     // State Moving
     else if (state == MOVING) {
@@ -85,7 +87,13 @@ void Alien::Update (float dt) {
     }
 
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
-    BreathAnimation(dt);    // sylar's alien breath extra effects
+    // BreathAnimation(dt);    // sylar's alien breath extra effects
+
+    // remover
+    if (InputManager::GetInstance().MousePress(MOUSE_BUTTON_RIGHT)) {
+        target = InputManager::GetInstance().GetMousePosition();
+        state = MOVING;
+    }
 }
 
 void Alien::NotifyCollision (GameObject& other) {
@@ -140,7 +148,7 @@ void Alien::ActionRest (float dt, Minion* minion) {
 }
 
 void Alien::ActionMove (float dt) {
-    Vec2 currentPosition = associated.box.GetCenter();
+    Vec2 currentPosition = associated.box.GetPosition();
 
     if (currentPosition.DistanceTo(target) > ALIEN_MINIMUM_DISTANCE) {
         float targetAngle = currentPosition.AngleTo(target);

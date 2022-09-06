@@ -29,9 +29,9 @@ Minion::Minion (
 void Minion::Start () {
     Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
     float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
-    Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
-    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(-arc);
-    associated.box.SetPosition(minionPlacement);
+    Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
+    Vec2 minionPosition = alienPosition + arcRadius.Rotate(-arc);
+    associated.box.SetPosition(minionPosition);
 }
 
 void Minion::Update (float dt) {
@@ -51,11 +51,10 @@ void Minion::Update (float dt) {
     arc += PI * MINION_ARC_SPEED * dt;
     Vec2 alienPosition = alienCenter.lock()->box.GetCenter();
     float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
-    Vec2 minionDistance = Vec2(MINION_ARC_DISTANCE) * alienScale;
-    Vec2 minionPlacement = alienPosition + minionDistance.Rotate(-arc);
-    associated.box.SetPosition(minionPlacement);
+    Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
+    Vec2 minionPosition = alienPosition + arcRadius.Rotate(-arc);
+    associated.box.SetPosition(minionPosition);
 
-    Vec2 minionPosition = associated.box.GetCenter();
     associated.angleDeg = minionPosition.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
 }
 

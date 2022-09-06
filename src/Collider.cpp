@@ -3,13 +3,14 @@
 Collider::Collider (GameObject& associated, Vec2 scale, Vec2 offset): Component(associated) {
     this->scale = scale;
     this->offset = offset;
+    SDL_Log("%f %f", offset.x, offset.y);
 }
 
 void Collider::Update (float dt) {
     float angle = Deg2Rad(associated.angleDeg);
 
     box.SetPosition(
-        associated.box.GetCenter() + offset.Rotate(angle)
+        associated.box.GetPosition() + offset.Rotate(angle)
     );
     box.SetSize(
         associated.box.w * scale.x, associated.box.h * scale.y
@@ -21,7 +22,7 @@ void Collider::Render () {
     if (not Game::GetInstance().GetCurrentState().Debugging())
         return;
 
-    Vec2 center( box.GetCenter() );
+    Vec2 center( box.GetPosition() );
     SDL_Point points[5];
 
     Vec2 point = (Vec2(box.x, box.y) - center).Rotate( associated.angleDeg/(180/PI) )
