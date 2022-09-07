@@ -47,6 +47,11 @@ void Rect::Translate (Vec2 target) {
     y += target.y;
 }
 
+void Rect::RotateAround (Vec2 point, Vec2 radius, float angle) {
+    Vec2 position = point + radius.Rotate(angle);
+    SetPosition(position);
+}
+
 Vec2 Rect::GetPosition () {
     return (GetGlobalCenter() + offset);
 }

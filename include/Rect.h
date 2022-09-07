@@ -20,6 +20,7 @@ class Rect {
         void SetPosition(float x, float y);
         void SetPosition(Vec2 point);
         void Translate(Vec2 target);
+        void RotateAround(Vec2 point, Vec2 radius, float angle);
 
         // Access
         Vec2 GetPosition();

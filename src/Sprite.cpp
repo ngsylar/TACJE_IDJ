@@ -66,14 +66,14 @@ void Sprite::Render (int startX, int startY) {
         startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
-    SDL_Point boxCenter = SDL_Point{
-        (int)(associated.box.w/2.0f + associated.box.offset.x),
-        (int)(associated.box.h/2.0f + associated.box.offset.y)
-    };
+    // SDL_Point boxCenter = SDL_Point{
+    //     destRect.w/2 + (int)associated.box.offset.x,
+    //     destRect.h/2 + (int)associated.box.offset.y
+    // };
     int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
         texture.get(), &clipRect, &destRect,
-        associated.angleDeg, &boxCenter,
+        associated.angleDeg, nullptr,
         SDL_FLIP_NONE
     );
     if (rendercpy == SPRITE_ERROR) {

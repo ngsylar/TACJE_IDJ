@@ -11,7 +11,7 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 
     sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
-    associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);
+    // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
