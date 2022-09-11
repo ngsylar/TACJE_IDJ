@@ -63,6 +63,7 @@ class Alien: public Component {
         void Update(float dt);
         void NotifyCollision(GameObject& other);
         void Render();
+        Vec2 GetScale();
         int GetHP();
         static int GetAlienCount();
         bool Is(std::string type);

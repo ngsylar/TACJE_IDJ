@@ -66,10 +66,29 @@ void Sprite::Render (int startX, int startY) {
         startX, startY,
         (int)associated.box.w, (int)associated.box.h
     };
-    // SDL_Point boxCenter = SDL_Point{
-    //     destRect.w/2 + (int)associated.box.offset.x,
-    //     destRect.h/2 + (int)associated.box.offset.y
-    // };
+    SDL_Point boxCenter = SDL_Point{
+        destRect.w/2 + (int)associated.box.offset.x,
+        destRect.h/2 + (int)associated.box.offset.y
+    };
+    int rendercpy = SDL_RenderCopyEx(
+        Game::GetInstance().GetRenderer(),
+        texture.get(), &clipRect, &destRect,
+        associated.angleDeg, &boxCenter,
+        SDL_FLIP_NONE
+    );
+    if (rendercpy == SPRITE_ERROR) {
+        SDL_Log("SDL_RenderCopy: %s", SDL_GetError());
+    }
+}
+
+void Sprite::RenderWithNoOffset (int startX, int startY) {
+    if (texture == nullptr)
+        return;
+
+    SDL_Rect destRect = SDL_Rect{
+        startX, startY,
+        (int)associated.box.w, (int)associated.box.h
+    };
     int rendercpy = SDL_RenderCopyEx(
         Game::GetInstance().GetRenderer(),
         texture.get(), &clipRect, &destRect,

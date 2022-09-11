@@ -42,6 +42,7 @@ class Sprite: public Component {
         void SetClip(int x, int y, int w, int h);
         void Render();
         void Render(int startX, int startY);
+        void RenderWithNoOffset(int startX, int startY);
         void SetScale(float scaleX, float scaleY);
         void SetScale(float scale);
         Vec2 GetScale();

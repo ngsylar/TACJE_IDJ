@@ -16,11 +16,9 @@ class GameObject {
     
     public:
         std::string label;
+        int layer;          // sylar's extra layer rendering
         Rect box;
         float angleDeg;
-        
-        // sylar's extra layer rendering
-        int layer;
 
         GameObject(int layer=0, std::string label="");
         ~GameObject();

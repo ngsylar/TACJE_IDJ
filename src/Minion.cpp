@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "Minion.h"
+#include "Alien.h"
 #include "Bullet.h"
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
@@ -28,7 +29,7 @@ Minion::Minion (
 
 void Minion::Start () {
     Vec2 alienPosition = alienCenter.lock()->box.GetPosition();
-    float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
+    float alienScale = ((Alien*)alienCenter.lock()->GetComponent("Alien"))->GetScale().x;
     Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
     Vec2 minionPosition = alienPosition + arcRadius.Rotate(-arc);
     associated.box.SetPosition(minionPosition);
@@ -50,7 +51,7 @@ void Minion::Update (float dt) {
     
     arc += PI * MINION_ARC_SPEED * dt;
     Vec2 alienPosition = alienCenter.lock()->box.GetPosition();
-    float alienScale = ((Sprite*)alienCenter.lock()->GetComponent("Sprite"))->GetScale().x;
+    float alienScale = ((Alien*)alienCenter.lock()->GetComponent("Alien"))->GetScale().x;
     Vec2 arcRadius = Vec2(MINION_ARC_RADIUS) * alienScale;
     associated.box.RotateAround(alienPosition, arcRadius, -arc);
 

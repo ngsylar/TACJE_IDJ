@@ -10,8 +10,8 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     alienCount++;
 
     sprite = new Sprite(associated, ALIEN_SPRITE);
-    associated.AddComponent(sprite);
-    // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);
+    // associated.AddComponent(sprite);    // idj's original object rendering
+    // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);  // sylar's extra positioning
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
@@ -27,6 +27,7 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
 }
 
 Alien::~Alien () {
+    delete sprite;  // sylar's alien breath extra effects
     minionArray.clear();
     alienCount--;
 }
@@ -96,25 +97,25 @@ void Alien::Update (float dt) {
     }
 }
 
-void Alien::NotifyCollision (GameObject& other) {
-    Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
-    if ((bullet != nullptr) and bullet->IsAimingAt(ALIEN_LABEL)) {
-        damageTaken = bullet->GetDamage();
-        return;
-    }
-    PenguinCannon* playerc = (PenguinCannon*)other.GetComponent("PenguinCannon");
-    if (playerc != nullptr) {
-        damageTaken = playerc->GetHP();
-        return;
-    }
-    PenguinBody* playerb = (PenguinBody*)other.GetComponent("PenguinBody");
-    if (playerb != nullptr) {
-        damageTaken = playerb->GetHP();
-        return;
-    }
+// sylar's alien breath extra effects
+void Alien::Render () {
+    sprite->RenderWithNoOffset(
+        (int)associated.box.x - Camera::pos.x,
+        (int)associated.box.y - Camera::pos.y
+    );
 }
 
-void Alien::Render () {}
+Vec2 Alien::GetScale () {
+    return sprite->GetScale();
+}
+
+int Alien::GetHP () {
+    return hp;
+}
+
+int Alien::GetAlienCount () {
+    return alienCount;
+}
 
 void Alien::ActionRest (float dt, Minion* minion) {
     cooldown.Update(dt);
@@ -197,12 +198,22 @@ void Alien::ExplodeAnimation () {
     explosionSound->Play(ALIEN_DEATH_SOUND_TIMES, ALIEN_DEATH_SELFDESTRUCTION);
 }
 
-int Alien::GetHP () {
-    return hp;
-}
-
-int Alien::GetAlienCount () {
-    return alienCount;
+void Alien::NotifyCollision (GameObject& other) {
+    Bullet* bullet = (Bullet*)other.GetComponent("Bullet");
+    if ((bullet != nullptr) and bullet->IsAimingAt(ALIEN_LABEL)) {
+        damageTaken = bullet->GetDamage();
+        return;
+    }
+    PenguinCannon* playerc = (PenguinCannon*)other.GetComponent("PenguinCannon");
+    if (playerc != nullptr) {
+        damageTaken = playerc->GetHP();
+        return;
+    }
+    PenguinBody* playerb = (PenguinBody*)other.GetComponent("PenguinBody");
+    if (playerb != nullptr) {
+        damageTaken = playerb->GetHP();
+        return;
+    }
 }
 
 bool Alien::Is (std::string type) {
