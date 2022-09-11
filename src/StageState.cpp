@@ -54,15 +54,15 @@ void StageState::LoadAssets () {
     // alien2->box.SetPosition(ALIEN2_START_POSITION);
     // AddObject(alien2);
 
-    GameObject* centro = new GameObject(MINION_LAYER, "CENTRO");
-    centro->AddComponent(new Sprite(*centro, "spike/objectCenter.png"));
-    Game::GetInstance().GetCurrentState().AddObject(centro);
-    centro->box.SetPosition(ALIEN1_START_POSITION);
-
     penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));
     penguin->box.SetPosition(PENGUINB_START_POSITION);
     AddObject(penguin);
+
+    // GameObject* centro = new GameObject(MINION_LAYER, "CENTRO");
+    // centro->AddComponent(new Sprite(*centro, "spike/objectCenter.png"));
+    // Game::GetInstance().GetCurrentState().AddObject(centro);
+    // centro->box.SetPosition(PENGUINB_START_POSITION);
 }
 
 void StageState::Start () {
@@ -101,11 +101,6 @@ void StageState::Update (float dt) {
     
     if (input.KeyPress(KEY_ESCAPE) or input.KeyPress(KEY_SPACE)) {
         Game::GetInstance().AddState(new PauseScene(this));
-    }
-
-    // remover
-    if (InputManager::GetInstance().MousePress(MOUSE_BUTTON_RIGHT)) {
-        GetObjectPtr("CENTRO").lock()->box.SetPosition(InputManager::GetInstance().GetMousePosition());
     }
 }
 

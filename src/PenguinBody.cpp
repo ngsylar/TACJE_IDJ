@@ -10,6 +10,8 @@ PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
 
     Sprite* sprite = new Sprite(associated, PENGUINB_SPRITE);
     associated.AddComponent(sprite);
+    associated.box.offset = Vec2(PENGUINB_CENTER_OFFSET);   // sylar's extra positioning
+
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
@@ -25,17 +27,14 @@ PenguinBody::~PenguinBody () {
 }
 
 void PenguinBody::Start () {
-    // GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
-    // pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
-    // pcannon = Game::GetInstance().GetCurrentState().AddObject(pcannonObj);
+    GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
+    pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
+    pcannon = Game::GetInstance().GetCurrentState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);
 
-    // sylar's extra positioning
-    position = associated.box.GetCenter();
-    arcPlacement = Vec2(PENGUINB_ARC_DISTANCE) * (PI*2);
-    center = position + arcPlacement;
-    associated.box.SetPosition(center);
-    deltaAngle = 0.0f;
+    stageLimits = Rect(
+        ((StageState&)Game::GetInstance().GetCurrentState()).GetGameMapLimits()
+    );
 }
 
 void PenguinBody::Update (float dt) {
@@ -49,7 +48,7 @@ void PenguinBody::Update (float dt) {
     if (hp <= 0) {
         ExplodeAnimation();
         associated.RequestDelete();
-        // pcannon.lock()->RequestDelete();
+        pcannon.lock()->RequestDelete();
         return;
     }
 
@@ -66,45 +65,24 @@ void PenguinBody::Update (float dt) {
     if (input.IsKeyDown(KEY_A)) {
         angle -= rotationRadSpeed * dt;
         associated.angleDeg = Rad2Deg(angle);
-        deltaAngle = angle;     // sylar's extra positioning
     }
     if (input.IsKeyDown(KEY_D)) {
         angle += rotationRadSpeed * dt;
         associated.angleDeg = Rad2Deg(angle);
-        deltaAngle = angle;     // sylar's extra positioning
     }
     
     speed = Vec2().DirectionFrom(angle) * linearSpeed;
     Vec2 displacement = speed * dt;
     associated.box.Translate(displacement);
-    position += displacement;   // sylar's extra positioning
 
-    Rect tilemapLimits(((StageState&)Game::GetInstance().GetCurrentState()).GetGameMapLimits());
-    
-    if (position.x < tilemapLimits.x) {
-        // associated.box.x = tilemapLimits.x;              // idj's original positioning
-        associated.box.x -= (position.x - tilemapLimits.x); // sylar's extra positioning
-        position.x = tilemapLimits.x;                       // sylar's extra positioning
-    } else if (position.x > tilemapLimits.w) {
-        // associated.box.x = tilemapLimits.w;              // idj's original positioning
-        associated.box.x -= (position.x - tilemapLimits.w); // sylar's extra positioning
-        position.x = tilemapLimits.w;                       // sylar's extra positioning
-    } if (position.y < tilemapLimits.y) {
-        // associated.box.y = tilemapLimits.y;              // idj's original positioning
-        associated.box.y -= (position.y - tilemapLimits.y); // sylar's extra positioning
-        position.y = tilemapLimits.y;                       // sylar's extra positioning
-    } else if (position.y > tilemapLimits.h) {
-        // associated.box.y = tilemapLimits.h;              // idj's original positioning
-        associated.box.y -= (position.y - tilemapLimits.h); // sylar's extra positioning
-        position.y = tilemapLimits.h;                       // sylar's extra positioning
-    }
-
-    // sylar's extra positioning
-    if (deltaAngle != 0.0f) {
-        arcDisplacement = arcPlacement.Rotate(deltaAngle);
-        center = position + arcDisplacement;
-        associated.box.SetPosition(center);
-        deltaAngle = 0.0f;
+    if (associated.box.x < stageLimits.x) {
+        associated.box.x = stageLimits.x;
+    } else if (associated.box.x > stageLimits.w) {
+        associated.box.x = stageLimits.w;
+    } if (associated.box.y < stageLimits.y) {
+        associated.box.y = stageLimits.y;
+    } else if (associated.box.y > stageLimits.h) {
+        associated.box.y = stageLimits.h;
     }
 }
 
@@ -125,7 +103,7 @@ void PenguinBody::ExplodeAnimation () {
             PENGUINB_DEATH_FRAME_ONESHOT, PENGUINB_DEATH_SELFDESTRUCTION
         )
     );
-    explosion->box.SetPosition(position);
+    explosion->box.SetPosition(associated.box.GetPosition());
     state.AddObject(explosion);
 
     GameObject* boom = new GameObject();
@@ -133,11 +111,6 @@ void PenguinBody::ExplodeAnimation () {
     boom->AddComponent(explosionSound);
     state.AddObject(boom);
     explosionSound->Play(PENGUINB_DEATH_SOUND_TIMES, PENGUINB_DEATH_SELFDESTRUCTION);
-}
-
-// sylar's extra positioning
-Vec2 PenguinBody::GetPosition () {
-    return position;
 }
 
 void PenguinBody::NotifyCollision (GameObject& other) {

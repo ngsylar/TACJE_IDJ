@@ -13,7 +13,6 @@ class Rect {
         Rect(float x, float y, float w, float h);
         Vec2 GetLocalCenter();
         Vec2 GetGlobalCenter();
-        Vec2 GetCenter(); // remover
 
         // Modifier
         void SetSize(float w, float h);

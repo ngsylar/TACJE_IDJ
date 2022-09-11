@@ -22,11 +22,6 @@ Vec2 Rect::GetGlobalCenter () {
     return Vec2(x+w/2.0f, y+h/2.0f);
 }
 
-// remover
-Vec2 Rect::GetCenter () {
-    return Vec2(x+w/2.0f, y+h/2.0f);
-}
-
 void Rect::SetSize (float w, float h) {
     this->w = w;
     this->h = h;

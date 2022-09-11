@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "PenguinCannon.h"
+#include "PenguinBody.h"
 #include "Bullet.h"
 
 PenguinCannon::PenguinCannon (
@@ -8,6 +9,8 @@ PenguinCannon::PenguinCannon (
     
     Sprite* sprite = new Sprite(associated, PENGUINC_SPRITE);
     associated.AddComponent(sprite);
+    associated.box.offset = Vec2(PENGUINC_CENTER_OFFSET);   // sylar's extra positioning
+
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
 
@@ -17,10 +20,6 @@ PenguinCannon::PenguinCannon (
 
     pbody = Game::GetInstance().GetCurrentState().GetObjectPtr(&penguinBody);
     angle = 0;
-
-    // sylar's extra positioning
-    pbodyCp = (PenguinBody*)pbody.lock()->GetComponent("PenguinBody");
-    arcPlacement = Vec2(PENGUINC_ARC_DISTANCE) * (PI*2);
 
     cooldown = Timer(PENGUINC_SHOT_COOLDOWN, PENGUINC_SHOT_COOLDOWN);
 }
@@ -41,11 +40,10 @@ void PenguinCannon::Update (float dt) {
     // associated.box.SetPosition(pbodyPosition);
 
     // sylar's extra positioning
-    Vec2 pbodyPosition = pbodyCp->GetPosition();
+    Vec2 pbodyPosition = pbody.lock()->box.GetPosition();
     angle = pbodyPosition.AngleTo(target);
-    Vec2 position = pbodyPosition + arcPlacement.Rotate(angle);
     associated.angleDeg = Rad2Deg(angle);
-    associated.box.SetPosition(position);
+    associated.box.SetPosition(pbodyPosition);
 
     cooldown.Update(dt);
     if (cooldown.IsOver() and input.MousePress(MOUSE_BUTTON_LEFT)) {
@@ -57,14 +55,14 @@ void PenguinCannon::Update (float dt) {
 void PenguinCannon::Render () {}
 
 int PenguinCannon::GetHP () {
-    return pbodyCp->GetHP();
+    if (pbody.expired()) return 0;
+    return ((PenguinBody*)pbody.lock()->GetComponent("PenguinBody"))->GetHP();
 }
 
 void PenguinCannon::Shoot (Vec2 target) {
     GameObject* bullet = new GameObject(PENGUINC_BULLET_LAYER, PENGUINC_BULLET_LABEL);
-    Vec2 cannonPosition = associated.box.GetCenter();
-    Vec2 bulletArcPlacement(PENGUINC_BULLET_ARC_DISTANCE);
-    Vec2 bulletPosition = cannonPosition + bulletArcPlacement.Rotate(angle);
+    Vec2 cannonPosition = associated.box.GetPosition();
+    Vec2 radius(PENGUINC_BULLET_ARC_DISTANCE);
 
     bullet->AddComponent(
         new Bullet(
@@ -76,7 +74,7 @@ void PenguinCannon::Shoot (Vec2 target) {
             PENGUINC_BULLET_SOUND_SHOT, PENGUINC_BULLET_SOUND_HIT
         )
     );
-    bullet->box.SetPosition(bulletPosition);
+    bullet->box.RotateAround(cannonPosition, radius, angle);
     Game::GetInstance().GetCurrentState().AddObject(bullet);
 
     // sylar's extra sfx
@@ -84,7 +82,8 @@ void PenguinCannon::Shoot (Vec2 target) {
 }
 
 void PenguinCannon::NotifyCollision (GameObject& other) {
-    pbodyCp->NotifyCollision(other);
+    if (not pbody.expired())
+        pbody.lock()->NotifyCollision(other);
 }
 
 bool PenguinCannon::Is (std::string type) {

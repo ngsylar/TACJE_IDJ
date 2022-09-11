@@ -23,18 +23,15 @@
 #define PENGUINB_DEATH_LAYER            7
 
 // sylar's extra positioning
-#define PENGUINB_ARC_DISTANCE           1.0f, 0.0f
+#define PENGUINB_CENTER_OFFSET          -6.0f, 0.0f
 
 class PenguinBody: public Component {
     private:
+        Rect stageLimits;
         std::weak_ptr<GameObject> pcannon;
         Vec2 speed;
         float angle, linearSpeed, rotationRadSpeed;
         int hp, damageTaken;
-        
-        // sylar's extra positioning
-        Vec2 position, arcPlacement, center, arcDisplacement;
-        float deltaAngle;
     
     public:
         PenguinBody(GameObject& associated);
@@ -46,9 +43,6 @@ class PenguinBody: public Component {
         void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
-
-        // sylar's extra positioning
-        Vec2 GetPosition();
 };
 
 #endif
