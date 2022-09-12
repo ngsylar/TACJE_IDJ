@@ -80,7 +80,7 @@ void Alien::Update (float dt) {
     }
     // State Resting/Shooting
     if (state == RESTING) {
-        // ActionRest(dt, minion);
+        ActionRest(dt);
     }
     // State Moving
     else if (state == MOVING) {
@@ -89,12 +89,6 @@ void Alien::Update (float dt) {
 
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
     BreathAnimation(dt);    // sylar's alien breath extra effects
-
-    // remover
-    if (InputManager::GetInstance().MousePress(MOUSE_BUTTON_RIGHT)) {
-        target = InputManager::GetInstance().GetMousePosition();
-        state = MOVING;
-    }
 }
 
 // sylar's alien breath extra effects
@@ -117,26 +111,10 @@ int Alien::GetAlienCount () {
     return alienCount;
 }
 
-void Alien::ActionRest (float dt, Minion* minion) {
+void Alien::ActionRest (float dt) {
     cooldown.Update(dt);
     if (cooldown.IsOver() and (not minionArray.empty())) {
-        float targetDistance = 999999.0f;
-        float minionDistance;
-        int minionShooterId;
-
-        target = penguin.lock()->box.GetPosition();
-
-        for (int i=0; i < (int)minionArray.size(); i++) {
-            minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
-            minionDistance = minion->GetPosition().DistanceTo(target);
-
-            if (minionDistance < targetDistance) {
-                targetDistance = minionDistance;
-                minionShooterId = i;
-            }
-        }
-        minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
-        minion->Shoot(target);
+        ActionShoot(dt);
         cooldown.Reset();
     }
 
@@ -146,6 +124,27 @@ void Alien::ActionRest (float dt, Minion* minion) {
         restTimer.Reset();
         state = MOVING;
     }
+}
+
+void Alien::ActionShoot (float dt) {
+    float targetDistance = 999999.0f;
+    Minion* minion;
+    float minionDistance;
+    int minionShooterId;
+
+    target = penguin.lock()->box.GetPosition();
+
+    for (int i=0; i < (int)minionArray.size(); i++) {
+        minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+        minionDistance = minion->GetPosition().DistanceTo(target);
+
+        if (minionDistance < targetDistance) {
+            targetDistance = minionDistance;
+            minionShooterId = i;
+        }
+    }
+    minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
+    minion->Shoot(target);
 }
 
 void Alien::ActionMove (float dt) {

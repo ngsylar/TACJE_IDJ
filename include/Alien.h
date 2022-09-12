@@ -51,7 +51,8 @@ class Alien: public Component {
         Sprite* sprite;
         bool breathIn;
 
-        void ActionRest(float dt, Minion* minion);
+        void ActionRest(float dt);
+        void ActionShoot(float dt);
         void ActionMove(float dt);
         void BreathAnimation(float dt);
         void ExplodeAnimation();

@@ -18,7 +18,7 @@
 #define MINION_BULLET_SOUND_HIT         "assets/audio/fireimpact.wav"
 #define MINION_BULLET_SPRITE            "assets/img/minionbullet2.png"
 #define MINION_BULLET_FRAME_COUNT       3
-#define MINION_BULLET_FRAME_TIME        0.04f
+#define MINION_BULLET_FRAME_TIME        0.06f
 #define MINION_BULLET_FRAME_ONESHOT     false
 #define MINION_BULLET_TARGETS           {"Player"}
 #define MINION_BULLET_SPEED             600.0f

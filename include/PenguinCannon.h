@@ -16,7 +16,7 @@
 #define PENGUINC_BULLET_SOUND_HIT       "assets/audio/snowball.wav"
 #define PENGUINC_BULLET_SPRITE          "assets/img/penguinbullet.png"
 #define PENGUINC_BULLET_FRAME_COUNT     4
-#define PENGUINC_BULLET_FRAME_TIME      0.04f
+#define PENGUINC_BULLET_FRAME_TIME      0.06f
 #define PENGUINC_BULLET_FRAME_ONESHOT   true
 #define PENGUINC_BULLET_ARC_DISTANCE    90.0f, 0.0f
 #define PENGUINC_BULLET_TARGETS         {"Enemy"}
