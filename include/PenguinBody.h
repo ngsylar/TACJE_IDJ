@@ -8,6 +8,7 @@
 #define PENGUINB_START_POSITION         704, 640
 #define PENGUINB_START_HP               100
 #define PENGUINB_MAX_SPEED              600.0f
+#define PENGUINB_MIN_SPEED              -300.0f
 #define PENGUINB_ACCELERATION           200.0f
 #define PENGUINB_ROTATION_SPEED         90.0f
 #define PENGUINB_LAYER                  1

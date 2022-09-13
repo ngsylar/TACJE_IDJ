@@ -58,9 +58,9 @@ void PenguinBody::Update (float dt) {
         } else linearSpeed = PENGUINB_MAX_SPEED;
     }
     if (input.IsKeyDown(KEY_S)) {
-        if (linearSpeed > (-PENGUINB_MAX_SPEED*0.5f)) {
-            linearSpeed -= (PENGUINB_ACCELERATION*0.5) * dt;
-        } else linearSpeed = (-PENGUINB_MAX_SPEED*0.5f);
+        if (linearSpeed > (PENGUINB_MIN_SPEED)) {
+            linearSpeed -= (PENGUINB_ACCELERATION) * dt;
+        } else linearSpeed = (PENGUINB_MIN_SPEED);
     }
     if (input.IsKeyDown(KEY_A)) {
         angle -= rotationRadSpeed * dt;

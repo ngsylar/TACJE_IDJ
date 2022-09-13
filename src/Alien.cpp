@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "Alien.h"
+#include "Minion.h"
 #include "Bullet.h"
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
@@ -87,18 +88,6 @@ void Alien::Render () {
         (int)associated.box.x - Camera::pos.x,
         (int)associated.box.y - Camera::pos.y
     );
-}
-
-Vec2 Alien::GetScale () {
-    return sprite->GetScale();
-}
-
-int Alien::GetHP () {
-    return hp;
-}
-
-int Alien::GetAlienCount () {
-    return alienCount;
 }
 
 void Alien::CheckDeadMinions () {
@@ -216,6 +205,18 @@ void Alien::NotifyCollision (GameObject& other) {
         damageTaken = playerb->GetHP();
         return;
     }
+}
+
+Vec2 Alien::GetScale () {
+    return sprite->GetScale();
+}
+
+int Alien::GetHP () {
+    return hp;
+}
+
+int Alien::GetAlienCount () {
+    return alienCount;
 }
 
 bool Alien::Is (std::string type) {

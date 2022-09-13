@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "AlienBoss.h"
+#include "MinionBoss.h"
 
 int AlienBoss::shotSpiralId = 0;
 
@@ -7,14 +8,30 @@ AlienBoss::AlienBoss (GameObject& associated, int minionCount): Alien(associated
     delete sprite;
     sprite = new Sprite(associated, ALIEN_BOSS_SPRITE);
 
-    // shotStylesCooldown = ALIEN_BOSS_SHOT_COOLDOWN;
-    shotStylesCooldown = {0.5f, 0.1f, 0.25f, 0.0f};
+    shotStylesCooldown = ALIEN_BOSS_SHOT_COOLDOWN;
+    shotStylesBulletSpeed = MINION_BOSS_BULLET_SPEED;
     ShotStyle initialStyle = SINGLE;
+
+    hp = ALIEN_BOSS_START_HP;
 
     float startTime = ALIEN_SHOT_COOLDOWN + ALIEN_TIMER_START;
     restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, startTime);
     cooldown = Timer(shotStylesCooldown[initialStyle], startTime);
     shotStyle = initialStyle;
+}
+
+void AlienBoss::Start () {
+    State& gameState = Game::GetInstance().GetCurrentState();
+    GameObject* minion;
+    float minionArcPlacement;
+
+    for (int i=0; i < minionCount; i++) {
+        minion = new GameObject(MINION_LAYER, MINION_LABEL);
+        minionArcPlacement = (float)i*((PI*2)/minionCount);
+        minion->AddComponent(new MinionBoss(*minion, associated, minionArcPlacement));
+        minionArray.push_back(gameState.AddObject(minion));
+    }
+    penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
 }
 
 void AlienBoss::Update (float dt) {
@@ -51,23 +68,8 @@ void AlienBoss::Update (float dt) {
     BreathAnimation(dt);    // sylar's alien breath extra effects
 }
 
-void AlienBoss::ActionRest (float dt) {
-    cooldown.Update(dt);
-    if (cooldown.IsOver() and (not minionArray.empty())) {
-        ActionShoot(dt);
-        cooldown.Reset();
-    }
-
-    restTimer.Update(dt);
-    if (restTimer.IsOver()) {
-        target = penguin.lock()->box.GetPosition();
-        restTimer.Reset();
-        state = MOVING;
-    }
-}
-
 void AlienBoss::ActionShoot (float dt) {
-    Minion* minion;
+    MinionBoss* minion;
     
     if (shotStyle == SINGLE) {
         Vec2 minionPosition;
@@ -83,11 +85,12 @@ void AlienBoss::ActionShoot (float dt) {
         }
 
         for (int i=0; i < (int)minionArray.size(); i++) {
-            minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+            minion = (MinionBoss*)minionArray[i].lock()->GetComponent("Minion");
             minionPosition = minionArray[i].lock()->box.GetPosition();
             angle = Deg2Rad(minionArray[i].lock()->angleDeg + MINION_ANGLEDEG_ADJUST);
             target = minionPosition + Vec2().DirectionFrom(angle);
-            minion->Shoot(target);
+            minion->Shoot(target, shotStylesBulletSpeed[SINGLE]);
+            minion->still = true;
         }
     }
     else if (shotStyle == MULTIPLE) {
@@ -98,7 +101,7 @@ void AlienBoss::ActionShoot (float dt) {
         target = penguin.lock()->box.GetPosition();
 
         for (int i=0; i < (int)minionArray.size(); i++) {
-            minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+            minion = (MinionBoss*)minionArray[i].lock()->GetComponent("Minion");
             minionDistance = minion->GetPosition().DistanceTo(target);
 
             if (minionDistance < targetDistance) {
@@ -106,8 +109,8 @@ void AlienBoss::ActionShoot (float dt) {
                 minionShooterId = i;
             }
         }
-        minion = (Minion*)minionArray[minionShooterId].lock()->GetComponent("Minion");
-        minion->Shoot(target);
+        minion = (MinionBoss*)minionArray[minionShooterId].lock()->GetComponent("Minion");
+        minion->Shoot(target, shotStylesBulletSpeed[MULTIPLE]);
     }
     
     else if (shotStyle == SPIRAL) {
@@ -115,11 +118,11 @@ void AlienBoss::ActionShoot (float dt) {
         float angle;
 
         for (int i=0; i < (int)minionArray.size(); i++) {
-            minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+            minion = (MinionBoss*)minionArray[i].lock()->GetComponent("Minion");
             minionPosition = minionArray[i].lock()->box.GetPosition();
             angle = Deg2Rad(minionArray[i].lock()->angleDeg + MINION_ANGLEDEG_ADJUST);
             target = minionPosition + Vec2().DirectionFrom(angle);
-            minion->Shoot(target);
+            minion->Shoot(target, shotStylesBulletSpeed[SPIRAL]);
         }
     }
 }
@@ -131,6 +134,10 @@ void AlienBoss::ActionMove (float dt) {
         float targetAngle = currentPosition.AngleTo(target);
         speed = currentPosition.DirectionFrom(targetAngle);
         associated.box.Translate(speed * ALIEN_LINEAR_SPEED * dt);
+        
+        for (int i=0; i < (int)minionArray.size(); i++) {
+            ((MinionBoss*)minionArray[i].lock()->GetComponent("Minion"))->still = false;
+        }
     }
     else {
         shotStyle = static_cast<ShotStyle>(rand()%shotStylesCooldown.size());
@@ -139,4 +146,25 @@ void AlienBoss::ActionMove (float dt) {
         speed = Vec2();
         state = RESTING;
     }
+}
+
+void AlienBoss::ExplodeAnimation () {
+    State& gameState = Game::GetInstance().GetCurrentState();
+
+    GameObject* explosion = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
+    explosion->AddComponent(
+        new Sprite(
+            *explosion, ALIEN_BOSS_DEATH_SPRITE,
+            ALIEN_DEATH_FRAME_COUNT, ALIEN_DEATH_FRAME_TIME,
+            ALIEN_DEATH_FRAME_ONESHOT, ALIEN_DEATH_SELFDESTRUCTION
+        )
+    );
+    explosion->box.SetPosition(associated.box.GetPosition());
+    gameState.AddObject(explosion);
+
+    GameObject* boom = new GameObject();
+    Sound* explosionSound = new Sound(*boom, ALIEN_DEATH_SOUND);
+    boom->AddComponent(explosionSound);
+    gameState.AddObject(boom);
+    explosionSound->Play(ALIEN_DEATH_SOUND_TIMES, ALIEN_DEATH_SELFDESTRUCTION);
 }

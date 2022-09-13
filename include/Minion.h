@@ -37,10 +37,13 @@
 #define MINION_DEATH_LAYER              7
 
 class Minion: public Component {
-    private:
+    protected:
         std::weak_ptr<GameObject> alienCenter;
         float arc;
         int hp, damageTaken;
+
+        // sylar's boss fight
+        Sprite* sprite;
     
     public:
         Minion(
@@ -48,14 +51,14 @@ class Minion: public Component {
             GameObject& alienCenter,
             float arcOffsetDeg=0.0f
         );
-        void Start();
-        void Update(float dt);
-        void Render();
-        int GetHP();
-        void Shoot(Vec2 target);
-        void ExplodeAnimation();
+        virtual void Start();
+        virtual void Update(float dt);
+        virtual void Render();
+        virtual void Shoot(Vec2 target);
+        virtual void ExplodeAnimation();
+        virtual void NotifyCollision(GameObject& other);
         Vec2 GetPosition();
-        void NotifyCollision(GameObject& other);
+        int GetHP();
         bool IsDead();
         bool Is(std::string type);
 };

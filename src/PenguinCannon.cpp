@@ -62,7 +62,7 @@ int PenguinCannon::GetHP () {
 void PenguinCannon::Shoot (Vec2 target) {
     GameObject* bullet = new GameObject(PENGUINC_BULLET_LAYER, PENGUINC_BULLET_LABEL);
     Vec2 cannonPosition = associated.box.GetPosition();
-    Vec2 radius(PENGUINC_BULLET_ARC_DISTANCE);
+    Vec2 radius(PENGUINC_BULLET_OFFSET);
 
     bullet->AddComponent(
         new Bullet(

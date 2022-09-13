@@ -3,7 +3,6 @@
 
 #include "Component.h"
 #include "Sprite.h"                     // sylar's extra positioning
-#include "Minion.h"
 
 #define ALIEN_LABEL                     "Enemy"
 #define ALIEN_SPRITE                    "assets/img/alien.png"
@@ -54,19 +53,19 @@ class Alien: public Component {
         virtual void ActionRest(float dt);
         virtual void ActionShoot(float dt);
         virtual void ActionMove(float dt);
-        void BreathAnimation(float dt);
-        void ExplodeAnimation();
+        virtual void BreathAnimation(float dt);
+        virtual void ExplodeAnimation();
 
     public:
         Alien(GameObject& associated, int minionCount);
         ~Alien();
-        void Start();
+        virtual void Start();
         virtual void Update(float dt);
-        void Render();
+        virtual void Render();
+        virtual void NotifyCollision(GameObject& other);
         Vec2 GetScale();
         int GetHP();
         static int GetAlienCount();
-        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 };
 
