@@ -15,7 +15,8 @@ class GameData {
         static bool stageStatePop;
     
     public:
-        static void UpdateHud(float dt);
+        static void UpdateHudHp(float dt);
+        static void UpdateHudCd(float dt);
         static bool PlayerVictory();
         static bool StageStatePopRequested();
 };

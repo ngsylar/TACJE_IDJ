@@ -1,4 +1,5 @@
 #include "GentooEngine.h"
+#include "GameData.h"
 #include "PenguinCannon.h"
 #include "PenguinBody.h"
 #include "Bullet.h"
@@ -50,9 +51,13 @@ void PenguinCannon::Update (float dt) {
     associated.box.SetPosition(pbodyPosition);
 
     cooldown.Update(dt);
-    if (cooldown.IsOver() and input.MousePress(MOUSE_BUTTON_LEFT)) {
-        Shoot(target);
-        cooldown.Reset();
+    if (cooldown.IsOver()) {
+        if (input.MousePress(MOUSE_BUTTON_LEFT)) {
+            Shoot(target);
+            cooldown.Reset();
+        }
+    } else {
+        GameData::UpdateHudCd(dt);
     }
 }
 
@@ -83,6 +88,10 @@ void PenguinCannon::Shoot (Vec2 target) {
 void PenguinCannon::NotifyCollision (GameObject& other) {
     if (not pbody.expired())
         pbody.lock()->NotifyCollision(other);
+}
+
+float PenguinCannon::GetRelativeCooldown () {
+    return ((1.0f/PENGUINC_SHOT_COOLDOWN) * cooldown.Get());
 }
 
 int PenguinCannon::GetHP () {

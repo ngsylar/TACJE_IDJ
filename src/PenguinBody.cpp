@@ -44,7 +44,7 @@ void PenguinBody::Update (float dt) {
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
-        GameData::UpdateHud(dt);
+        GameData::UpdateHudHp(dt);
     }
     if (hp <= 0) {
         ExplodeAnimation();
@@ -89,10 +89,6 @@ void PenguinBody::Update (float dt) {
 
 void PenguinBody::Render () {}
 
-int PenguinBody::GetHP () {
-    return hp;
-}
-
 void PenguinBody::ExplodeAnimation () {
     State& state = Game::GetInstance().GetCurrentState();
 
@@ -130,6 +126,18 @@ void PenguinBody::NotifyCollision (GameObject& other) {
         damageTaken = hp;
         return;
     }
+}
+
+float PenguinBody::GetRelativeCooldown () {
+    if (pcannon.expired())
+        return 0.0f;
+
+    PenguinCannon* pcptr = (PenguinCannon*)pcannon.lock()->GetComponent("PenguinCannon");
+    return pcptr->GetRelativeCooldown();
+}
+
+int PenguinBody::GetHP () {
+    return hp;
 }
 
 bool PenguinBody::Is (std::string type) {

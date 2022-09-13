@@ -42,6 +42,7 @@ class PenguinCannon: public Component {
         virtual void Render();
         virtual void Shoot(Vec2 target);
         virtual void NotifyCollision(GameObject& other);
+        float GetRelativeCooldown();
         int GetHP();
         bool Is(std::string type);
 };

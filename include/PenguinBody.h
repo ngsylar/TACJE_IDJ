@@ -40,9 +40,10 @@ class PenguinBody: public Component {
         void Start();
         void Update(float dt);
         void Render();
-        int GetHP();
         void ExplodeAnimation();
         void NotifyCollision(GameObject& other);
+        float GetRelativeCooldown();
+        int GetHP();
         bool Is(std::string type);
 };
 
