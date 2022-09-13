@@ -20,12 +20,6 @@ AlienBoss::AlienBoss (GameObject& associated, int minionCount): Alien(associated
     shotStyle = initialStyle;
 }
 
-void AlienBoss::Start () {
-    State& gameState = Game::GetInstance().GetCurrentState();
-    penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
-    GenerateMinions();
-}
-
 void AlienBoss::Update (float dt) {
     if (damageTaken > 0) {
         hp -= damageTaken;
@@ -45,7 +39,7 @@ void AlienBoss::Update (float dt) {
     }
     // State Generation
     else if (minionArray.empty()) {
-        // gerar novos minions aqui
+        GenerateMinions();
     }
     // State Resting/Shooting
     if (state == RESTING) {

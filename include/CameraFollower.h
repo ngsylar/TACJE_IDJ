@@ -5,6 +5,8 @@
 
 class CameraFollower: public Component {
     public:
+        Vec2 offset;
+        
         CameraFollower(GameObject& go);
         void Update(float dt);
         void Render();

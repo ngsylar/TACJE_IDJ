@@ -5,7 +5,7 @@
 
 #define PENGUINB_LABEL                  "Player"
 #define PENGUINB_SPRITE                 "assets/img/penguin.png"
-#define PENGUINB_START_POSITION         704, 640
+#define PENGUINB_START_POSITION         704.0f, 640.0f
 #define PENGUINB_START_HP               100
 #define PENGUINB_MAX_SPEED              600.0f
 #define PENGUINB_MIN_SPEED              -300.0f

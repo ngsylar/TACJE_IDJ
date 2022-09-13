@@ -35,16 +35,8 @@ Alien::~Alien () {
 
 void Alien::Start () {
     State& gameState = Game::GetInstance().GetCurrentState();
-    GameObject* minion;
-    float minionArcPlacement;
-
-    for (int i=0; i < minionCount; i++) {
-        minion = new GameObject(MINION_LAYER, MINION_LABEL);
-        minionArcPlacement = (float)i*((PI*2)/minionCount);
-        minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
-        minionArray.push_back(gameState.AddObject(minion));
-    }
     penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
+    GenerateMinions();
 }
 
 void Alien::Update (float dt) {
@@ -88,6 +80,19 @@ void Alien::Render () {
         (int)associated.box.x - Camera::pos.x,
         (int)associated.box.y - Camera::pos.y
     );
+}
+
+void Alien::GenerateMinions () {
+    State& gameState = Game::GetInstance().GetCurrentState();
+    GameObject* minion;
+    float minionArcPlacement;
+
+    for (int i=0; i < minionCount; i++) {
+        minion = new GameObject(MINION_LAYER, MINION_LABEL);
+        minionArcPlacement = (float)i*((PI*2)/minionCount);
+        minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
+        minionArray.push_back(gameState.AddObject(minion));
+    }
 }
 
 void Alien::CheckDeadMinions () {

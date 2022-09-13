@@ -28,7 +28,6 @@ class AlienBoss: public Alien {
     
     public:
         AlienBoss(GameObject& associated, int minionCount);
-        void Start();
         void Update(float dt);
 };
 

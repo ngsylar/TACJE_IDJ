@@ -18,9 +18,9 @@
 #define ALIEN_SHOT_COOLDOWN             0.75f
 #define ALIEN_FOE_LABEL                 "Player"
 
-#define ALIEN0_START_POSITION           512, 300
-#define ALIEN1_START_POSITION           1070, 760
-#define ALIEN2_START_POSITION           286, 920
+#define ALIEN0_START_POSITION           512.0f, 300.0f
+#define ALIEN1_START_POSITION           1070.0f, 760.0f
+#define ALIEN2_START_POSITION           286.0f, 920.0f
 
 #define ALIEN_DEATH_LABEL               "Explosion"
 #define ALIEN_DEATH_SOUND               "assets/audio/boomAlien.wav"
@@ -49,6 +49,7 @@ class Alien: public Component {
         Sprite* sprite;
         bool breathIn;
 
+        virtual void GenerateMinions();
         void CheckDeadMinions();
         virtual void ActionRest(float dt);
         virtual void ActionShoot();

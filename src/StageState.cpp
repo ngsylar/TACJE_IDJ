@@ -4,6 +4,7 @@
 #include "PauseScene.h"
 #include "EndState.h"
 #include "GameData.h"
+#include "Hud.h"
 #include "AlienBoss.h"
 #include "PenguinBody.h"
 
@@ -68,9 +69,14 @@ void StageState::LoadAssets () {
     // centro->AddComponent(new Sprite(*centro, "spike/objectCenter.png"));
     // Game::GetInstance().GetCurrentState().AddObject(centro);
     // centro->box.SetPosition(PENGUINB_START_POSITION);
+
+    GameObject* hud = new GameObject(HUD_LAYER, HUD_LABEL);
+    hud->AddComponent(new Hud(*hud, *penguin));
+    GameData::hud = AddObject(hud);
 }
 
 void StageState::Start () {
+    Game::GetInstance().AddState(new PauseScene(this));
     Camera::EnableFree();
     Camera::Follow(penguin);
     gameMapLimits = Rect(GAMEMAP_TILEMAP0_LIMITS);

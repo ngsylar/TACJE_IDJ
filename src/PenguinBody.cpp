@@ -1,5 +1,6 @@
 #include "GentooEngine.h"
 #include "StageState.h"
+#include "GameData.h"
 #include "PenguinBody.h"
 #include "PenguinSuperCannon.h"
 #include "Alien.h"
@@ -43,7 +44,7 @@ void PenguinBody::Update (float dt) {
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
-        // SDL_Log("Player %d", hp);    // remover linha
+        GameData::UpdateHud(dt);
     }
     if (hp <= 0) {
         ExplodeAnimation();
