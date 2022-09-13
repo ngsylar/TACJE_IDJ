@@ -65,7 +65,7 @@ void AlienBoss::Update (float dt) {
     }
 
     associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
-    BreathAnimation(dt);    // sylar's alien breath extra effects
+    BreathAnimation(dt);
 }
 
 void AlienBoss::ActionShoot (float dt) {
@@ -92,6 +92,7 @@ void AlienBoss::ActionShoot (float dt) {
             minion->Shoot(target, shotStylesBulletSpeed[SINGLE]);
             minion->still = true;
         }
+        PlaySoundEffect(MINION_BULLET_SOUND_SHOT, ALIEN_BOSS_SHOT_SFX_TIMES);
     }
     else if (shotStyle == MULTIPLE) {
         float targetDistance = 999999.0f;
@@ -110,7 +111,7 @@ void AlienBoss::ActionShoot (float dt) {
             }
         }
         minion = (MinionBoss*)minionArray[minionShooterId].lock()->GetComponent("Minion");
-        minion->Shoot(target, shotStylesBulletSpeed[MULTIPLE]);
+        minion->Shoot(target, shotStylesBulletSpeed[MULTIPLE], MINION_BULLET_SOUND_SHOT);
     }
     
     else if (shotStyle == SPIRAL) {
@@ -124,6 +125,7 @@ void AlienBoss::ActionShoot (float dt) {
             target = minionPosition + Vec2().DirectionFrom(angle);
             minion->Shoot(target, shotStylesBulletSpeed[SPIRAL]);
         }
+        PlaySoundEffect(MINION_BULLET_SOUND_SHOT, ALIEN_BOSS_SHOT_SFX_TIMES);
     }
 }
 
@@ -149,8 +151,6 @@ void AlienBoss::ActionMove (float dt) {
 }
 
 void AlienBoss::ExplodeAnimation () {
-    State& gameState = Game::GetInstance().GetCurrentState();
-
     GameObject* explosion = new GameObject(ALIEN_DEATH_LAYER, ALIEN_DEATH_LABEL);
     explosion->AddComponent(
         new Sprite(
@@ -160,11 +160,15 @@ void AlienBoss::ExplodeAnimation () {
         )
     );
     explosion->box.SetPosition(associated.box.GetPosition());
-    gameState.AddObject(explosion);
+    Game::GetInstance().GetCurrentState().AddObject(explosion);
 
-    GameObject* boom = new GameObject();
-    Sound* explosionSound = new Sound(*boom, ALIEN_DEATH_SOUND);
-    boom->AddComponent(explosionSound);
-    gameState.AddObject(boom);
-    explosionSound->Play(ALIEN_DEATH_SOUND_TIMES, ALIEN_DEATH_SELFDESTRUCTION);
+    PlaySoundEffect(ALIEN_DEATH_SOUND);
+}
+
+void AlienBoss::PlaySoundEffect (std::string soundFileName, int times) {
+    GameObject* sfx = new GameObject();
+    Sound* sound = new Sound(*sfx, soundFileName);
+    sfx->AddComponent(sound);
+    Game::GetInstance().GetCurrentState().AddObject(sfx);
+    sound->Play(times, ALIEN_BOSS_SFX_SELFDESTRUCTION);
 }

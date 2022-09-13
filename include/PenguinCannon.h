@@ -3,6 +3,7 @@
 
 #include "Timer.h"
 #include "Component.h"
+#include "Sprite.h"                     // sylar's boss fight
 #include "Sound.h"                      // sylar's extra sfx
 
 #define PENGUINC_SPRITE                 "assets/img/cubngun.png"
@@ -26,21 +27,22 @@
 #define PENGUINC_BULLET_LAYER           2
 
 class PenguinCannon: public Component {
-    private:
+    protected:
         std::weak_ptr<GameObject> pbody;
         float angle;
         Timer cooldown;
 
-        // sylar's extra sfx
-        Sound* shotSound;
+        Sprite* sprite;     // sylar's boss fight
+        Sound* shotSound;   // sylar's extra sfx
     
     public:
         PenguinCannon(GameObject& associated, GameObject& penguinBody);
-        void Update(float dt);
-        void Render();
+        virtual void Start();
+        virtual void Update(float dt);
+        virtual void Render();
+        virtual void Shoot(Vec2 target);
+        virtual void NotifyCollision(GameObject& other);
         int GetHP();
-        void Shoot(Vec2 target);
-        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 };
 

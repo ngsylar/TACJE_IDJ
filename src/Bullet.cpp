@@ -38,7 +38,7 @@ Bullet::Bullet (
 
 void Bullet::Start () {
     // sylar's extra sfx
-    if (shotSound)
+    if (shotSound != nullptr)
         shotSound->Play();
 }
 

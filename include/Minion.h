@@ -2,6 +2,7 @@
 #define MINION_H
 
 #include "Component.h"
+#include "Sprite.h"                     // sylar's boss fight
 
 #define MINION_LABEL                    "Enemy"
 #define MINION_SPRITE                   "assets/img/minion.png"

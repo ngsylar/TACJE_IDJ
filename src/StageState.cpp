@@ -75,7 +75,7 @@ void StageState::Start () {
     Camera::Follow(penguin);
     gameMapLimits = Rect(GAMEMAP_TILEMAP0_LIMITS);
     music.Open(BACKGROUND_MUSIC);
-    // music.Play(MUSIC_REPEAT_ON);
+    music.Play(MUSIC_REPEAT_ON);
 }
 
 void StageState::Update (float dt) {

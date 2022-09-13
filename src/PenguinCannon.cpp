@@ -7,9 +7,8 @@ PenguinCannon::PenguinCannon (
     GameObject& associated, GameObject& penguinBody
 ): Component(associated) {
     
-    Sprite* sprite = new Sprite(associated, PENGUINC_SPRITE);
+    sprite = new Sprite(associated);
     associated.AddComponent(sprite);
-    associated.box.offset = Vec2(PENGUINC_CENTER_OFFSET);   // sylar's extra positioning
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
@@ -22,6 +21,11 @@ PenguinCannon::PenguinCannon (
     angle = 0;
 
     cooldown = Timer(PENGUINC_SHOT_COOLDOWN, PENGUINC_SHOT_COOLDOWN);
+}
+
+void PenguinCannon::Start () {
+    sprite->Open(PENGUINC_SPRITE);
+    associated.box.offset = Vec2(PENGUINC_CENTER_OFFSET);   // sylar's extra positioning
 }
 
 void PenguinCannon::Update (float dt) {
@@ -54,11 +58,6 @@ void PenguinCannon::Update (float dt) {
 
 void PenguinCannon::Render () {}
 
-int PenguinCannon::GetHP () {
-    if (pbody.expired()) return 0;
-    return ((PenguinBody*)pbody.lock()->GetComponent("PenguinBody"))->GetHP();
-}
-
 void PenguinCannon::Shoot (Vec2 target) {
     GameObject* bullet = new GameObject(PENGUINC_BULLET_LAYER, PENGUINC_BULLET_LABEL);
     Vec2 cannonPosition = associated.box.GetPosition();
@@ -84,6 +83,11 @@ void PenguinCannon::Shoot (Vec2 target) {
 void PenguinCannon::NotifyCollision (GameObject& other) {
     if (not pbody.expired())
         pbody.lock()->NotifyCollision(other);
+}
+
+int PenguinCannon::GetHP () {
+    if (pbody.expired()) return 0;
+    return ((PenguinBody*)pbody.lock()->GetComponent("PenguinBody"))->GetHP();
 }
 
 bool PenguinCannon::Is (std::string type) {

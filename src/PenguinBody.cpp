@@ -1,7 +1,7 @@
 #include "GentooEngine.h"
 #include "StageState.h"
 #include "PenguinBody.h"
-#include "PenguinCannon.h"
+#include "PenguinSuperCannon.h"
 #include "Alien.h"
 #include "Minion.h"
 #include "Bullet.h"
@@ -28,7 +28,7 @@ PenguinBody::~PenguinBody () {
 
 void PenguinBody::Start () {
     GameObject* pcannonObj = new GameObject(PENGUINC_LAYER, PENGUINB_LABEL);
-    pcannonObj->AddComponent(new PenguinCannon(*pcannonObj, associated));
+    pcannonObj->AddComponent(new PenguinSuperCannon(*pcannonObj, associated));
     pcannon = Game::GetInstance().GetCurrentState().AddObject(pcannonObj);
     rotationRadSpeed = Deg2Rad(PENGUINB_ROTATION_SPEED);
 

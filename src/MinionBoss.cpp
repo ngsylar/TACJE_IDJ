@@ -51,20 +51,20 @@ void MinionBoss::Update (float dt) {
     associated.angleDeg = minionPosition.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
 }
 
-void MinionBoss::Shoot (Vec2 target, float bulletSpeed) {
+void MinionBoss::Shoot (Vec2 target, float bulletSpeed, std::string bulletSoundShot) {
     Vec2 minionPosition = associated.box.GetPosition();
     Vec2 radius(MINION_BOSS_BULLET_OFFSET);
     float angle = minionPosition.AngleTo(target);
 
-    GameObject* bullet = new GameObject(MINION_BULLET_LAYER, MINION_BULLET_LABEL);
+    GameObject* bullet = new GameObject(MINION_BULLET_LAYER, MINION_BOSS_BULLET_LABEL);
     bullet->AddComponent(
         new Bullet(
             *bullet, MINION_BOSS_BULLET_SPRITE,
             angle, bulletSpeed, MINION_BULLET_RANGE,
             MINION_BULLET_DAMAGE,
             MINION_BULLET_FRAME_COUNT, MINION_BULLET_FRAME_TIME, MINION_BULLET_FRAME_ONESHOT,
-            MINION_BULLET_TARGETS,
-            MINION_BULLET_SOUND_SHOT, MINION_BULLET_SOUND_HIT
+            MINION_BOSS_BULLET_TARGETS,
+            bulletSoundShot, MINION_BULLET_SOUND_HIT
         )
     );
     bullet->box.RotateAround(minionPosition, radius, angle);
