@@ -51,7 +51,7 @@ class Alien: public Component {
 
         void CheckDeadMinions();
         virtual void ActionRest(float dt);
-        virtual void ActionShoot(float dt);
+        virtual void ActionShoot();
         virtual void ActionMove(float dt);
         virtual void BreathAnimation(float dt);
         virtual void ExplodeAnimation();

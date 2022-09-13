@@ -17,6 +17,8 @@ Minion::Minion (
 
     this->alienCenter = Game::GetInstance().GetCurrentState().GetObjectPtr(&alienCenter);
     arc = arcOffsetDeg;
+
+    playDeathSound = true;
 }
 
 void Minion::Start () {
@@ -37,6 +39,7 @@ void Minion::Start () {
 
 void Minion::Update (float dt) {
     if (alienCenter.expired()) {
+        playDeathSound = false;
         ExplodeAnimation();
         associated.RequestDelete();
         return;
@@ -93,7 +96,8 @@ void Minion::ExplodeAnimation () {
     );
     explosion->box.SetPosition(associated.box.GetPosition());
     state.AddObject(explosion);
-    
+
+    if (not playDeathSound) return;
     GameObject* boom = new GameObject();
     Sound* explosionSound = new Sound(*boom, MINION_DEATH_SOUND);
     boom->AddComponent(explosionSound);

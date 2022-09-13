@@ -106,7 +106,7 @@ void Alien::CheckDeadMinions () {
 void Alien::ActionRest (float dt) {
     cooldown.Update(dt);
     if (cooldown.IsOver() and (not minionArray.empty())) {
-        ActionShoot(dt);
+        ActionShoot();
         cooldown.Reset();
     }
 
@@ -118,7 +118,7 @@ void Alien::ActionRest (float dt) {
     }
 }
 
-void Alien::ActionShoot (float dt) {
+void Alien::ActionShoot () {
     float targetDistance = 999999.0f;
     Minion* minion;
     float minionDistance;

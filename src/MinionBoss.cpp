@@ -27,6 +27,7 @@ void MinionBoss::Start () {
 
 void MinionBoss::Update (float dt) {
     if (alienCenter.expired()) {
+        playDeathSound = false;
         ExplodeAnimation();
         associated.RequestDelete();
         return;
@@ -85,6 +86,7 @@ void MinionBoss::ExplodeAnimation () {
     explosion->box.SetPosition(associated.box.GetPosition());
     state.AddObject(explosion);
     
+    if (not playDeathSound) return;
     GameObject* boom = new GameObject();
     Sound* explosionSound = new Sound(*boom, MINION_DEATH_SOUND);
     boom->AddComponent(explosionSound);

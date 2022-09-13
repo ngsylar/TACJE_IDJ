@@ -22,16 +22,8 @@ AlienBoss::AlienBoss (GameObject& associated, int minionCount): Alien(associated
 
 void AlienBoss::Start () {
     State& gameState = Game::GetInstance().GetCurrentState();
-    GameObject* minion;
-    float minionArcPlacement;
-
-    for (int i=0; i < minionCount; i++) {
-        minion = new GameObject(MINION_LAYER, MINION_LABEL);
-        minionArcPlacement = (float)i*((PI*2)/minionCount);
-        minion->AddComponent(new MinionBoss(*minion, associated, minionArcPlacement));
-        minionArray.push_back(gameState.AddObject(minion));
-    }
     penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
+    GenerateMinions();
 }
 
 void AlienBoss::Update (float dt) {
@@ -68,7 +60,20 @@ void AlienBoss::Update (float dt) {
     BreathAnimation(dt);
 }
 
-void AlienBoss::ActionShoot (float dt) {
+void AlienBoss::GenerateMinions () {
+    State& gameState = Game::GetInstance().GetCurrentState();
+    GameObject* minion;
+    float minionArcPlacement;
+    
+    for (int i=0; i < minionCount; i++) {
+        minion = new GameObject(MINION_LAYER, MINION_LABEL);
+        minionArcPlacement = (float)i*((PI*2)/minionCount);
+        minion->AddComponent(new MinionBoss(*minion, associated, minionArcPlacement));
+        minionArray.push_back(gameState.AddObject(minion));
+    }
+}
+
+void AlienBoss::ActionShoot () {
     MinionBoss* minion;
     
     if (shotStyle == SINGLE) {
@@ -112,8 +117,8 @@ void AlienBoss::ActionShoot (float dt) {
         }
         minion = (MinionBoss*)minionArray[minionShooterId].lock()->GetComponent("Minion");
         minion->Shoot(target, shotStylesBulletSpeed[MULTIPLE], MINION_BULLET_SOUND_SHOT);
-    }
     
+    }
     else if (shotStyle == SPIRAL) {
         Vec2 minionPosition;
         float angle;

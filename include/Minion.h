@@ -43,8 +43,8 @@ class Minion: public Component {
         float arc;
         int hp, damageTaken;
 
-        // sylar's boss fight
-        Sprite* sprite;
+        Sprite* sprite;         // sylar's boss fight
+        bool playDeathSound;    // sylar's extra sfx
     
     public:
         Minion(
