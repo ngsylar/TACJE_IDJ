@@ -34,9 +34,8 @@
 #define ALIEN_DEATH_LAYER               7
 
 class Alien: public Component {
-    private:
+    protected:
         enum AlienState {RESTING, MOVING, SLEEPING};
-        // enum ShotStyle {SINGLE, MULTIPLE, SPIRAL};
 
         int hp, damageTaken;
         AlienState state;
@@ -51,9 +50,10 @@ class Alien: public Component {
         Sprite* sprite;
         bool breathIn;
 
-        void ActionRest(float dt);
-        void ActionShoot(float dt);
-        void ActionMove(float dt);
+        void CheckDeadMinions();
+        virtual void ActionRest(float dt);
+        virtual void ActionShoot(float dt);
+        virtual void ActionMove(float dt);
         void BreathAnimation(float dt);
         void ExplodeAnimation();
 
@@ -61,12 +61,12 @@ class Alien: public Component {
         Alien(GameObject& associated, int minionCount);
         ~Alien();
         void Start();
-        void Update(float dt);
-        void NotifyCollision(GameObject& other);
+        virtual void Update(float dt);
         void Render();
         Vec2 GetScale();
         int GetHP();
         static int GetAlienCount();
+        void NotifyCollision(GameObject& other);
         bool Is(std::string type);
 };
 

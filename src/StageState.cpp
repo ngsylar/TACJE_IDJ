@@ -4,7 +4,7 @@
 #include "PauseScene.h"
 #include "EndState.h"
 #include "GameData.h"
-#include "Alien.h"
+#include "AlienBoss.h"
 #include "PenguinBody.h"
 
 StageState::StageState () {
@@ -44,15 +44,20 @@ void StageState::LoadAssets () {
     // alien0->box.SetPosition(ALIEN0_START_POSITION);
     // AddObject(alien0);
 
-    GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
-    alien1->box.SetPosition(ALIEN1_START_POSITION);
-    AddObject(alien1);
+    // GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // alien1->AddComponent(new Alien(*alien1, ALIEN_MINION_COUNT));
+    // alien1->box.SetPosition(ALIEN1_START_POSITION);
+    // AddObject(alien1);
 
     // GameObject* alien2 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
     // alien2->AddComponent(new Alien(*alien2, ALIEN_MINION_COUNT));
     // alien2->box.SetPosition(ALIEN2_START_POSITION);
     // AddObject(alien2);
+
+    GameObject* boss = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    boss->AddComponent(new AlienBoss(*boss, ALIEN_MINION_COUNT));
+    boss->box.SetPosition(ALIEN1_START_POSITION);
+    AddObject(boss);
 
     penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));

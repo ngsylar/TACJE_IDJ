@@ -47,8 +47,6 @@ void Alien::Start () {
 }
 
 void Alien::Update (float dt) {
-    Minion* minion;
-    
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
@@ -59,15 +57,7 @@ void Alien::Update (float dt) {
         associated.RequestDelete();
         return;
     }
-
-    for (int i=(int)minionArray.size()-1; i >= 0; i--) {
-        minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
-        if (minion->IsDead()) {
-            minion->ExplodeAnimation();
-            minionArray[i].lock()->RequestDelete();
-            minionArray.erase(minionArray.begin()+i);
-        }
-    }
+    CheckDeadMinions();
 
     // State Sleeping
     if (penguin.expired()) {
@@ -109,6 +99,19 @@ int Alien::GetHP () {
 
 int Alien::GetAlienCount () {
     return alienCount;
+}
+
+void Alien::CheckDeadMinions () {
+    Minion* minion;
+
+    for (int i=(int)minionArray.size()-1; i >= 0; i--) {
+        minion = (Minion*)minionArray[i].lock()->GetComponent("Minion");
+        if (minion->IsDead()) {
+            minion->ExplodeAnimation();
+            minionArray[i].lock()->RequestDelete();
+            minionArray.erase(minionArray.begin()+i);
+        }
+    }
 }
 
 void Alien::ActionRest (float dt) {
