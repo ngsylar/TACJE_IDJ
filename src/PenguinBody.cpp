@@ -21,6 +21,8 @@ PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
 
     linearSpeed = 0.0f;
     angle = 0.0f;
+
+    GameData::movementAllowed = false;
 }
 
 PenguinBody::~PenguinBody () {
@@ -53,6 +55,17 @@ void PenguinBody::Update (float dt) {
         return;
     }
 
+    if (input.IsKeyDown(KEY_A)) {
+        angle -= rotationRadSpeed * dt;
+        associated.angleDeg = Rad2Deg(angle);
+    }
+    if (input.IsKeyDown(KEY_D)) {
+        angle += rotationRadSpeed * dt;
+        associated.angleDeg = Rad2Deg(angle);
+    }
+    if (not GameData::movementAllowed) {
+        return;
+    }
     if (input.IsKeyDown(KEY_W)) {
         if (linearSpeed < PENGUINB_MAX_SPEED) {
             linearSpeed += PENGUINB_ACCELERATION * dt;
@@ -62,14 +75,6 @@ void PenguinBody::Update (float dt) {
         if (linearSpeed > (PENGUINB_MIN_SPEED)) {
             linearSpeed -= (PENGUINB_ACCELERATION) * dt;
         } else linearSpeed = (PENGUINB_MIN_SPEED);
-    }
-    if (input.IsKeyDown(KEY_A)) {
-        angle -= rotationRadSpeed * dt;
-        associated.angleDeg = Rad2Deg(angle);
-    }
-    if (input.IsKeyDown(KEY_D)) {
-        angle += rotationRadSpeed * dt;
-        associated.angleDeg = Rad2Deg(angle);
     }
     
     speed = Vec2().DirectionFrom(angle) * linearSpeed;

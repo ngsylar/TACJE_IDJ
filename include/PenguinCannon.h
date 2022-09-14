@@ -9,6 +9,7 @@
 #define PENGUINC_SPRITE                 "assets/img/cubngun.png"
 #define PENGUINC_SHOT_SOUND             "assets/audio/cannonshot.wav"
 #define PENGUINC_SHOT_COOLDOWN          0.5f
+#define PENGUINC_SHOT_TIMESTART         -4.0f
 #define PENGUINC_CENTER_OFFSET          -36.0f, 0.0f
 #define PENGUINC_LAYER                  3
 

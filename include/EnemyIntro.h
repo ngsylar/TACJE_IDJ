@@ -11,6 +11,7 @@ class AlienIntro: public Component {
         float scale;
         int minionCount;
         std::vector<std::weak_ptr<GameObject>> minionArray;
+        Timer cleaner;
 
     public:
         AlienIntro(
@@ -28,6 +29,7 @@ class MinionIntro: public Component {
     private:
         std::weak_ptr<GameObject> alienCenter;
         bool boss;
+        int index;
         Sprite* sprite;
         float scale, desiredScale;
         float arc;
@@ -38,6 +40,7 @@ class MinionIntro: public Component {
         MinionIntro(
             GameObject& associated,
             GameObject& alienCenter,
+            int index,
             float arcOffsetDeg=0.0f,
             bool boss=false
         );

@@ -15,6 +15,8 @@ class GameData {
         static bool stageStatePop;
     
     public:
+        static bool movementAllowed;    // editar: GAMBIARRA BRABA
+
         static void UpdateHudHp(float dt);
         static void UpdateHudCd(float dt);
         static bool PlayerVictory();

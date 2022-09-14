@@ -21,7 +21,7 @@ PenguinCannon::PenguinCannon (
     pbody = Game::GetInstance().GetCurrentState().GetObjectPtr(&penguinBody);
     angle = 0;
 
-    cooldown = Timer(PENGUINC_SHOT_COOLDOWN, PENGUINC_SHOT_COOLDOWN);
+    cooldown = Timer(PENGUINC_SHOT_COOLDOWN, PENGUINC_SHOT_TIMESTART);
 }
 
 void PenguinCannon::Start () {
@@ -56,6 +56,7 @@ void PenguinCannon::Update (float dt) {
             Shoot(target);
             cooldown.Reset();
         }
+        GameData::movementAllowed = true;
     } else {
         GameData::UpdateHudCd(dt);
     }

@@ -5,11 +5,9 @@
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
 
-int Alien::alienCount = 1;
+int Alien::alienCount = 0;
 
 Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
-    alienCount++;
-
     sprite = new Sprite(associated, ALIEN_SPRITE);
     // associated.AddComponent(sprite);    // idj's original object rendering
     // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);  // sylar's extra positioning
@@ -25,6 +23,8 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, startTime);
     cooldown = Timer(ALIEN_SHOT_COOLDOWN, startTime);
     state = RESTING;
+
+    alienCount++;
 }
 
 Alien::~Alien () {

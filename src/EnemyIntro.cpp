@@ -25,19 +25,27 @@ void AlienIntro::Start () {
     for (int i=0; i < minionCount; i++) {
         minion = new GameObject(MINION_LAYER, MINION_LABEL);
         minionArcPlacement = (float)i*((PI*2)/minionCount);
-        minion->AddComponent(new MinionIntro(*minion, associated, minionArcPlacement, boss));
+        minion->AddComponent(new MinionIntro(*minion, associated, i, minionArcPlacement, boss));
         minionArray.push_back(gameState.AddObject(minion));
     }
-    SDL_Log("here");
+    cleaner.SetResetTime(0.75f);
 }
 
 void AlienIntro::Update (float dt) {
     if (scale < 1.0f) {
         scale += 0.25f * dt;
         sprite->SetScale(scale);
+        return;
     }
-    // if (scale >= 0.75) {
-    // }
+
+    cleaner.Update(dt);
+    if (cleaner.IsOver()) {
+        GameObject* alien = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+        alien->AddComponent(new Alien(*alien, ALIEN_MINION_COUNT));
+        alien->box.SetPosition(associated.box.GetPosition());
+        Game::GetInstance().GetCurrentState().AddObject(alien);
+        associated.RequestDelete();
+    }
 }
 
 void AlienIntro::Render () {}
@@ -47,10 +55,11 @@ bool AlienIntro::Is (std::string type) {
 }
 
 MinionIntro::MinionIntro (
-    GameObject& associated, GameObject& alienCenter, float arcOffsetDeg, bool boss
+    GameObject& associated, GameObject& alienCenter, int index, float arcOffsetDeg, bool boss
 ): Component(associated) {
 
     this->alienCenter = Game::GetInstance().GetCurrentState().GetObjectPtr(&alienCenter);
+    this->index = index;
     this->boss = boss;
 
     if (boss) {
@@ -62,9 +71,10 @@ MinionIntro::MinionIntro (
     sprite->SetScale(0.0f);
     scale = 0.0f;
 
-    int rangeStart = MINION_SCALE_MIN * 100;
-    int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
-    desiredScale = (float)((rand() % scaleMod) + rangeStart) / 100.0f;
+    // int rangeStart = MINION_SCALE_MIN * 100;
+    // int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
+    // desiredScale = (float)((rand() % scaleMod) + rangeStart) / 100.0f;
+    desiredScale = 0.86f;
 
     arc = arcOffsetDeg;
 }
@@ -78,6 +88,11 @@ void MinionIntro::Start () {
 }
 
 void MinionIntro::Update (float dt) {
+    if (alienCenter.expired()) {
+        associated.RequestDelete();
+        return;
+    }
+
     Vec2 currentPosition = associated.box.GetPosition();
 
     if (currentPosition.DistanceTo(position) > ALIEN_MINIMUM_DISPLACEMENT) {

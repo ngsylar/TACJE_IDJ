@@ -3,6 +3,7 @@
 #include "Hud.h"
 
 std::weak_ptr<GameObject> GameData::hud;
+bool GameData::movementAllowed = false;
 bool GameData::playerVictory = false;
 bool GameData::stageStatePop = false;
 
