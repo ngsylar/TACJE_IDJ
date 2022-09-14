@@ -5,7 +5,7 @@
 #include "EndState.h"
 #include "GameData.h"
 #include "Hud.h"
-#include "AlienBoss.h"
+#include "EnemyIntro.h"
 #include "PenguinBody.h"
 
 StageState::StageState () {
@@ -39,6 +39,11 @@ void StageState::LoadAssets () {
     gameMap1->box = Rect(GAMEMAP_START_POSITION, GAMEMAP_TILESET_TILE_SIZE);
     gameMap1->AddComponent(gameMapTmap1);
     AddObject(gameMap1);
+
+    GameObject* alien1 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    alien1->AddComponent(new AlienIntro(*alien1, ALIEN_MINION_COUNT));
+    alien1->box.SetPosition(ALIEN1_START_POSITION);
+    AddObject(alien1);
     
     // GameObject* alien0 = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
     // alien0->AddComponent(new Alien(*alien0, ALIEN_MINION_COUNT));
@@ -55,10 +60,10 @@ void StageState::LoadAssets () {
     // alien2->box.SetPosition(ALIEN2_START_POSITION);
     // AddObject(alien2);
 
-    GameObject* boss = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-    boss->AddComponent(new AlienBoss(*boss, ALIEN_MINION_COUNT));
-    boss->box.SetPosition(ALIEN1_START_POSITION);
-    AddObject(boss);
+    // GameObject* boss = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    // boss->AddComponent(new AlienBoss(*boss, ALIEN_MINION_COUNT));
+    // boss->box.SetPosition(ALIEN1_START_POSITION);
+    // AddObject(boss);
 
     penguin = new GameObject(PENGUINB_LAYER, PENGUINB_LABEL);
     penguin->AddComponent(new PenguinBody(*penguin));
@@ -81,7 +86,7 @@ void StageState::Start () {
     Camera::Follow(penguin);
     gameMapLimits = Rect(GAMEMAP_TILEMAP0_LIMITS);
     music.Open(BACKGROUND_MUSIC);
-    music.Play(MUSIC_REPEAT_ON);
+    // music.Play(MUSIC_REPEAT_ON);
 }
 
 void StageState::Update (float dt) {

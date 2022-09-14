@@ -40,7 +40,7 @@
 class Minion: public Component {
     protected:
         std::weak_ptr<GameObject> alienCenter;
-        float arc;
+        float arc, scale;
         int hp, damageTaken;
 
         Sprite* sprite;         // sylar's boss fight

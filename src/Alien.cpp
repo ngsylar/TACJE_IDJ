@@ -5,7 +5,7 @@
 #include "PenguinBody.h"
 #include "PenguinCannon.h"
 
-int Alien::alienCount = 0;
+int Alien::alienCount = 1;
 
 Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     alienCount++;
