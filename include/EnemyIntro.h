@@ -9,9 +9,9 @@ class AlienIntro: public Component {
         bool boss;
         Sprite* sprite;
         float scale;
-        int minionCount;
+        int minionCount, minionsReady;
         std::vector<std::weak_ptr<GameObject>> minionArray;
-        Timer cleaner;
+        Timer countdown;
 
     public:
         AlienIntro(
@@ -21,7 +21,8 @@ class AlienIntro: public Component {
         );
         void Start();
         void Update(float dt);
-        void Render();
+        void IncreaseReadyMinions();
+        void GenerateNPC();
         bool Is(std::string type);
 };
 
@@ -34,7 +35,8 @@ class MinionIntro: public Component {
         float scale, desiredScale;
         float arc;
         Vec2 alienPosition, position;
-        Timer generator;
+        Timer countdown;
+        bool ready, readyPosition, readyScale;
 
     public:
         MinionIntro(
@@ -46,7 +48,7 @@ class MinionIntro: public Component {
         );
         void Start();
         void Update(float dt);
-        void Render();
+        float GetScale();
         bool Is(std::string type);
 };
 

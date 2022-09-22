@@ -16,6 +16,8 @@ class GameData {
     
     public:
         static bool movementAllowed;    // editar: GAMBIARRA BRABA
+        static bool bossAllowed;        // editar: GAMBIARRA BRABA
+        static int kills;               // editar: GAMBIARRA BRABA
 
         static void UpdateHudHp(float dt);
         static void UpdateHudCd(float dt);

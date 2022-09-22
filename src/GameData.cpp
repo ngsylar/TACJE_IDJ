@@ -3,9 +3,13 @@
 #include "Hud.h"
 
 std::weak_ptr<GameObject> GameData::hud;
-bool GameData::movementAllowed = false;
 bool GameData::playerVictory = false;
 bool GameData::stageStatePop = false;
+
+// editar: GAMBIARRA BRABA
+bool GameData::movementAllowed = false;
+bool GameData::bossAllowed = true;
+int GameData::kills = 0;
 
 void GameData::UpdateHudHp (float dt) {
     if (hud.expired()) return;

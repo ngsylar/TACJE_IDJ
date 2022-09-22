@@ -23,6 +23,7 @@ PenguinBody::PenguinBody (GameObject& associated): Component(associated) {
     angle = 0.0f;
 
     GameData::movementAllowed = false;
+    GameData::kills = 0;
 }
 
 PenguinBody::~PenguinBody () {

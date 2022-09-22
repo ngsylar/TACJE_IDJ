@@ -1,4 +1,5 @@
 #include "GentooEngine.h"
+#include "GameData.h"
 #include "Alien.h"
 #include "Minion.h"
 #include "Bullet.h"
@@ -7,15 +8,16 @@
 
 int Alien::alienCount = 0;
 
-Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
+Alien::Alien (
+    GameObject& associated, int minionCount, std::vector<float> minionScaleArray
+): Component(associated) {
     sprite = new Sprite(associated, ALIEN_SPRITE);
     // associated.AddComponent(sprite);    // idj's original object rendering
     // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);  // sylar's extra positioning
 
     Collider* collider = new Collider(associated);
     associated.AddComponent(collider);
-
-    this->minionCount = minionCount;
+    
     hp = ALIEN_START_HP;
     damageTaken = 0;
 
@@ -25,12 +27,18 @@ Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     state = RESTING;
 
     alienCount++;
+
+    this->minionCount = minionCount;
+    while ((int)minionScaleArray.size() < minionCount)
+        minionScaleArray.push_back(1.0f);
+    this->minionScaleArray = minionScaleArray;
 }
 
 Alien::~Alien () {
     delete sprite;  // sylar's alien breath extra effects
     minionArray.clear();
     alienCount--;
+    GameData::kills++;
 }
 
 void Alien::Start () {
@@ -90,7 +98,9 @@ void Alien::GenerateMinions () {
     for (int i=0; i < minionCount; i++) {
         minion = new GameObject(MINION_LAYER, MINION_LABEL);
         minionArcPlacement = (float)i*((PI*2)/minionCount);
-        minion->AddComponent(new Minion(*minion, associated, minionArcPlacement));
+        minion->AddComponent(
+            new Minion(*minion, associated, minionArcPlacement, minionScaleArray[i])
+        );
         minionArray.push_back(gameState.AddObject(minion));
     }
 }

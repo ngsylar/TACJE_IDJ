@@ -7,11 +7,8 @@ AlienIntro::AlienIntro (
     this->minionCount = minionCount;
     this->boss = boss;
 
-    if (boss) {
-        sprite = new Sprite(associated, ALIEN_BOSS_SPRITE);
-    } else {
-        sprite = new Sprite(associated, ALIEN_SPRITE);
-    }
+    if (boss) sprite = new Sprite(associated, ALIEN_BOSS_SPRITE);
+    else sprite = new Sprite(associated, ALIEN_SPRITE);
     associated.AddComponent(sprite);
     sprite->SetScale(0.0f);
     scale = 0.0f;
@@ -22,33 +19,52 @@ void AlienIntro::Start () {
     GameObject* minion;
     float minionArcPlacement;
 
+    minionsReady = 0;
     for (int i=0; i < minionCount; i++) {
         minion = new GameObject(MINION_LAYER, MINION_LABEL);
         minionArcPlacement = (float)i*((PI*2)/minionCount);
         minion->AddComponent(new MinionIntro(*minion, associated, i, minionArcPlacement, boss));
         minionArray.push_back(gameState.AddObject(minion));
     }
-    cleaner.SetResetTime(0.75f);
+    countdown.SetResetTime(0.75f);
 }
 
 void AlienIntro::Update (float dt) {
+    associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
+
     if (scale < 1.0f) {
         scale += 0.25f * dt;
         sprite->SetScale(scale);
         return;
     }
 
-    cleaner.Update(dt);
-    if (cleaner.IsOver()) {
-        GameObject* alien = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-        alien->AddComponent(new Alien(*alien, ALIEN_MINION_COUNT));
-        alien->box.SetPosition(associated.box.GetPosition());
-        Game::GetInstance().GetCurrentState().AddObject(alien);
-        associated.RequestDelete();
-    }
+    countdown.Update(dt);
+    if (countdown.IsOver())
+        GenerateNPC();
 }
 
-void AlienIntro::Render () {}
+void AlienIntro::IncreaseReadyMinions () {
+    minionsReady++;
+}
+
+void AlienIntro::GenerateNPC () {
+    if (minionsReady != minionCount)
+        return;
+
+    std::vector<float> minionScaleArray;
+    for (int i=0; i < minionCount; i++)
+        minionScaleArray.push_back(
+            ((MinionIntro*)minionArray[i].lock()->GetComponent("MinionIntro"))->GetScale()
+        );
+
+    GameObject* alien = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+    if (boss) alien->AddComponent(new AlienBoss(*alien, ALIEN_MINION_COUNT));
+    else alien->AddComponent(new Alien(*alien, ALIEN_MINION_COUNT, minionScaleArray));
+    alien->box.SetPosition(associated.box.GetPosition());
+    alien->angleDeg = associated.angleDeg;
+    Game::GetInstance().GetCurrentState().AddObject(alien);
+    associated.RequestDelete();
+}
 
 bool AlienIntro::Is (std::string type) {
     return (type == "AlienIntro");
@@ -62,21 +78,21 @@ MinionIntro::MinionIntro (
     this->index = index;
     this->boss = boss;
 
-    if (boss) {
-        sprite = new Sprite(associated, MINION_BOSS_SPRITE);
-    } else {
-        sprite = new Sprite(associated, MINION_SPRITE);
-    }
+    if (boss) sprite = new Sprite(associated, MINION_BOSS_SPRITE);
+    else sprite = new Sprite(associated, MINION_SPRITE);
     associated.AddComponent(sprite);
     sprite->SetScale(0.0f);
     scale = 0.0f;
 
-    // int rangeStart = MINION_SCALE_MIN * 100;
-    // int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
-    // desiredScale = (float)((rand() % scaleMod) + rangeStart) / 100.0f;
-    desiredScale = 0.86f;
+    int rangeStart = MINION_SCALE_MIN * 100;
+    int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
+    desiredScale = (float)((rand() % scaleMod) + rangeStart) / 100.0f;
 
     arc = arcOffsetDeg;
+
+    readyPosition = false;
+    readyScale = false;
+    ready = false;
 }
 
 void MinionIntro::Start () {
@@ -84,7 +100,8 @@ void MinionIntro::Start () {
     alienPosition = alienCenter.lock()->box.GetPosition();
     position = alienPosition + arcRadius.Rotate(-arc);
     associated.box.SetPosition(alienPosition);
-    generator.SetResetTime(0.75f);
+    associated.angleDeg = position.AngleDegTo(alienPosition) + MINION_ANGLEDEG_ADJUST;
+    countdown.SetResetTime(0.75f);
 }
 
 void MinionIntro::Update (float dt) {
@@ -93,25 +110,31 @@ void MinionIntro::Update (float dt) {
         return;
     }
 
-    Vec2 currentPosition = associated.box.GetPosition();
-
-    if (currentPosition.DistanceTo(position) > ALIEN_MINIMUM_DISPLACEMENT) {
-        float targetAngle = currentPosition.AngleTo(position);
-        Vec2 speed = currentPosition.DirectionFrom(targetAngle);
-        associated.box.Translate(speed * 22.5f * dt);
-    }
-
-    generator.Update(dt);
-    if (not generator.IsOver())
+    countdown.Update(dt);
+    if (not countdown.IsOver())
         return;
 
+    Vec2 currentPosition = associated.box.GetPosition();
+    if (currentPosition.DistanceTo(position) > 1.0f) {
+        float targetAngle = currentPosition.AngleTo(position);
+        Vec2 speed = currentPosition.DirectionFrom(targetAngle);
+        associated.box.Translate(speed * 30.0f * dt);
+    } else readyPosition = true;
+
     if (scale < desiredScale) {
-        scale += 0.25f * dt;
+        scale += 0.25f * desiredScale * dt;
         sprite->SetScale(scale);
+    } else readyScale = true;
+    
+    if ((not ready) and readyPosition and readyScale) {
+        ((AlienIntro*)alienCenter.lock()->GetComponent("AlienIntro"))->IncreaseReadyMinions();
+        ready = true;
     }
 }
 
-void MinionIntro::Render () {}
+float MinionIntro::GetScale () {
+    return scale;
+}
 
 bool MinionIntro::Is (std::string type) {
     return (type == "MinionIntro");

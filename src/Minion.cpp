@@ -6,7 +6,7 @@
 #include "PenguinCannon.h"
 
 Minion::Minion (
-    GameObject& associated, GameObject& alienCenter, float arcOffsetDeg
+    GameObject& associated, GameObject& alienCenter, float arcOffsetDeg, float scale
 ): Component(associated) {
 
     sprite = new Sprite(associated);
@@ -16,6 +16,7 @@ Minion::Minion (
     associated.AddComponent(collider);
 
     this->alienCenter = Game::GetInstance().GetCurrentState().GetObjectPtr(&alienCenter);
+    this->scale = scale;
     arc = arcOffsetDeg;
 
     playDeathSound = true;
@@ -23,9 +24,10 @@ Minion::Minion (
 
 void Minion::Start () {
     sprite->Open(MINION_SPRITE);
-    int rangeStart = MINION_SCALE_MIN * 100;
-    int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
-    sprite->SetScale((float)((rand() % scaleMod) + rangeStart) / 100.0f);
+    // int rangeStart = MINION_SCALE_MIN * 100;
+    // int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
+    // sprite->SetScale((float)((rand() % scaleMod) + rangeStart) / 100.0f);
+    sprite->SetScale(scale);
 
     hp = sprite->GetScale().x * MINION_HP_MODIFIER;
     damageTaken = 0;

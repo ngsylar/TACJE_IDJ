@@ -43,6 +43,7 @@ class Alien: public Component {
         static int alienCount;
         int minionCount;
         std::vector<std::weak_ptr<GameObject>> minionArray;
+        std::vector<float> minionScaleArray;
         std::weak_ptr<GameObject> penguin;
         
         // sylar's alien breath extra effects
@@ -58,7 +59,11 @@ class Alien: public Component {
         virtual void ExplodeAnimation();
 
     public:
-        Alien(GameObject& associated, int minionCount);
+        Alien(
+            GameObject& associated,
+            int minionCount,
+            std::vector<float> minionScaleArray={}
+        );
         ~Alien();
         virtual void Start();
         virtual void Update(float dt);

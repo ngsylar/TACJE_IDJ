@@ -11,7 +11,7 @@
 #define OPENING_CONCEAL_TIME    0.25f
 #define OPENING_LAYER           0
 
-#define OPENING_GAME_SPRITES    {"assets/ui/disclaimer.k3y"}
+#define OPENING_GAME_SPRITES    {}
 
 class OpeningScene: public State {
     private:

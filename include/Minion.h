@@ -50,7 +50,8 @@ class Minion: public Component {
         Minion(
             GameObject& associated,
             GameObject& alienCenter,
-            float arcOffsetDeg=0.0f
+            float arcOffsetDeg=0.0f,
+            float scale=1.0f
         );
         virtual void Start();
         virtual void Update(float dt);

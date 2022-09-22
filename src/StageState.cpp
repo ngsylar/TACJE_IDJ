@@ -97,6 +97,7 @@ void StageState::Start () {
     gameMapLimits = Rect(GAMEMAP_TILEMAP0_LIMITS);
     music.Open(BACKGROUND_MUSIC);
     // music.Play(MUSIC_REPEAT_ON);
+    GameData::bossAllowed = true;
 }
 
 void StageState::Update (float dt) {
@@ -113,9 +114,17 @@ void StageState::Update (float dt) {
     } else if (GetObjectPtr(penguin).expired()) {
         GameData::playerVictory = false;
         gameOver = true;
-    } else if (Alien::GetAlienCount() < 0) {
+    } else if (GameData::kills >= 2) {
         GameData::playerVictory = true;
         gameOver = true;
+    }
+    // editar: GAMBIARRA BRABA
+    else if (GameData::bossAllowed and (GameData::kills >= 1) and (Alien::GetAlienCount() <= 0)) {
+        GameObject* boss = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
+        boss->AddComponent(new AlienIntro(*boss, ALIEN_MINION_COUNT, true));
+        boss->box.SetPosition(ALIEN1_START_POSITION);
+        AddObject(boss);
+        GameData::bossAllowed = false;
     }
 
     if (GameData::StageStatePopRequested()) {
