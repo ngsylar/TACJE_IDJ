@@ -8,9 +8,7 @@
 
 int Alien::alienCount = 0;
 
-Alien::Alien (
-    GameObject& associated, int minionCount, std::vector<float> minionScaleArray
-): Component(associated) {
+Alien::Alien (GameObject& associated, int minionCount): Component(associated) {
     sprite = new Sprite(associated, ALIEN_SPRITE);
     // associated.AddComponent(sprite);    // idj's original object rendering
     // associated.box.offset = Vec2(ALIEN_CENTER_OFFSET);  // sylar's extra positioning
@@ -24,14 +22,11 @@ Alien::Alien (
     float startTime = ALIEN_SHOT_COOLDOWN + (ALIEN_TIMER_START * alienCount);
     restTimer = Timer(ALIEN_MOVEMENT_COOLDOWN, startTime);
     cooldown = Timer(ALIEN_SHOT_COOLDOWN, startTime);
-    state = RESTING;
+    state = GENERATING;
 
     alienCount++;
 
     this->minionCount = minionCount;
-    while ((int)minionScaleArray.size() < minionCount)
-        minionScaleArray.push_back(1.0f);
-    this->minionScaleArray = minionScaleArray;
 }
 
 Alien::~Alien () {
@@ -44,14 +39,13 @@ Alien::~Alien () {
 void Alien::Start () {
     State& gameState = Game::GetInstance().GetCurrentState();
     penguin = gameState.GetObjectPtr(ALIEN_FOE_LABEL);
-    GenerateMinions();
 }
 
 void Alien::Update (float dt) {
+    // Core
     if (damageTaken > 0) {
         hp -= damageTaken;
         damageTaken = 0;
-        // SDL_Log("Alien %d", hp);     // remover linha
     }
     if (hp <= 0) {
         ExplodeAnimation();
@@ -60,8 +54,16 @@ void Alien::Update (float dt) {
     }
     CheckDeadMinions();
 
+    // Animation
+    associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
+    BreathAnimation(dt);    // sylar's alien breath extra effects
+
+    // State Generating
+    if (state == GENERATING) {
+        GenerateMinions();
+    }
     // State Sleeping
-    if (penguin.expired()) {
+    else if (penguin.expired()) {
         state = SLEEPING;
     }
     // State Chasing
@@ -77,9 +79,6 @@ void Alien::Update (float dt) {
     else if (state == MOVING) {
         ActionMove(dt);
     }
-
-    associated.angleDeg += (ALIEN_ROTATION_SPEED * dt);
-    BreathAnimation(dt);    // sylar's alien breath extra effects
 }
 
 // sylar's alien breath extra effects
@@ -91,18 +90,25 @@ void Alien::Render () {
 }
 
 void Alien::GenerateMinions () {
+    if (not minionArray.empty())
+        return;
+
     State& gameState = Game::GetInstance().GetCurrentState();
-    GameObject* minion;
-    float minionArcPlacement;
 
     for (int i=0; i < minionCount; i++) {
-        minion = new GameObject(MINION_LAYER, MINION_LABEL);
-        minionArcPlacement = (float)i*((PI*2)/minionCount);
+        int rangeStart = MINION_SCALE_MIN * 100;
+        int scaleMod = ((MINION_SCALE_MAX - MINION_SCALE_MIN) * 100) + 1;
+        float minionScale = (float)((rand() % scaleMod) + rangeStart) / 100.0f;
+
+        GameObject* minion = new GameObject(MINION_LAYER, MINION_LABEL);
+        float minionArcPlacement = (float)i*((PI*2)/minionCount);
         minion->AddComponent(
-            new Minion(*minion, associated, minionArcPlacement, minionScaleArray[i])
+            new Minion(*minion, associated, minionArcPlacement, minionScale)
         );
         minionArray.push_back(gameState.AddObject(minion));
     }
+
+    state = RESTING;
 }
 
 void Alien::CheckDeadMinions () {
@@ -116,6 +122,13 @@ void Alien::CheckDeadMinions () {
             minionArray.erase(minionArray.begin()+i);
         }
     }
+}
+
+void Alien::ReplaceMinion (GameObject* minion, int index) {
+    if ((index >= minionArray.size()) or (not minion->GetComponent("Minion")))
+        return;
+    minionArray[index].lock()->RequestDelete();
+    minionArray[index] = Game::GetInstance().GetCurrentState().AddObject(minion);
 }
 
 void Alien::ActionRest (float dt) {

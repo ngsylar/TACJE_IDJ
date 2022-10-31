@@ -34,7 +34,7 @@
 
 class Alien: public Component {
     protected:
-        enum AlienState {RESTING, MOVING, SLEEPING};
+        enum AlienState {GENERATING, RESTING, MOVING, SLEEPING};
 
         int hp, damageTaken;
         AlienState state;
@@ -43,7 +43,6 @@ class Alien: public Component {
         static int alienCount;
         int minionCount;
         std::vector<std::weak_ptr<GameObject>> minionArray;
-        std::vector<float> minionScaleArray;
         std::weak_ptr<GameObject> penguin;
         
         // sylar's alien breath extra effects
@@ -59,11 +58,7 @@ class Alien: public Component {
         virtual void ExplodeAnimation();
 
     public:
-        Alien(
-            GameObject& associated,
-            int minionCount,
-            std::vector<float> minionScaleArray={}
-        );
+        Alien(GameObject& associated, int minionCount);
         ~Alien();
         virtual void Start();
         virtual void Update(float dt);
@@ -73,6 +68,9 @@ class Alien: public Component {
         int GetHP();
         static int GetAlienCount();
         bool Is(std::string type);
+
+        // sylar's extra logic
+        void ReplaceMinion (GameObject* minion, int arrayIndex);
 };
 
 #endif

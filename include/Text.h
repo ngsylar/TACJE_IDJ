@@ -18,22 +18,6 @@ class Text: public Component {
     public:
         enum Style {SOLID, SHADED, BLENDED};
     
-    private:
-        std::shared_ptr<TTF_Font> font;
-        SDL_Texture* texture;
-        std::string fontFileName;
-        int fontSize;
-        Style style;
-        SDL_Color color;
-        std::string text;
-        Timer flickTimer;
-        float displayTime;
-        float concealTime;
-        bool flicker;
-
-        void RemakeTexture();
-
-    public:
         Text(
             GameObject& associated,
             std::string text,
@@ -55,6 +39,21 @@ class Text: public Component {
         void Update(float dt);
         void Render();
         bool Is(std::string type);
+
+    private:
+        std::shared_ptr<TTF_Font> font;
+        SDL_Texture* texture;
+        std::string fontFileName;
+        int fontSize;
+        Style style;
+        SDL_Color color;
+        std::string text;
+        Timer flickTimer;
+        float displayTime;
+        float concealTime;
+        bool flicker;
+
+        void RemakeTexture();
 };
 
 #endif

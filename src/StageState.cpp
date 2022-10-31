@@ -5,7 +5,7 @@
 #include "EndState.h"
 #include "GameData.h"
 #include "Hud.h"
-#include "EnemyIntro.h"
+#include "AlienIntro.h"
 #include "PenguinBody.h"
 
 StageState::StageState () {
@@ -121,7 +121,7 @@ void StageState::Update (float dt) {
     // editar: GAMBIARRA BRABA
     else if (GameData::bossAllowed and (GameData::kills >= 1) and (Alien::GetAlienCount() <= 0)) {
         GameObject* boss = new GameObject(ALIEN_LAYER, ALIEN_LABEL);
-        boss->AddComponent(new AlienIntro(*boss, ALIEN_MINION_COUNT, true));
+        boss->AddComponent(new AlienIntro(*boss, ALIEN_MINION_COUNT, AlienIntro::BOSS));
         boss->box.SetPosition(ALIEN1_START_POSITION);
         AddObject(boss);
         GameData::bossAllowed = false;
